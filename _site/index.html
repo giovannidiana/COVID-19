@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Statistical analysis of COVID-19 epidemics | This is an open scientific project aimed to characterize and predict the evolution of the worldwide diffusion of the new coronavirus 2019.</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Statistical analysis of COVID-19 epidemics" />
+<meta name="author" content="Giovanni Diana and Diana Passaro" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="This is an open scientific project aimed to characterize and predict the evolution of the worldwide diffusion of the new coronavirus 2019." />
+<meta property="og:description" content="This is an open scientific project aimed to characterize and predict the evolution of the worldwide diffusion of the new coronavirus 2019." />
+<link rel="canonical" href="http://localhost:4000/" />
+<meta property="og:url" content="http://localhost:4000/" />
+<meta property="og:site_name" content="Statistical analysis of COVID-19 epidemics" />
+<script type="application/ld+json">
+{"@type":"WebSite","url":"http://localhost:4000/","headline":"Statistical analysis of COVID-19 epidemics","name":"Statistical analysis of COVID-19 epidemics","author":{"@type":"Person","name":"Giovanni Diana and Diana Passaro"},"description":"This is an open scientific project aimed to characterize and predict the evolution of the worldwide diffusion of the new coronavirus 2019.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Statistical analysis of COVID-19 epidemics" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Statistical analysis of COVID-19 epidemics</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a><a class="page-link" href="/todo/">ToDo list</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="home">
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/javascript" charset="utf-8" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<script type="text/javascript" charset="utf-8" src="https://vincenttam.github.io/javascripts/MathJaxLocal.js">
+</script>
+
+<h1 id="introduction">Introduction</h1>
+<p>Spread of COVID-19 in early 2020 has raised important concerns about the ability of national health systems to detect the positive cases, as well as the intervention rate a country is expected to put in place to contain the infection.</p>
+
+<p>Using data on desease spread and containment through the public repository <a href="https://github.com/CSSEGISandData/COVID-19">CSSEGISandData/COVID-19</a> we established a predictive model to estimate the outbreak of the infection in a given population.</p>
+
+<p>In some regions of China the infection rate has significantly decreased compared to the initial exponential spread of the infection. This information can be used to build predictive models which can help other countries to estimate the extent of the outbreak.<br />
+First we modeled the number of infections over time based on the desease outbreak in China. Our model captures the initial exponential phase of the outbreak and the effect of the external intervention to contain the infection. Thus the exponential phase termimnates with a peak of maximum rate of new infected cases and then is followed by a critical period where the number of infections can decrease if the intervention remains stable.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><img src="Figures/Figure_stat_1.png" alt="" /></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">Fig. 1: Dynamics of the infection in the province of Henan, Mainland China</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="the-model">The model</h2>
+<p>We used a generative model to describe the dynamics of the infected population in a given geographic area. Our model takes into account the effect of the local interventions by coupling the average number of new infections per day <script type="math/tex">X(t)</script> with a dynamical variable <script type="math/tex">A(t)</script> which acts against the spread. The observed number of new cases is then generated from a Poisson distribution with rate $X(t)\cdot p(t)$, where $p(t)$ is a fraction of the true number of infections which varies over time (due for instance to the increased number of tests during the acute phase).</p>
+
+<p>The model is defined by two differential equations for the average daily infections $X(t)$ and the action $A(t)$ and a probabilistic rule on the observed infections</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align*}
+\frac{dX}{dt} &= \lambda x - q X A,\quad X(t_0) = X_0\\
+\frac{dA}{dt} &= h X,\quad A(t_0)=0\\
+n(t) & \sim \mathrm{Poisson}(X(t)\cdot p(t)),\quad p(t)=\frac{X(t)}{X(t)+k}
+\end{align*} %]]></script>
+
+<p>where $\lambda$ is the replication rate, $h$ quantifies the impact of the outbreack on local interventions and $q$ is their effect in containing the infection. 
+$X_0$ is the average number of infections at the initial time (22/01/2020) and the constant $k$ parametrizes the fraction $p(t)$ of observed cases with respect to the average of new infections $X(t)$. 
+Figure 2 illustrate the typical dynamics of the model.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><img src="Figures/Figure_1.png" alt="" /></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">Fig. 2: <em>Dynamics of the number of infections</em></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="statistical-inference-of-model-parameters">Statistical inference of model parameters</h2>
+<p>By using the available daily reported cases in the public repository <a href="https://github.com/CSSEGISandData/COVID-19">CSSEGISandData/COVID-19</a> we can estimate the parameters of the model from the data for each country/region affected by the infection. Knowing the model parameters allow us to draw predictions on future infections. For this analysis we will assume that the replication rate $\lambda$ is the same for all countries whereas all the other model parameters are country-dependent. This allows us to exploit the worldwide data to provide a precise estimate of the replication rate which would not be easy to extract from areas where the number of infections is low.</p>
+
+<p>The framework of statistical inference allows us to estimate the model parameters and make predictions while taking into account statistical uncertainties derived from the data. We performed a global analysis of all 114 countries included in the CSSE dataset [1]</p>
+
+<iframe width="800" height="400" frameborder="0" scrolling="no" src="plotly_chart.html"></iframe>
+
+<h2 id="references">References</h2>
+<ol>
+  <li>Dong, Ensheng, Hongru Du, and Lauren Gardner. “An interactive web-based dashboard to track COVID-19 in real time.” The Lancet Infectious Diseases (2020).</li>
+</ol>
+
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Statistical analysis of COVID-19 epidemics</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Giovanni Diana and Diana Passaro</li><li><a class="u-email" href="mailto:g.diana.mail@gmail.com diana.passaro@inserm.fr">g.diana.mail@gmail.com diana.passaro@inserm.fr</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/giovannidiana"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">giovannidiana</span></a></li><li><a href="https://www.twitter.com/GiovannDiana"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">GiovannDiana</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>This is an open scientific project aimed to characterize and predict the evolution of the worldwide diffusion of the new coronavirus 2019. </p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
