@@ -30,9 +30,6 @@ github_username:  giovannidiana
 
 # Build settings
 theme: jekyll-theme-slate
-plugins:
-  - jekyll-feed
-
 markdown: kramdown
 kramdown:
    math_engine: mathjax
