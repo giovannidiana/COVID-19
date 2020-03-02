@@ -29,7 +29,7 @@ twitter_username: GiovannDiana
 github_username:  giovannidiana
 
 # Build settings
-theme: minima
+theme: jekyll-theme-slate
 plugins:
   - jekyll-feed
 
