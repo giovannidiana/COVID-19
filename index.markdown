@@ -1,3 +1,4 @@
+{% include mathjax.html %}
 
 ## Introduction 
 Spread of COVID-19 in early 2020 has raised important concerns about the ability of national health systems to detect the positive cases, as well as the intervention rate a country is expected to put in place to contain the infection.
