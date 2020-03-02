@@ -36,7 +36,7 @@ where $\lambda$ is the replication rate, $h$ quantifies the impact of the outbre
 $X_0$ is the average number of infections at the initial time (22/01/2020) and the constant $k$ parametrizes the fraction $p(t)$ of observed cases with respect to the average of new infections $X(t)$. 
 Figure 2 illustrate the typical dynamics of the model.
 
-|![](Figures/Figure_1.png)|
+|<img src="Figures/Figure_1.png"/>|
 |:--:|
 |Fig. 2: *Dynamics of the number of infections*|
 
