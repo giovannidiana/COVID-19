@@ -15,7 +15,7 @@ Spread of COVID-19 in early 2020 has raised important concerns about the ability
 In some regions of China the infection rate has significantly decreased compared to the initial exponential spread of the infection. This information can be used to build predictive models which can help other countries to estimate the extent of the outbreak.  
 First we modeled the number of infections over time based on the desease outbreak in China. Our model captures the initial exponential phase of the outbreak and the effect of the external intervention to contain the infection. Thus the exponential phase termimnates with a peak of maximum rate of new infected cases and then is followed by a critical period where the number of infections can decrease if the intervention remains stable.  
 
-|![](Figures/Figure_stat_1.png)|
+|<img src="Figures/Figure_stat_1.png"/>|
 |:--:|
 |Fig. 1: Dynamics of the infection in the province of Henan, Mainland China|
 
