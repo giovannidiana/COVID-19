@@ -20,14 +20,14 @@
 
 theme: jekyll-theme-slate
 title: Statistical analysis of COVID-19 epidemics 
-email: g.diana.mail@gmail.com diana.passaro@inserm.fr
-author: Giovanni Diana and Diana Passaro
-description: >- # this means to ignore newlines until "baseurl:"
-  This is an open scientific project aimed to characterize and predict the evolution of the worldwide diffusion of the new coronavirus 2019. 
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
-twitter_username: GiovannDiana
-github_username:  giovannidiana
+#email: g.diana.mail@gmail.com diana.passaro@inserm.fr
+#author: Giovanni Diana and Diana Passaro
+#description: >- # this means to ignore newlines until "baseurl:"
+#  This is an open scientific project aimed to characterize and predict the evolution of the worldwide diffusion of the new coronavirus 2019. 
+#baseurl: "" # the subpath of your site, e.g. /blog
+#url: "" # the base hostname & protocol for your site, e.g. http://example.com
+#twitter_username: GiovannDiana
+#github_username:  giovannidiana
 
 # Build settings
 
