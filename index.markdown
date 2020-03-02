@@ -1,3 +1,7 @@
+---
+mathjax: true
+---
+
 {% include mathjax.html %}
 
 ## Introduction 
