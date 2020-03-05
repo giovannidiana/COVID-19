@@ -243,7 +243,7 @@ cov.PriorSample <- function(NITER){
 	return(params_samples)
 }
 
-cov.GlobalMCMC <- function(NITER,id_show=1,adaptive=FALSE){
+cov.GlobalMCMC <- function(NITER,id_show=1,adaptive=FALSE,init=NA){
 	Al=1
 	Bl=2
 	A=c(1,1,1)
@@ -268,6 +268,12 @@ cov.GlobalMCMC <- function(NITER,id_show=1,adaptive=FALSE){
 
 	params_samples=vector("list",NITER)
 	params_samples[[1]]=list(param=params,lambda=lambda)
+
+	if(!is.na(init)){
+		params_samples[[1]]=init
+		params=params_samples[[1]]$param
+		lambda=params_samples[[1]]$lambda
+	}
 	
 	GLL=cov.GlobalLogLikelihood_vec(lambda,params,Al,Bl,A,B,tf,temperature=temp)
 
