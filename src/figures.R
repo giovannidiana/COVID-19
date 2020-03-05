@@ -32,9 +32,9 @@ for(i in 2:4){
 
 
 
-png("../Figures/Figure_stat_2.png",width=600,height=1000)
+png("../Figures/Figure_stat_2.png",width=700,height=3000)
 means.h=colMeans(par_comb[[2]])
 ord=order(means.h,decreasing=T)
-par(mar=c(12,3,3,3))
+par(mar=c(3,15,3,3))
 boxplot(par_comb[[2]][,ord], horizontal=T,las=2,outline=F)
 dev.off()
