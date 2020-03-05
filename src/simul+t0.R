@@ -16,7 +16,7 @@ library(readr)
 
 cat("Download data\n")
 
-file_conf = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Deaths.csv"
+file_conf = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv"
 rawdata_conf<-read_csv(file_conf)
 
 file_rec = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Recovered.csv"
@@ -253,8 +253,8 @@ cov.GlobalMCMC <- function(NITER,id_show=1,adaptive=FALSE){
 	tf=ncol(data)
 
 	temp=1
-	prop_size_lam=1000
-	prop_size=matrix(1000,nc,nvar-1) #* rowSums(data)
+	prop_size_lam=2000
+	prop_size=matrix(2000,nc,nvar-1) #* rowSums(data)
 
 	params=matrix(NA,nc,nvar-1)
 
