@@ -36,8 +36,38 @@ data_conf<-t(apply(rawdata_conf,1,function(x) diff(as.numeric(x))))
 data_rec<-t(apply(rawdata_rec,1,function(x) diff(as.numeric(x))))
 data_conf[data_conf<0]=0
 data_rec[data_rec<0]=0
+data=data_conf
 
-cov.sim <- function(params,tf,dt=.1){
+cov.MixedGammaVec <- function(x1,a1,b1,x2,a2,b2){
+	
+	l1=dgamma(x1,a1,b1,log=T)
+	l2=dgamma(x2,a2,b2,log=T)
+	sel=which(l2>l1)
+	nsel=which(l1>=l2)
+	r=rep(NA,length(x1))
+	r[sel] = -log(2)+l2[sel]+log(1+dgamma(x1[sel],a1[sel],b1[sel])/dgamma(x2[sel],a2[sel],b2[sel]))
+	r[nsel] = -log(2)+l1[nsel]+log(1+dgamma(x2[nsel],a2[nsel],b2[nsel])/dgamma(x1[nsel],a1[nsel],b1[nsel]))
+
+	if(any(is.na(r))) cat("there is a problem\n")
+	return(r)
+}
+
+cov.MixedGamma <- function(x1,a1,b1,x2,a2,b2){
+	
+	l1=dgamma(x1,a1,b1,log=T)
+	l2=dgamma(x2,a2,b2,log=T)
+	
+	if(l2>l1){
+		r = -log(2)+l2+log(1+dgamma(x1,a1,b1)/dgamma(x2,a2,b2))
+	} else {
+		r = -log(2)+l1+log(1+dgamma(x2,a2,b2)/dgamma(x1,a1,b1))
+	}
+
+	return(r)
+}
+
+
+cov.sim <- function(params,tf,dt=.01){
 	names(params)<-c("lambda","q","h","x0","alpha")
 
 	t=seq(0,tf,dt)
@@ -65,10 +95,47 @@ cov.sim <- function(params,tf,dt=.1){
 		}
 	}
 
-
-
 	return(list(Rx,Ry))
 }
+
+cov.SIM <- function(params,tf,dt=0.1){
+	#names(params)<-c("lambda","q","h","x0","alpha")
+	nr=nrow(params)
+	t=seq(0,tf,l=ceiling(tf/dt))
+	
+	x=matrix(0,nr,ceiling(tf/dt))
+	y=matrix(0,nr,ceiling(tf/dt))
+	
+	Rx=matrix(0,nr,tf)
+	Ry=matrix(0,nr,tf)
+	
+	x[,1]=params[,'x0']
+	y[,1]=0
+
+	counter=1
+	for(i in 2:length(t)){
+		x[,i] = x[,i-1]+dt*(params[,'lambda']*(x[,i-1])-params[,'q']*y[,i-1]*x[,i-1])
+		y[,i] = y[,i-1]+dt*(params[,'h']*x[,i-1])
+		if(t[i]+dt>counter) {
+			Rx[,counter] = x[,i]
+			Ry[,counter] = y[,i]
+			counter=counter+1
+						
+		}
+	}
+
+	if(any(c(Rx,Ry)<0)){ 
+		#warning('Negative values')
+		#cat('Negative values\n')
+		#cat("recursive calc",'\n')
+		return(cov.SIM(params,tf,dt/10))
+	} else {
+		#cat("done\n")
+		return(list(Rx,Ry))
+	}
+}
+
+
 
 cov.LogLikelihood <- function(X,params,A,B,tf){
 	names(params)<-c("lambda","q","h","x0","k")
@@ -78,20 +145,36 @@ cov.LogLikelihood <- function(X,params,A,B,tf){
 	return(LogLik)
 }
 
-cov.GlobalLogLikelihood <- function(lam,paramlist,Al,Bl,A,B,tf,print=F){
-	LogLik=dgamma(lam,Al,Bl,log=T)
-	for(i in 1:nrow(data)){
-		p=c(lam,paramlist[i,])
-		names(p)<-c("lambda","q","h","x0","k")
-		res=cov.sim(p,tf)
-		pp=res[[1]]/(res[[1]]+p['k'])
-		LogLik = LogLik+sum(dpois(data[i,],lambda=res[[1]]*pp,log=T)) + sum(dgamma(paramlist[i,],A,B,log=T))
-		if(print){
-			cat(i,' ',LogLik,'\n')
-		}
-	}
+cov.GlobalLogLikelihood <- function(lam,paramlist,Al,Bl,A,B,tf,temperature=1,print=F){
+	
+	nr=nrow(paramlist)
+	p=data.frame(lambda=lam,
+		     q=paramlist[,1],
+		     h=paramlist[,2],
+		     x0=paramlist[,3],
+		     k=paramlist[,4])
+	res=cov.SIM(p,tf)
+	pp=res[[1]]/(res[[1]]+p[,'k'])
+	LogLik = dgamma(lam,Al,Bl,log=T)+sum(dpois(data,lambda=res[[1]]*pp,log=T)) + sum(dgamma(paramlist,matrix(A,nr,length(A),byrow=1),matrix(B,nr,length(B),byrow=1),log=T))
 
 	return(LogLik)
+}
+
+cov.GlobalLogLikelihood_vec <- function(lam,paramlist,Al,Bl,A,B,tf,temperature=1,print=F){
+	
+	nr=nrow(data)
+	p=data.frame(lambda=lam,
+		     q=paramlist[,1],
+		     h=paramlist[,2],
+		     x0=paramlist[,3],
+		     k=paramlist[,4])
+	res=cov.SIM(p,tf)
+	pp=res[[1]]/(res[[1]]+p[,'k'])
+	if(ncol(data)!=ncol(res[[1]])) warning("data and solutions differ in dimensions\n")
+	LogLikVec = rowSums(dpois(data,lambda=res[[1]]*pp,log=T)) #+ rowSums(dgamma(paramlist,matrix(A,nr,length(A),byrow=1),matrix(B,nr,length(B),byrow=1),log=T))
+
+	LogLik=sum(LogLikVec)+dgamma(lam,Al,Bl,log=T)
+	return(list(LogLik=temperature*LogLik,LogLikVec=temperature*LogLikVec))
 }
 
 cov.MCMC <- function(time_series,NITER){
@@ -153,7 +236,136 @@ cov.PriorSample <- function(NITER){
 	return(params_samples)
 }
 
-cov.GlobalMCMC <- function(NITER){
+cov.GlobalMCMC <- function(NITER,id_show=1,adaptive=FALSE){
+	Al=1
+	Bl=5
+	A=c(1,1,1,1)
+	B=c(10,10,5,1)
+	nvar=5
+	nc=nrow(data)
+	tf=ncol(data)
+
+	temp=1
+	prop_size_lam=4000
+	prop_size=matrix(1000,nc,nvar-1) #* rowSums(data)
+
+	params=matrix(NA,nc,nvar-1)
+
+	## init using single MCMC
+
+	lambda=0.2
+	for(i in 1:nc){ 
+		params[i,]=rgamma(nvar-1,A,B)
+		#params[i,]=cov.MCMC(data[i,],100)[100,2:5]
+	}
+
+	params_samples=vector("list",NITER)
+	params_samples[[1]]=list(param=params,lambda=lambda)
+	
+	GLL=cov.GlobalLogLikelihood_vec(lambda,params,Al,Bl,A,B,tf,temperature=temp)
+
+	ar.lam=rep(0,100)
+	ar.par=array(0,dim=c(nc,nvar-1,100))
+	ar.timer.lam=100
+	ar.timer.par=matrix(100,nc,nvar-1)
+
+	for(i in 1:NITER){
+		## first update lambda
+		if(runif(1)<0.5){
+			fac=rgamma(1,prop_size_lam,prop_size_lam)
+			lambda_new=fac*lambda
+		} else {
+			lambda_new=rgamma(1,Al,Bl)
+		}
+
+		#cat(i,' ',c(ar.timer.lam,mean(ar.lam),prop_size_lam,lambda,lambda_new),"     \r")	
+		cat(i,"     \r")	
+		GLL_new=cov.GlobalLogLikelihood_vec(lambda,params,Al,Bl,A,B,tf,temperature=temp)
+		
+		logalpha = GLL_new$LogLik- GLL$LogLik + 
+			   cov.MixedGamma(lambda,Al,Bl,lambda/lambda_new,prop_size_lam,prop_size_lam)-
+			   cov.MixedGamma(lambda_new,Al,Bl,lambda_new/lambda,prop_size_lam,prop_size_lam)
+
+
+		## and update lambda
+		u=runif(1)
+		if(log(u)<logalpha){
+			lambda=lambda_new
+			GLL=GLL_new
+		}
+
+		###################################################
+		## Adaptive proposal
+		if(adaptive){
+
+		ar.lam=c(ar.lam[-1],(log(u)<logalpha))
+		ar.timer.lam=max(ar.timer.lam-1,0)
+
+		if(ar.timer.lam==0) {
+			if(mean(ar.lam)<0.25) {
+				prop_size_lam=prop_size_lam*2
+				ar.timer.lam=100
+			}
+			if(mean(ar.lam)>0.8) {
+				prop_size_lam=prop_size_lam/2
+				ar.timer.lam=100
+			}
+		}
+		}
+		###################################################
+
+		## then update the other parameters independently
+
+		for(var in 1:ncol(params)){
+			kstar=sample(1:nc,1)
+			which_from_prior=runif(nc)<0.5
+			params_new=params
+
+
+			fac=rgamma(nc,prop_size[,var],prop_size[,var])
+			rprior=rgamma(nc,A[var],B[var])			
+
+			params_new[!which_from_prior,var]=fac[!which_from_prior]*params[!which_from_prior,var]
+			params_new[which_from_prior,var]=rprior[which_from_prior]
+
+			params_new[(1:nc),var][-kstar]=params[(1:nc),var][-kstar]
+			GLL_new = cov.GlobalLogLikelihood_vec(lambda,params_new,Al,Bl,A,B,tf,temperature=temp) 
+			logalpha = GLL_new$LogLikVec - GLL$LogLikVec + 
+				   cov.MixedGammaVec(params[,var],rep(A[var],nc),rep(B[var],nc),params[,var]/params_new[,var],prop_size[,var],prop_size[,var]) - 
+				   cov.MixedGammaVec(params_new[,var],rep(A[var],nc),rep(B[var],nc),params_new[,var]/params[,var],prop_size[,var],prop_size[,var])
+
+			u=runif(nc)
+			selec=log(u)<logalpha
+			params[selec,var]=params_new[selec,var]
+			GLL$LogLikVec[selec]=GLL_new$LogLikVec[selec]
+			if(adaptive){
+			###################################################
+			## Adaptive proposal
+			ar.par[,var,]=cbind(ar.par[,var,-1],selec)
+			ar.par.means=apply(ar.par,c(1,2),mean)
+			nonzero=ar.timer.par[,var]>0
+			ar.timer.par[nonzero,var]=ar.timer.par[nonzero,var]-1
+
+			zeros_and_low = ar.par.means[,var]<0.25 & ar.timer.par[,var]==0
+			prop_size[zeros_and_low,var] = prop_size[zeros_and_low,var]*2
+
+			zeros_and_high = ar.par.means[,var]>0.8 & ar.timer.par[,var]==0
+			prop_size[zeros_and_high,var] = prop_size[zeros_and_high,var]*2
+
+			ar.timer.par[zeros_and_low | zeros_and_high,var] = 100
+			###################################################
+			}
+		}
+
+		params_samples[[i]]=list(param=params,lambda=lambda)
+		if(i>20 && i%%10==0) cov.plotFromGlobal(id_show,params_samples[(i-20):i],ncol(data)+10,10)
+	}
+
+	return(params_samples)
+}
+
+# This is not a good idea...
+cov.GlobalIS <- function(N){
 	Al=1
 	Bl=2
 	A=c(1,1,1,1)
@@ -162,52 +374,26 @@ cov.GlobalMCMC <- function(NITER){
 	nc=nrow(data)
 	tf=ncol(data)
 
-	prop_size_lam=100
-	prop_size=100
-
-	params=matrix(NA,nc,nvar-1)
-	lambda=rgamma(1,Al,Bl)
-
-	for(i in 1:nc){ 
-		params[i,]=rgamma(nvar-1,A,B)
-	}
-
-	params_samples=vector("list",NITER)
-	params_samples[[1]]=list(param=params,lambda=lambda)
+	params_samples=vector("list",N)
 	
-	LogLik = cov.GlobalLogLikelihood(lambda,params,Al,Bl,A,B,tf) 
+	for(i in 1:N){
+		cat(i,"         \r")
+		lambda=rgamma(1,Al,Bl)
+		params=matrix(NA,nc,nvar-1)
 
-	for(i in 1:NITER){
+		for(k in 1:nc){ 
+			params[k,]=rgamma(nvar-1,A,B)
+		}
 		
-		var=sample(1:nvar,1)
-		if(var==1){
-			fac=rgamma(1,prop_size_lam,prop_size_lam)
-			params_new=params
-			lambda_new=fac*lambda
-			LogLik_new = cov.GlobalLogLikelihood(lambda_new,params_new,Al,Bl,A,B,tf) 
-			logalpha = LogLik_new- LogLik + dgamma(1/fac,prop_size_lam,prop_size_lam,log=T) - dgamma(fac,prop_size_lam,prop_size_lam,log=T) 
-		} else {
-			fac=rgamma(nc,prop_size,prop_size)
-			params_new=params
-			params_new[,var-1]=fac*params[,var-1]
-			lambda_new=lambda
-			LogLik_new = cov.GlobalLogLikelihood(lambda_new,params_new,Al,Bl,A,B,tf) 
-			logalpha = LogLik_new- LogLik + sum(dgamma(1/fac,prop_size,prop_size,log=T) - dgamma(fac,prop_size,prop_size,log=T))
-		}
+	        weight=cov.GlobalLogLikelihood_vec(lambda,params,Al,Bl,A,B,tf)$LogLik
+		params_samples[[i]]=list(param=params,lambda=lambda,w=weight)
 
-		u=runif(1)
-		if(log(u)<logalpha){
-			params=params_new
-			lambda=lambda_new
-			LogLik=LogLik_new
-			params_samples[[i]]=list(param=params_new,lambda=lambda_new)
-		} else {
-			params_samples[[i]]=list(param=params,lambda=lambda)
-		}
 	}
+
 
 	return(params_samples)
 }
+
 
 cov.plot_param <- function(X,param,tf){
 	plot(X)
@@ -248,7 +434,7 @@ cov.plotFromGlobal <- function(ind,samples,tf,n=10,ymax=max(data[ind,])){
 	randsam=sample((Nsam/2):Nsam,n)
 	for(i in 1:n){
 		ranind=sample((Nsam/2):Nsam,1)
-		params=c(samples[[randsam[i]]]$lambda,samples[[ranind]]$param[ind,])
+		params=c(samples[[randsam[i]]]$lambda,samples[[randsam[i]]]$param[ind,])
 		names(params)<-c("lambda","q","h","x0","k")
 		res=cov.sim(params,tf)
 		pp=res[[1]]/(res[[1]]+params['k'])

@@ -23,27 +23,29 @@ The model is defined by two differential equations for the average daily infecti
 
 $$
 \begin{align*}
-\frac{dX}{dt} &= \lambda x - q X A,\quad X(t_0) = X_0\\
-\frac{dA}{dt} &= h X,\quad A(t_0)=0\\
-n(t) & \sim \mathrm{Poisson}(X(t)\cdot p(t)),\quad p(t)=\frac{X(t)}{X(t)+k}
+\frac{dX}{dt} &= \lambda X - X A,\quad X(t_0) = X_0\\
+\frac{dA}{dt} &= h X\theta(t-t_0),\quad A(t_0)=0\\
+n(t) & \sim \mathrm{Poisson}(X(t))
 \end{align*}
 $$ 
 
-where $\lambda$ is the replication rate, $h$ quantifies the impact of the outbreack on local interventions and $q$ is their effect in containing the infection. 
-$X_0$ is the average number of infections at the initial time (22/01/2020) and the constant $k$ parametrizes the fraction $p(t)$ of observed cases with respect to the average of new infections $X(t)$. 
-Figure 2 illustrate the typical dynamics of the model.
+where $\lambda$ is the (observed) infection rate and $h$ quantifies the impact of the outbreack on local interventions, taken after time $t_0$.  
+$X_0$ is the average number of infections at the initial time (22/01/2020).
+Figure 2 illustrates the typical dynamics of the model.
 
 |<img src="Figures/Figure_1.png"/>|
 |:--:|
 |Fig. 2: *Dynamics of the number of infections*|
 
 ## Statistical inference of model parameters
-By using the available daily reported cases in the public repository [CSSEGISandData/COVID-19](https://github.com/CSSEGISandData/COVID-19) we can estimate the parameters of the model from the data for each country/region affected by the infection. Knowing the model parameters allow us to draw predictions on future infections. For this analysis we will assume that the replication rate $\lambda$ is the same for all countries whereas all the other model parameters are country-dependent. This allows us to exploit the worldwide data to provide a precise estimate of the replication rate which would not be easy to extract from areas where the number of infections is low.
+By using the available daily reported cases in the public repository [CSSEGISandData/COVID-19](https://github.com/CSSEGISandData/COVID-19) we can estimate the parameters of the model from the data for each country/region affected by the infection. Knowing the model parameters allow us to draw predictions on how the epidemics will evolve. For this analysis we assume that the rate of infection $\lambda$ is the same for all countries whereas all the other model parameters are country-dependent. This allows us to exploit the worldwide data to strengthen the predictive power of the model.
 
-The framework of statistical inference allows us to estimate the model parameters and make predictions while taking into account statistical uncertainties derived from the data. We performed a global analysis of all 114 countries included in the CSSE dataset [1]
+The framework of statistical inference allows us to estimate the model parameters and make predictions while taking into account statistical uncertainties derived from the data and the prior uncertainty. We performed a global analysis on 44 countries included in the CSSE dataset [1]. 
 
+The interactive chart below gives an overview of the course of the infection for each country.
 <iframe width="800" height="400" frameborder="0" scrolling="no"
 src="plotly_chart.html"></iframe>
+
 
 ## References
 1. Dong, Ensheng, Hongru Du, and Lauren Gardner. "An interactive web-based dashboard to track COVID-19 in real time." The Lancet Infectious Diseases (2020).   
