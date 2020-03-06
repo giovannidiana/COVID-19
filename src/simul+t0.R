@@ -247,7 +247,7 @@ cov.GlobalMCMC <- function(NITER,id_show=1,adaptive=FALSE,init=NA){
 	Al=1
 	Bl=2
 	A=c(1,1,1)
-	B=c(10,10,10)
+	B=c(10,.1,10)
 	nvar=4
 	nc=nrow(data)
 	tf=ncol(data)

@@ -48,7 +48,19 @@ src="plotly_chart.html"></iframe>
 
 |<img src="Figures/Figure_stat_2.png"/>|
 |:--:|
-|Fig. 3: |
+|Fig. 3: parametet $h$ per country|
+
+|<img src="Figures/Figure_stat_2.png"/>|
+|:--:|
+|Fig. 4: infection rate the 22nd of Jan 2020|
+
+|<img src="Figures/Figure_stat_2.png"/>|
+|:--:|
+|Fig. 5: time of intervention per country|
+
+|<img src="Figures/Figure_stat_lambda.png"/>|
+|:--:|
+|Fig. 6: Posterior distribution of the daily infection rate $\lambda$|
 
 ## References
 1. Dong, Ensheng, Hongru Du, and Lauren Gardner. "An interactive web-based dashboard to track COVID-19 in real time." The Lancet Infectious Diseases (2020).   
