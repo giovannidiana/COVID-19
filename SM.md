@@ -1,6 +1,6 @@
 ---
 layout: page
-title: ToDo list
+title: "Supplementary methods"
 permalink: /Supplementary methods/
 ---
 
