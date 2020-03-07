@@ -25,12 +25,14 @@ $$
 \begin{align*}
 \frac{dX}{dt} &= \lambda X - X A,\quad X(t_0) = X_0\\
 \frac{dA}{dt} &= h X\theta(t-t_0),\quad A(t_0)=0\\
-n(t) & \sim \mathrm{Poisson}(X(t))
+n(t) & \sim \mathrm{Poisson}(X(t) \cdot p(t)),\quad p(t)=\frac{X(t)}{X(t)+k}
 \end{align*}
 $$ 
 
 where $\lambda$ is the (observed) infection rate and $h$ quantifies the impact of the outbreack on local interventions, taken after time $t_0$.  
 $X_0$ is the average number of infections at the initial time (22/01/2020).
+The lack of observations at early stages is captured by the factor $p(t)$ which depends directly on the daily infection rate. The assumption being that the more infections are detected the more tests and controls are put in place to monitor the infected population. Note however that this is not sufficient to estimate the true number of infected individual, but to accommodate the low number of observations when the epidemics reaches a given country.
+
 Figure 2 illustrates the typical dynamics of the model.
 
 |<img src="Figures/Figure_1.png"/>|
@@ -40,7 +42,7 @@ Figure 2 illustrates the typical dynamics of the model.
 ## Statistical inference of model parameters
 By using the available daily reported cases in the public repository [CSSEGISandData/COVID-19](https://github.com/CSSEGISandData/COVID-19) we can estimate the parameters of the model from the data for each country/region affected by the infection. Knowing the model parameters allow us to draw predictions on how the epidemics will evolve. For this analysis we assume that the rate of infection $\lambda$ is the same for all countries whereas all the other model parameters are country-dependent. This allows us to exploit the worldwide data to strengthen the predictive power of the model.
 
-The framework of statistical inference allows us to estimate the model parameters and make predictions while taking into account statistical uncertainties derived from the data and the prior uncertainty. We performed a global analysis on 44 countries included in the CSSE dataset [1]. 
+The framework of statistical inference allows us to estimate the model parameters and make predictions while taking into account statistical uncertainties derived from the data and the prior uncertainty. We performed a global analysis on 173 countries included in the CSSE dataset [1]. 
 
 The interactive chart below gives an overview of the course of the infection for each country.
 <iframe width="800" height="400" frameborder="0" scrolling="no"
@@ -58,9 +60,13 @@ src="plotly_chart.html"></iframe>
 |:--:|
 |Fig. 5: time of intervention per country|
 
+|<img src="Figures/Figure_stat_5.png"/>|
+|:--:|
+|Fig. 6: parameter $k$ per country|
+
 |<img src="Figures/Figure_stat_lambda.png"/>|
 |:--:|
-|Fig. 6: Posterior distribution of the daily infection rate $\lambda$|
+|Fig. 7: Posterior distribution of the daily infection rate $\lambda$|
 
 ## References
 1. Dong, Ensheng, Hongru Du, and Lauren Gardner. "An interactive web-based dashboard to track COVID-19 in real time." The Lancet Infectious Diseases (2020).   
