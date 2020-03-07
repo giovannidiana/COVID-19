@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: default
 title: "Supplementary methods"
 permalink: /Supplementary methods/
 ---
