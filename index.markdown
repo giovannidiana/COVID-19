@@ -53,7 +53,7 @@ The framework of statistical inference allows us to estimate the model parameter
 
 The interactive chart below gives an overview of the course of the infection for each country.
 <iframe width="800" height="400" frameborder="0" scrolling="no"
-src="plotly_chart.html"></iframe>
+src="notebook/plotly_chart.html"></iframe>
 
 ## References
 1. Dong, Ensheng, Hongru Du, and Lauren Gardner. "An interactive web-based dashboard to track COVID-19 in real time." The Lancet Infectious Diseases (2020).   
