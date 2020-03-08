@@ -5,21 +5,20 @@
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,maximum-scale=2">
-    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=55d15a071d48584e01af29f431b407daae445435">
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=e181bca4406636247634997406c05c37ef6e3559">
 
 <!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Statistical analysis of COVID-19 epidemics | This is an open scientific project aimed to characterize and predict the evolution of the worldwide diffusion of the new coronavirus 2019.</title>
+<title>Statistical analysis of COVID-19 epidemics | Statistical analysis of COVID-19 infections</title>
 <meta name="generator" content="Jekyll v3.8.5" />
 <meta property="og:title" content="Statistical analysis of COVID-19 epidemics" />
-<meta name="author" content="Giovanni Diana and Diana Passaro" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="This is an open scientific project aimed to characterize and predict the evolution of the worldwide diffusion of the new coronavirus 2019." />
-<meta property="og:description" content="This is an open scientific project aimed to characterize and predict the evolution of the worldwide diffusion of the new coronavirus 2019." />
+<meta name="description" content="Statistical analysis of COVID-19 infections" />
+<meta property="og:description" content="Statistical analysis of COVID-19 infections" />
 <link rel="canonical" href="http://localhost:4000/" />
 <meta property="og:url" content="http://localhost:4000/" />
 <meta property="og:site_name" content="Statistical analysis of COVID-19 epidemics" />
 <script type="application/ld+json">
-{"@type":"WebSite","url":"http://localhost:4000/","headline":"Statistical analysis of COVID-19 epidemics","name":"Statistical analysis of COVID-19 epidemics","author":{"@type":"Person","name":"Giovanni Diana and Diana Passaro"},"description":"This is an open scientific project aimed to characterize and predict the evolution of the worldwide diffusion of the new coronavirus 2019.","@context":"https://schema.org"}</script>
+{"@type":"WebSite","url":"http://localhost:4000/","headline":"Statistical analysis of COVID-19 epidemics","name":"Statistical analysis of COVID-19 epidemics","description":"Statistical analysis of COVID-19 infections","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
   </head>
@@ -32,7 +31,7 @@
           <a id="forkme_banner" href="https://github.com/giovannidiana/COVID-19">View on GitHub</a>
 
           <h1 id="project_title">Statistical analysis of COVID-19 epidemics</h1>
-          <h2 id="project_tagline">This is an open scientific project aimed to characterize and predict the evolution of the worldwide diffusion of the new coronavirus 2019. </h2>
+          <h2 id="project_tagline">Statistical analysis of COVID-19 infections</h2>
 
           
         </header>
@@ -57,7 +56,13 @@
 <script type="text/javascript" charset="utf-8" src="https://vincenttam.github.io/javascripts/MathJaxLocal.js">
 </script>
 
-<h1 id="introduction">Introduction</h1>
+<hr />
+
+<p><a href="SM">Supplementary Methods</a></p>
+
+<hr />
+
+<h2 id="introduction">Introduction</h2>
 <p>Spread of COVID-19 in early 2020 has raised important concerns about the ability of national health systems to detect the positive cases, as well as the intervention rate a country is expected to put in place to contain the infection.</p>
 
 <p>Using data on desease spread and containment through the public repository <a href="https://github.com/CSSEGISandData/COVID-19">CSSEGISandData/COVID-19</a> we established a predictive model to estimate the outbreak of the infection in a given population.</p>
@@ -85,14 +90,16 @@ First we modeled the number of infections over time based on the desease outbrea
 
 <script type="math/tex; mode=display">% <![CDATA[
 \begin{align*}
-\frac{dX}{dt} &= \lambda x - q X A,\quad X(t_0) = X_0\\
-\frac{dA}{dt} &= h X,\quad A(t_0)=0\\
-n(t) & \sim \mathrm{Poisson}(X(t)\cdot p(t)),\quad p(t)=\frac{X(t)}{X(t)+k}
+\frac{dX}{dt} &= \lambda X - X A,\quad X(t_0) = X_0\\
+\frac{dA}{dt} &= h X\theta(t-t_0),\quad A(t_0)=0\\
+n(t) & \sim \mathrm{Poisson}(X(t) \cdot p(t)),\quad p(t)=\frac{X(t)}{X(t)+k}
 \end{align*} %]]></script>
 
-<p>where $\lambda$ is the replication rate, $h$ quantifies the impact of the outbreack on local interventions and $q$ is their effect in containing the infection. 
-$X_0$ is the average number of infections at the initial time (22/01/2020) and the constant $k$ parametrizes the fraction $p(t)$ of observed cases with respect to the average of new infections $X(t)$. 
-Figure 2 illustrate the typical dynamics of the model.</p>
+<p>where $\lambda$ is the (observed) infection rate and $h$ quantifies the impact of the outbreack on local interventions, taken after time $t_0$.<br />
+$X_0$ is the average number of infections at the initial time (22/01/2020).
+The lack of observations at early stages is captured by the factor $p(t)$ which depends directly on the daily infection rate. The assumption being that the more infections are detected the more tests and controls are put in place to monitor the infected population. Note however that this is not sufficient to estimate the true number of infected individual, but to accommodate the low number of observations when the epidemics reaches a given country.</p>
+
+<p>Figure 2 illustrates the typical dynamics of the model.</p>
 
 <table>
   <thead>
@@ -108,11 +115,77 @@ Figure 2 illustrate the typical dynamics of the model.</p>
 </table>
 
 <h2 id="statistical-inference-of-model-parameters">Statistical inference of model parameters</h2>
-<p>By using the available daily reported cases in the public repository <a href="https://github.com/CSSEGISandData/COVID-19">CSSEGISandData/COVID-19</a> we can estimate the parameters of the model from the data for each country/region affected by the infection. Knowing the model parameters allow us to draw predictions on future infections. For this analysis we will assume that the replication rate $\lambda$ is the same for all countries whereas all the other model parameters are country-dependent. This allows us to exploit the worldwide data to provide a precise estimate of the replication rate which would not be easy to extract from areas where the number of infections is low.</p>
+<p>By using the available daily reported cases in the public repository <a href="https://github.com/CSSEGISandData/COVID-19">CSSEGISandData/COVID-19</a> we can estimate the parameters of the model from the data for each country/region affected by the infection. Knowing the model parameters allow us to draw predictions on how the epidemics will evolve. For this analysis we assume that the rate of infection $\lambda$ is the same for all countries whereas all the other model parameters are country-dependent. This allows us to exploit the worldwide data to strengthen the predictive power of the model.</p>
 
-<p>The framework of statistical inference allows us to estimate the model parameters and make predictions while taking into account statistical uncertainties derived from the data. We performed a global analysis of all 114 countries included in the CSSE dataset [1]</p>
+<p>The framework of statistical inference allows us to estimate the model parameters and make predictions while taking into account statistical uncertainties derived from the data and the prior uncertainty. We performed a global analysis on 173 countries included in the CSSE dataset [1].</p>
 
+<p>The interactive chart below gives an overview of the course of the infection for each country.</p>
 <iframe width="800" height="400" frameborder="0" scrolling="no" src="plotly_chart.html"></iframe>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><img src="Figures/Figure_stat_2.png" /></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">Fig. 3: parametet $h$ per country</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><img src="Figures/Figure_stat_3.png" /></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">Fig. 4: infection rate the 22nd of Jan 2020</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><img src="Figures/Figure_stat_4.png" /></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">Fig. 5: time of intervention per country</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><img src="Figures/Figure_stat_5.png" /></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">Fig. 6: parameter $k$ per country</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><img src="Figures/Figure_stat_lambda.png" /></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">Fig. 7: Posterior distribution of the daily infection rate $\lambda$</td>
+    </tr>
+  </tbody>
+</table>
 
 <h2 id="references">References</h2>
 <ol>

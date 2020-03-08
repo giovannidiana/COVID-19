@@ -5,6 +5,12 @@ mathjax: true
 
 {% include mathjax.html %}
 
+***
+
+[Supplementary Methods](SM)
+
+***
+
 ## Introduction 
 Spread of COVID-19 in early 2020 has raised important concerns about the ability of national health systems to detect the positive cases, as well as the intervention rate a country is expected to put in place to contain the infection.
 
@@ -18,19 +24,19 @@ First we modeled the number of infections over time based on the desease outbrea
 |Fig. 1: Dynamics of the infection in the province of Henan, Mainland China|
 
 ## The model
-We used a generative model to describe the dynamics of the infected population in a given geographic area. Our model takes into account the effect of the local interventions by coupling the average number of new infections per day $$X(t)$$ with a dynamical variable $$A(t)$$ which acts against the spread. The observed number of new cases is then generated from a Poisson distribution with rate $X(t)\cdot p(t)$, where $p(t)$ is a fraction of the true number of infections which varies over time (due for instance to the increased number of tests during the acute phase).
+We used a generative model to describe the dynamics of the infected population in a given geographic area. Our model takes into account the effect of the local interventions by coupling the average number of infections $$X(t)$$ with a dynamical variable $$A(t)$$ which acts against the spread. The observed number of cases is then generated from a Poisson distribution with rate $X(t)\cdot p(t)$, where $p(t)$ is a fraction of the true number of infections which varies over time (due for instance to the increased number of tests during the acute phase).
 
-The model is defined by two differential equations for the average daily infections $X(t)$ and the action $A(t)$ and a probabilistic rule on the observed infections 
+The model is defined by two differential equations for the size of the infected population $X(t)$ and the action $A(t)$ and a probabilistic rule on the observed infections 
 
 $$
 \begin{align*}
 \frac{dX}{dt} &= \lambda X - X A,\quad X(t_0) = X_0\\
-\frac{dA}{dt} &= h X\theta(t-t_0),\quad A(t_0)=0\\
-n(t) & \sim \mathrm{Poisson}(X(t) \cdot p(t)),\quad p(t)=\frac{X(t)}{X(t)+k}
+\frac{dA}{dt} &= h X(t)p(t),\quad A(t_0)=0\\
+n(t) & \sim \mathrm{Poisson}(X(t) \cdot p(t)),\quad p(t)=\frac{X(t)^g}{X(t)^h+k^g}
 \end{align*}
 $$ 
 
-where $\lambda$ is the (observed) infection rate and $h$ quantifies the impact of the outbreack on local interventions, taken after time $t_0$.  
+where $\lambda$ is the (observed) infection rate and $h$ quantifies the effect of local interventions.  
 $X_0$ is the average number of infections at the initial time (22/01/2020).
 The lack of observations at early stages is captured by the factor $p(t)$ which depends directly on the daily infection rate. The assumption being that the more infections are detected the more tests and controls are put in place to monitor the infected population. Note however that this is not sufficient to estimate the true number of infected individual, but to accommodate the low number of observations when the epidemics reaches a given country.
 
@@ -48,26 +54,6 @@ The framework of statistical inference allows us to estimate the model parameter
 The interactive chart below gives an overview of the course of the infection for each country.
 <iframe width="800" height="400" frameborder="0" scrolling="no"
 src="plotly_chart.html"></iframe>
-
-|<img src="Figures/Figure_stat_2.png"/>|
-|:--:|
-|Fig. 3: parametet $h$ per country|
-
-|<img src="Figures/Figure_stat_3.png"/>|
-|:--:|
-|Fig. 4: infection rate the 22nd of Jan 2020|
-
-|<img src="Figures/Figure_stat_4.png"/>|
-|:--:|
-|Fig. 5: time of intervention per country|
-
-|<img src="Figures/Figure_stat_5.png"/>|
-|:--:|
-|Fig. 6: parameter $k$ per country|
-
-|<img src="Figures/Figure_stat_lambda.png"/>|
-|:--:|
-|Fig. 7: Posterior distribution of the daily infection rate $\lambda$|
 
 ## References
 1. Dong, Ensheng, Hongru Du, and Lauren Gardner. "An interactive web-based dashboard to track COVID-19 in real time." The Lancet Infectious Diseases (2020).   

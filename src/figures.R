@@ -1,3 +1,6 @@
+samples=sam_globX
+
+
 # Figure 1
 
 png("../Figures/Figure_1.png",width=400,height=400)
@@ -8,29 +11,29 @@ dev.off()
 # Figure stat
 
 png("../Figures/Figure_stat_1.png",width=600,height=400)
-country_index=12
-barplot(rbind(diff(rawdata_conf[country_index,]),
-	      diff(rawdata_rec[country_index,]), 
-	      diff(rawdata_deaths[country_index,])),
-	col=c("red","green","purple" ),las=2,names.arg=names(rawdata_conf)[-1])
-legend("topright",legend=c("confirmed","recovered","deaths"),fill=c("red","green","purple" ))
+country_index=which(province[,1]=="Henan")
+barplot(rbind((data.I[country_index,]),
+	      (data.R[country_index,]), 
+	      (data.D[country_index,])),
+	col=c("red","green","purple" ),las=2,names.arg=names(rawdata_conf))
+legend("topright",legend=c("infected","recovered","deaths"),fill=c("red","green","purple" ))
 
 dev.off()
 
 # Figure param lambda
 
 par_comb=vector("list",5)
-labels=rep("",nrow(data))
-for(j in 1:nrow(data)) labels[j]<-paste(as.character(country[j,1]),as.character(province[j,1]))
+labels=rep("",nrow(data.I))
+for(j in 1:nrow(data.I)) labels[j]<-paste(as.character(country[j,1]),as.character(province[j,1]))
 
-par_comb[[1]]=par_comb[[1]]=unlist(lapply(sam_glob3,"[[",'lambda'))
+par_comb[[1]]=par_comb[[1]]=unlist(lapply(samples,"[[",'lambda'))
 for(i in 2:5){
-       	par_comb[[i]]=t(do.call(cbind,lapply(sam_glob3,function(x) x$param[,i-1])))
+       	par_comb[[i]]=t(do.call(cbind,lapply(samples,function(x) x$param[,i-1])))
 	colnames(par_comb[[i]])=labels
 }
 
 png("../Figures/Figure_stat_lambda.png",width=600,height=400)
-hist(unlist(lapply(sam_glob3,function(x) x$lambda)),
+hist(unlist(lapply(samples,function(x) x$lambda)),
      main="",
      xlab="worldwide infection rate per day",
      ylab="frequency",freq=0)
