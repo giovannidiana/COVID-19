@@ -54,7 +54,7 @@ By using the available daily reported cases in the public repository [CSSEGISand
 
 The framework of statistical inference allows us to estimate the model parameters and make predictions while taking into account statistical uncertainties derived from the data and the prior uncertainty. We performed a global analysis on 255 countries included in the CSSE dataset [1]. 
 
-The interactive chart below gives an overview of the course of the infection for each country. Data are update every day.
+The interactive chart below gives an overview of the course of the infection for each country. Data are updated every day.
 
 <center><iframe width="800" height="400" frameborder="0" scrolling="no"
 src="notebooks/plotly_chart.html"></iframe>
