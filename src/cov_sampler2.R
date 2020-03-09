@@ -3,6 +3,7 @@
 #    h=.1,
 #    x0=1
 #    k=1
+#    g
 
 
 library(readr)
@@ -155,7 +156,7 @@ cov.LogLikelihood <- function(ind,params,A,B,tf){
 	res=cov.sim(params,tf)
 	pp=1/(1+(params[,'k']/res$Rx)^params[,'g'])
 	
-	LogLik = sum(dpois(data.I[ind,],lambda=res$Rx*pp,log=T)) + 
+	LogLik = sum(dpois(data[ind,],lambda=res$Rx*pp,log=T)) + 
 		 sum(dgamma(params,A,B,log=T))
 	return(LogLik)
 }
@@ -171,14 +172,14 @@ cov.GlobalLogLikelihood <- function(gparlist,paramlist,Al,Bl,A,B,tf,temperature=
 		     )
 	res=cov.SIM(p,tf)
 	pp=1/(1+(p[,'k']/res$Rx)^p[,'g'])
-	LogLik = dgamma(gparlist,Al,Bl,log=T)+sum(dpois(data.I,lambda=res$Rx*pp,log=T)) + sum(dgamma(paramlist,matrix(A,nr,length(A),byrow=1),matrix(B,nr,length(B),byrow=1),log=T))
+	LogLik = dgamma(gparlist,Al,Bl,log=T)+sum(dpois(data,lambda=res$Rx*pp,log=T)) + sum(dgamma(paramlist,matrix(A,nr,length(A),byrow=1),matrix(B,nr,length(B),byrow=1),log=T))
 
 	return(LogLik)
 }
 
 cov.GlobalLogLikelihood_vec <- function(gparlist,paramlist,Al,Bl,A,B,tf,temperature=1,print=F){
 	
-	nr=nrow(data.I)
+	nr=nrow(data)
 	p=data.frame(lambda=gparlist,
 		     h=paramlist[,1],
 		     x0=paramlist[,2],
@@ -187,8 +188,8 @@ cov.GlobalLogLikelihood_vec <- function(gparlist,paramlist,Al,Bl,A,B,tf,temperat
 		     )
 	res=cov.SIM(p,tf)
 	pp=1/(1+(p[,'k']/res$Rx)^p[,'g'])
-	if(ncol(data.I)!=ncol(res$Rx)) warning("data and solutions differ in dimensions\n")
-	LogLikVec = rowSums(dpois(data.I,lambda=res$Rx*pp,log=T)) + rowSums(dgamma(paramlist,matrix(A,nr,length(A),byrow=1),matrix(B,nr,length(B),byrow=1),log=T))
+	if(ncol(data)!=ncol(res$Rx)) warning("data and solutions differ in dimensions\n")
+	LogLikVec = rowSums(dpois(data,lambda=res$Rx*pp,log=T)) + rowSums(dgamma(paramlist,matrix(A,nr,length(A),byrow=1),matrix(B,nr,length(B),byrow=1),log=T))
 
 	LogLik=sum(LogLikVec)+dgamma(gparlist,Al,Bl,log=T)
 	return(list(LogLik=temperature*LogLik,LogLikVec=temperature*LogLikVec))
@@ -198,7 +199,7 @@ cov.MCMC <- function(ind,NITER){
 	A=c(1,1,1,1,1)
 	B=c(2,.2,.1,.1,.1)
 	nvar=5
-	tf=ncol(rawdata_conf)
+	tf=ncol(data)
 
 	prop_size=100
 
@@ -261,8 +262,8 @@ cov.GlobalMCMC <- function(NITER,show=1,adaptive=FALSE,init=NA,verbose=F){
 	A=c(5,1,4,1)
 	B=c(100,0.1,0.01,1)
 	nvar=5
-	nc=nrow(data.I)
-	tf=ncol(data.I)
+	nc=nrow(data)
+	tf=ncol(data)
 
 	temp=1
 	prop_size_lam=100
@@ -402,8 +403,8 @@ cov.plot_last <- function(X,samples,tf,n=10,ymax=max(X)){
 	}
 }
 
-cov.plotFromGlobal <- function(ind,samples,tf,n=10,ymax=max(data.I[ind,])){
-	plot(data.I[ind,],xlim=c(1,tf),main=country[ind,],ylim=c(0,ymax))
+cov.plotFromGlobal <- function(ind,samples,tf,n=10,ymax=max(data[ind,])){
+	plot(data[ind,],xlim=c(1,tf),main=country[ind,],ylim=c(0,ymax))
 	Nsam=length(samples)
 	randsam=sample((Nsam/2):Nsam,n)
 	for(i in 1:n){

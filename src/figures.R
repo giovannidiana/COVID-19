@@ -1,8 +1,10 @@
+load(file="samples_9mar.RData")
 samples=sam_globX
 
 
 # Figure 1
 
+if(FALSE){
 png("../Figures/Figure_1.png",width=400,height=400)
 plot(cov.sim(c(.1,.1,.01,1,.01),100,.1)[[1]],type='l',lwd=2,xlab="time (days)", ylab="Infected cases")
 grid()
@@ -19,12 +21,21 @@ barplot(rbind((data.I[country_index,]),
 legend("topright",legend=c("infected","recovered","deaths"),fill=c("red","green","purple" ))
 
 dev.off()
-
+}
 # Figure param lambda
 
 par_comb=vector("list",5)
-labels=rep("",nrow(data.I))
-for(j in 1:nrow(data.I)) labels[j]<-paste(as.character(country[j,1]),as.character(province[j,1]))
+labels=rep("",nrow(data))
+
+with_province=!is.na(province[,1])
+for(i in 1:nrow(data)){
+    if(with_province[i]){
+        labels[i]=paste(province[i,],",",country[i,],sep="")
+    } else {        
+        labels[i]=paste(country[i,],sep="")
+    } 
+}
+
 
 par_comb[[1]]=par_comb[[1]]=unlist(lapply(samples,"[[",'lambda'))
 for(i in 2:5){
@@ -35,7 +46,7 @@ for(i in 2:5){
 png("../Figures/Figure_stat_lambda.png",width=600,height=400)
 hist(unlist(lapply(samples,function(x) x$lambda)),
      main="",
-     xlab="worldwide infection rate per day",
+     xlab="worldwide daily infection rate",
      ylab="frequency",freq=0)
 dev.off()
 
