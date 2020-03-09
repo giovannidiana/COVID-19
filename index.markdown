@@ -32,7 +32,7 @@ $$
 \begin{align*}
 \frac{dX}{dt} &= \lambda X - X A,\quad X(t_0) = X_0\\
 \frac{dA}{dt} &= h X(t)p(t),\quad A(t_0)=0\\
-n(t) & \sim \mathrm{Poisson}(X(t) \cdot p(t)),\quad p(t)=\frac{X(t)^g}{X(t)^h+k^g}
+n(t) & \sim \mathrm{Poisson}(X(t) \cdot p(t)),\quad p(t)=\frac{1}{1+\left(\frac{k}{X(t)}\right)^g}
 \end{align*}
 $$ 
 
@@ -46,7 +46,7 @@ Figure 2 illustrates the typical dynamics of the model.
 |:--:|
 |Fig. 2: *Dynamics of the number of infections*|
 
-## Statistical inference of model parameters
+## Statistical inference and model predictions
 By using the available daily reported cases in the public repository [CSSEGISandData/COVID-19](https://github.com/CSSEGISandData/COVID-19) we can estimate the parameters of the model from the data for each country/region affected by the infection. Knowing the model parameters allow us to draw predictions on how the epidemics will evolve. For this analysis we assume that the rate of infection $\lambda$ is the same for all countries whereas all the other model parameters are country-dependent. This allows us to exploit the worldwide data to strengthen the predictive power of the model.
 
 The framework of statistical inference allows us to estimate the model parameters and make predictions while taking into account statistical uncertainties derived from the data and the prior uncertainty. We performed a global analysis on 173 countries included in the CSSE dataset [1]. 
