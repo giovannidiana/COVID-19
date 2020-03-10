@@ -40,6 +40,8 @@ where $\lambda$ is the (observed) infection rate and $h$ quantifies the effect o
 $X_0$ is the average number of infections at the initial time (22/01/2020).
 The lack of observations at early stages is captured by the factor $p(t)$ which depends directly on the daily infection rate. The assumption being that the more infections are detected the more tests and controls are put in place to monitor the infected population. Note however that this is not sufficient to estimate the true number of infected individual, but to accommodate the low number of observations when the epidemics reaches a given country.
 
+
+
 Figure 2 illustrates the typical dynamics of the model.
 
 <figure>
@@ -48,6 +50,19 @@ Figure 2 illustrates the typical dynamics of the model.
 </center>
 </figure>
 
+Table 1 illustrates the list of parameters determining the dynamics of the model. 
+
+name 	description
+h 	intervention coefficient
+k 	Hill scale
+g 	Hill shape
+\lambda 	global infection rate
+X_0 	initial infected
+X(t) 	infected at time t
+A(t) 	intervention strenght
+p(t) 	observed fraction of infected individuals
+
+Of particular importance, the intervention coefficient h and strenght A(t) describe the investment the country is putting in place to contain the epidemy (plotted in supplementary Figure 3 and 4). Linked to these parameter, the time to intervention can be calculated for each country (supplementary figure 5), and together with the hill scale k (supplementary figure 6) is indicative of the readiness of the country to put in place a containment programme.  
 
 ## Statistical inference and model predictions
 By using the available daily reported cases in the public repository [CSSEGISandData/COVID-19](https://github.com/CSSEGISandData/COVID-19) we can estimate the parameters of the model from the data for each country/region affected by the infection (see current state [here](current_state)). Knowing the model parameters allow us to draw predictions on how the epidemics will evolve. For this analysis we assume that the rate of infection $\lambda$ is the same for all countries whereas all the other model parameters are country-dependent. This allows us to exploit the worldwide data to strengthen the predictive power of the model.
