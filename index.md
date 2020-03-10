@@ -6,7 +6,6 @@ mathjax: true
 {% include mathjax.html %}
 
 ***
-
 [Supplementary Methods](SM)
 
 ***
@@ -49,10 +48,11 @@ Figure 2 illustrates the typical dynamics of the model.
 </center>
 </figure>
 
-## Statistical inference and model predictions
-By using the available daily reported cases in the public repository [CSSEGISandData/COVID-19](https://github.com/CSSEGISandData/COVID-19) we can estimate the parameters of the model from the data for each country/region affected by the infection. Knowing the model parameters allow us to draw predictions on how the epidemics will evolve. For this analysis we assume that the rate of infection $\lambda$ is the same for all countries whereas all the other model parameters are country-dependent. This allows us to exploit the worldwide data to strengthen the predictive power of the model.
 
-The framework of statistical inference allows us to estimate the model parameters and make predictions while taking into account statistical uncertainties derived from the data and the prior uncertainty. We performed a global analysis on 255 countries included in the CSSE dataset [1]. 
+## Statistical inference and model predictions
+By using the available daily reported cases in the public repository [CSSEGISandData/COVID-19](https://github.com/CSSEGISandData/COVID-19) we can estimate the parameters of the model from the data for each country/region affected by the infection (see current state [here](current_state)). Knowing the model parameters allow us to draw predictions on how the epidemics will evolve. For this analysis we assume that the rate of infection $\lambda$ is the same for all countries whereas all the other model parameters are country-dependent. This allows us to exploit the worldwide data to strengthen the predictive power of the model.
+
+The framework of statistical inference allows us to estimate the model parameters and make predictions while taking into account statistical uncertainties derived from the data and the prior uncertainty. We performed a global analysis on 255 countries included in the CSSE dataset [1].
 
 The interactive chart below gives an overview of the course of the infection for each country. Data are updated every day.
 

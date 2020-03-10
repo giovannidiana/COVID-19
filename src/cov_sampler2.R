@@ -435,4 +435,12 @@ cov.GlobalPlot<- function(samples,n=10,tf=ncol(data)){
 	}
 }
 
+cov.plotData <- function(country_index){
+	barplot(rbind((data.I[country_index,]),
+	      (data.R[country_index,]), 
+	      (data.D[country_index,])),
+	col=c("red","green","purple" ),las=2,names.arg=names(rawdata_conf))
+legend("topleft",legend=c("infected","recovered","deaths"),fill=c("red","green","purple" ))
+}
+
 
