@@ -5,6 +5,9 @@ mathjax: true
 
 {% include mathjax.html %}
 
+### Authors
+ Giovanni Diana and Diana Passaro
+
 ***
 [Supplementary Methods](SM)
 
