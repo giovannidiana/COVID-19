@@ -50,6 +50,7 @@ Figure 2 illustrates the typical dynamics of the model.
 </center>
 </figure>
 
+
 Table 1 illustrates the list of parameters determining the dynamics of the model. 
 
 name 	description
@@ -62,7 +63,9 @@ X(t) 	infected at time t
 A(t) 	intervention strenght
 p(t) 	observed fraction of infected individuals
 
+
 Of particular importance, the intervention coefficient h and strenght A(t) describe the investment the country is putting in place to contain the epidemy (plotted in supplementary Figure 3 and 4). Linked to these parameter, the time to intervention can be calculated for each country (supplementary figure 5), and together with the hill scale k (supplementary figure 6) is indicative of the readiness of the country to put in place a containment programme.  
+
 
 ## Statistical inference and model predictions
 By using the available daily reported cases in the public repository [CSSEGISandData/COVID-19](https://github.com/CSSEGISandData/COVID-19) we can estimate the parameters of the model from the data for each country/region affected by the infection (see current state [here](current_state)). Knowing the model parameters allow us to draw predictions on how the epidemics will evolve. For this analysis we assume that the rate of infection $\lambda$ is the same for all countries whereas all the other model parameters are country-dependent. This allows us to exploit the worldwide data to strengthen the predictive power of the model.
