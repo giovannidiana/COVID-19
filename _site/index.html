@@ -93,10 +93,56 @@ The lack of observations at early stages is captured by the factor $p(t)$ which 
 <p>Figure 2 illustrates the typical dynamics of the model.</p>
 
 <figure>
-<center><img src="Figures/Figure_1.png" />
+<img src="Figures/Figure_1.png" />
 <figcaption> Fig. 2: Dynamics of the number of infections</figcaption>
-</center>
 </figure>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">name</th>
+      <th style="text-align: right">description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">$h$</td>
+      <td style="text-align: right">intervention coefficient</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">$k$</td>
+      <td style="text-align: right">Hill scale</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">$g$</td>
+      <td style="text-align: right">Hill shape</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">$\lambda$</td>
+      <td style="text-align: right">global infection rate</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">$X_0$</td>
+      <td style="text-align: right">initial infected</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">$X(t)$</td>
+      <td style="text-align: right">infected at time t</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">$A(t)$</td>
+      <td style="text-align: right">intervention strength</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">$p(t)$</td>
+      <td style="text-align: right">observed fraction of infected individuals</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Table 1: Summary of parameters and variable used in the model.</p>
+
+<p>Of particular importance, the intervention coefficient h and strenght A(t) describe the investment the country is putting in place to contain the epidemy (plotted in supplementary Figure 3 and 4). Linked to these parameter, the time to intervention can be calculated for each country (supplementary figure 5), and together with the hill scale k (supplementary figure 6) is indicative of the readiness of the country to put in place a containment programme.</p>
 
 <h2 id="statistical-inference-and-model-predictions">Statistical inference and model predictions</h2>
 <p>By using the available daily reported cases in the public repository <a href="https://github.com/CSSEGISandData/COVID-19">CSSEGISandData/COVID-19</a> we can estimate the parameters of the model from the data for each country/region affected by the infection (see current state <a href="current_state">here</a>). Knowing the model parameters allow us to draw predictions on how the epidemics will evolve. For this analysis we assume that the rate of infection $\lambda$ is the same for all countries whereas all the other model parameters are country-dependent. This allows us to exploit the worldwide data to strengthen the predictive power of the model.</p>

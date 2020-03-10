@@ -45,25 +45,22 @@ The lack of observations at early stages is captured by the factor $p(t)$ which 
 Figure 2 illustrates the typical dynamics of the model.
 
 <figure>
-<center><img src="Figures/Figure_1.png"/>
+<img src="Figures/Figure_1.png"/>
 <figcaption> Fig. 2: Dynamics of the number of infections</figcaption>
-</center>
 </figure>
 
+|name |	description|
+|:----|-----------:|
+|$h$ |	intervention coefficient|
+|$k$ |	Hill scale|
+|$g$ |	Hill shape|
+|$\lambda$ |	global infection rate|
+|$X_0$ |	initial infected|
+|$X(t)$ |	infected at time t|
+|$A(t)$ | intervention strength|
+|$p(t)$ |	observed fraction of infected individuals|
 
-Table 1 illustrates the list of parameters determining the dynamics of the model. 
-
-
-
-name 	description
-h 	intervention coefficient
-k 	Hill scale
-g 	Hill shape
-\lambda 	global infection rate
-X_0 	initial infected
-X(t) 	infected at time t
-A(t) 	intervention strenght
-p(t) 	observed fraction of infected individuals
+Table 1: Summary of parameters and variable used in the model.
 
 
 
