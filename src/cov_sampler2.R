@@ -60,6 +60,20 @@ data.D.diff[data.D.diff<0]=0
 
 data=data.I
 
+
+## set labels 
+
+labels=rep("",nrow(data))
+
+with_province=!is.na(province[,1])
+for(i in 1:nrow(data)){
+    if(with_province[i]){
+        labels[i]=paste(country[i,],",",province[i,],sep="")
+    } else {        
+        labels[i]=paste(country[i,],sep="")
+    } 
+}
+
 cov.MixedGammaVec <- function(x1,a1,b1,x2,a2,b2){
 	
 	l1=dgamma(x1,a1,b1,log=T)
@@ -269,7 +283,7 @@ cov.PriorSample <- function(NITER){
 	return(params_samples)
 }
 
-cov.GlobalMCMC <- function(NITER,show=1,adaptive=FALSE,init=NA,verbose=F){
+cov.GlobalMCMC <- function(NITER,show=1,adaptive=FALSE,init=NA,init_labels=NA,verbose=F){
 	Al=1
 	Bl=10
 	A=c(3,1,3,1)
@@ -297,10 +311,10 @@ cov.GlobalMCMC <- function(NITER,show=1,adaptive=FALSE,init=NA,verbose=F){
 	prop_choice=rep("black",NITER)
 	params_samples[[1]]=list(param=params,lambda=lambda)
 
-	if(!is.na(init)){
-		params_samples[[1]]=init
-		params=params_samples[[1]]$param
-		lambda=params_samples[[1]]$lambda
+	if(!is.na(init)){		
+		params[match(init_labels,labels),]=init$param
+		lambda=init$lambda
+		params_samples[[1]]=list(param=params,lambda=lambda)
 	}
 	
 	GLL=cov.GlobalLogLikelihood_vec(lambda,params,Al,Bl,A,B,tf,temperature=temp)
