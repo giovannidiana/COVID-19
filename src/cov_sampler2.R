@@ -154,7 +154,7 @@ cov.SIM <- function(params,tf,dt=0.1){
 cov.LogLikelihood <- function(ind,params,A,B,tf){
 	names(params)<-c("lambda","h","x0","k","g")
 	res=cov.sim(params,tf)
-	pp=1/(1+(params[,'k']/res$Rx)^params[,'g'])
+	pp=1/(1+(params['k']/res$Rx)^params['g'])
 	
 	LogLik = sum(dpois(data[ind,],lambda=res$Rx*pp,log=T)) + 
 		 sum(dgamma(params,A,B,log=T))
@@ -196,8 +196,8 @@ cov.GlobalLogLikelihood_vec <- function(gparlist,paramlist,Al,Bl,A,B,tf,temperat
 }
 
 cov.MCMC <- function(ind,NITER){
-	A=c(1,1,1,1,1)
-	B=c(2,.2,.1,.1,.1)
+	A=c(1,1,3,1,3)
+	B=c(10,10,50,0.1,0.01)
 	nvar=5
 	tf=ncol(data)
 
@@ -205,9 +205,11 @@ cov.MCMC <- function(ind,NITER){
 
 	params=rgamma(nvar,A,B)
 	params_samples=matrix(NA,NITER,nvar)
+	LL_samples=rep(NA,NITER)
 	params_samples[1,]=params
 	
 	LogLik = cov.LogLikelihood(ind,params,A,B,tf) 
+	LL_samples[1]=LogLik
 
 	for(i in 1:NITER){
 		
@@ -226,6 +228,17 @@ cov.MCMC <- function(ind,NITER){
 		} else {
 			params_samples[i,]=params
 		}}
+		
+		LL_samples[i]=LogLik
+		
+		if(i>20 && i%%10==0){
+			par(mar=c(0,3,0,0))
+			layout(matrix(1:6,6))
+			plot(LL_samples[max(1,i-200):i],type='l')
+		       	for(l in 1:5) 
+				plot(params_samples[max(1,i-200):i,l],type='l')
+		}
+
 
 	}
 
@@ -259,8 +272,8 @@ cov.PriorSample <- function(NITER){
 cov.GlobalMCMC <- function(NITER,show=1,adaptive=FALSE,init=NA,verbose=F){
 	Al=1
 	Bl=10
-	A=c(5,1,4,1)
-	B=c(100,0.1,0.01,1)
+	A=c(3,1,3,1)
+	B=c(50,0.1,0.01,1)
 	nvar=5
 	nc=nrow(data)
 	tf=ncol(data)
@@ -277,10 +290,10 @@ cov.GlobalMCMC <- function(NITER,show=1,adaptive=FALSE,init=NA,verbose=F){
 	lambda=rgamma(1,Al,Bl)
 	for(i in 1:nc){ 
 		params[i,]=rgamma(nvar-1,A,B)
-		#params[i,]=cov.MCMC(data[i,],100)[100,2:5]
 	}
 
 	params_samples=vector("list",NITER)
+	LL_samples=rep(NA,NITER)
 	prop_choice=rep("black",NITER)
 	params_samples[[1]]=list(param=params,lambda=lambda)
 
@@ -292,6 +305,7 @@ cov.GlobalMCMC <- function(NITER,show=1,adaptive=FALSE,init=NA,verbose=F){
 	
 	GLL=cov.GlobalLogLikelihood_vec(lambda,params,Al,Bl,A,B,tf,temperature=temp)
 
+	LL_samples[1]=GLL$LogLik
 
 	for(i in 1:NITER){
 		
@@ -309,6 +323,7 @@ cov.GlobalMCMC <- function(NITER,show=1,adaptive=FALSE,init=NA,verbose=F){
 
 		## recalculate the LogLikelihood
 		GLL$LogLik=dgamma(lambda,Al,Bl,log=T)+sum(GLL$LogLikVec)
+		LL_samples[i]=GLL$LogLik
 		
 		if(any(is.infinite(GLL$LogLikVec))){
 		       	cat("log likelihood vector is infinite\n")
@@ -370,12 +385,13 @@ cov.GlobalMCMC <- function(NITER,show=1,adaptive=FALSE,init=NA,verbose=F){
 		}
 
 		params_samples[[i]]=list(param=params,lambda=lambda)
-		if(i>20 && i%%10==0 && show){
+		if(i>20 && i%%20==0 && show){
 			par(mar=c(0,3,0,0))
-			layout(matrix(1:5,5))
-				plot(unlist(lapply(params_samples[max(1,i-200):i],function(x) x$lambda)),col=prop_choice[max(1,i-200):i])
+			layout(matrix(1:6,6))
+				plot(LL_samples[max(1,i-500):i],type='l')
+				plot(unlist(lapply(params_samples[max(1,i-500):i],function(x) x$lambda)),col=prop_choice[max(1,i-500):i],type='l')
 		       	for(l in 1:4) 
-				plot(unlist(lapply(params_samples[max(1,i-200):i],function(x) x$param[59,l])),col=prop_choice[max(1,i-200):i])
+				plot(unlist(lapply(params_samples[max(1,i-500):i],function(x) x$param[59,l])),col=prop_choice[max(1,i-500):i],type='l')
 		}
 	}
 

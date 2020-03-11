@@ -48,10 +48,10 @@ $$
 <imgcaption>Fig. 4: infection rate the 22nd of Jan 2020</imgcaption>
 
 <img src="../Figures/Figure_stat_4.png"/>
-<imgcaption>Fig. 5: time of intervention per country</imgcaption>
+<imgcaption>Fig. 5: Hill scale parameter $k$ per country. This parameter can be interpreted as the size of the infected population at which the intervention becomes more pronounced.</imgcaption>
 
 <img src="../Figures/Figure_stat_5.png"/>
-<imgcaption>Fig. 6: parameter $k$ per country.</imgcaption>
+<imgcaption>Fig. 6: Hill shape parameter $g$ per country. Combined with the Hill scale, this parameter characterizes the strength of the intervention. In particular, after the infected population has surpassed the scale $k$, higher values of the shape $g$ denote a more pronounced switch in the actions taken to contain the spread.</imgcaption>
 
 <img src="../Figures/Figure_stat_lambda.png"/>
 <imgcaption>Fig. 7: Posterior distribution of the daily infection rate $\lambda$</imgcaption>
