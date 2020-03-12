@@ -9,8 +9,10 @@ mathjax: true
  Giovanni Diana and Diana Passaro
 
 ***
-[Supplementary Methods](SM)
-[Summary of the outbreak by country](current_state))
+
+* [Summary of the outbreak by country](current_state))
+* [Supplementary Methods](SM)
+
 
 ***
 
