@@ -312,7 +312,8 @@ cov.GlobalMCMC <- function(NITER,show=1,adaptive=FALSE,init=NA,init_labels=NA,ve
 	params_samples[[1]]=list(param=params,lambda=lambda)
 
 	if(!is.na(init)){		
-		params[match(init_labels,labels),]=init$param
+		existing_labels=init_labels[init_labels %in% labels]
+		params[match(existing_labels,labels),]=init$param[which(init_labels %in% labels),]
 		lambda=init$lambda
 		params_samples[[1]]=list(param=params,lambda=lambda)
 	}
