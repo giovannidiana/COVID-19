@@ -286,8 +286,8 @@ cov.PriorSample <- function(NITER){
 cov.GlobalMCMC <- function(NITER,show=1,adaptive=FALSE,init=NA,init_labels=NA,verbose=F){
 	Al=1
 	Bl=10
-	A=c(3,1,3,1)
-	B=c(50,0.1,0.01,1)
+	A=c(1,1,1,1)
+	B=c(100,0.1,0.001,1)
 	nvar=5
 	nc=nrow(data)
 	tf=ncol(data)
