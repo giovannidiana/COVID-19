@@ -8,7 +8,7 @@ mathjax: true
 ## Authors
  Giovanni Diana and Diana Passaro
 
-___
+***
 
 * [Summary of the outbreak by country](current_state)
 * [Supplementary Methods](SM)
