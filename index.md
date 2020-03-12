@@ -17,10 +17,10 @@ mathjax: true
 ## Introduction 
 Spread of COVID-19 in early 2020 has raised important concerns about the ability of national health systems to detect the positive cases, as well as the intervention rate a country is expected to put in place to contain the infection.
 
-  Using data on desease spread and containment through the public repository [CSSEGISandData/COVID-19](https://github.com/CSSEGISandData/COVID-19) we established a predictive model to estimate the outbreak of the infection in a given population. 
+  Using data on disease spread and containment through the public repository [CSSEGISandData/COVID-19](https://github.com/CSSEGISandData/COVID-19) we established a predictive model to estimate the outbreak of the infection in a given population. 
 
 In some regions of China the infection rate has significantly decreased compared to the initial exponential spread of the infection. This information can be used to build predictive models which can help other countries to estimate the extent of the outbreak.  
-First we modeled the number of infections over time based on the desease outbreak in China. Our model captures the initial exponential phase of the outbreak and the effect of the external intervention to contain the infection. Thus the exponential phase termimnates with a peak of maximum rate of new infected cases and then is followed by a critical period where the number of infections can decrease if the intervention remains stable.  
+First we modeled the number of infections over time based on the disease outbreak in China. Our model captures the initial exponential phase of the outbreak and the effect of the external intervention to contain the infection. Thus the exponential phase termimnates with a peak of maximum rate of new infected cases and then is followed by a critical period where the number of infections can decrease if the intervention remains stable.  
 
 <figure>
    <center><img src="Figures/Figure_stat_1.png"/>
