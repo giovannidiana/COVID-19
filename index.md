@@ -13,7 +13,6 @@ mathjax: true
 * [Summary of the outbreak by country](current_state)
 * [Supplementary Methods](SM)
 
-
 ***
 
 ## Introduction 

@@ -5,7 +5,7 @@
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,maximum-scale=2">
-    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=27d88001ff8ea9e26fabfedf4635e19b257c8e83">
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=0020783525e4d079b253aaffa2cacdfe83c67e0f">
 
 <!-- Begin Jekyll SEO tag v2.6.1 -->
 <title>Statistical analysis of COVID-19 epidemics | Inference and predictions on the course of the outbreak</title>
@@ -56,25 +56,29 @@
 <script type="text/javascript" charset="utf-8" src="https://vincenttam.github.io/javascripts/MathJaxLocal.js">
 </script>
 
-<h3 id="authors">Authors</h3>
+<h2 id="authors">Authors</h2>
 <p>Giovanni Diana and Diana Passaro</p>
 
 <hr />
-<p><a href="SM">Supplementary Methods</a></p>
+
+<ul>
+  <li><a href="current_state">Summary of the outbreak by country</a></li>
+  <li><a href="SM">Supplementary Methods</a></li>
+</ul>
 
 <hr />
 
 <h2 id="introduction">Introduction</h2>
 <p>Spread of COVID-19 in early 2020 has raised important concerns about the ability of national health systems to detect the positive cases, as well as the intervention rate a country is expected to put in place to contain the infection.</p>
 
-<p>Using data on desease spread and containment through the public repository <a href="https://github.com/CSSEGISandData/COVID-19">CSSEGISandData/COVID-19</a> we established a predictive model to estimate the outbreak of the infection in a given population.</p>
+<p>Using data on disease spread and containment through the public repository <a href="https://github.com/CSSEGISandData/COVID-19">CSSEGISandData/COVID-19</a> we established a predictive model to estimate the outbreak of the infection in a given population.</p>
 
 <p>In some regions of China the infection rate has significantly decreased compared to the initial exponential spread of the infection. This information can be used to build predictive models which can help other countries to estimate the extent of the outbreak.<br />
-First we modeled the number of infections over time based on the desease outbreak in China. Our model captures the initial exponential phase of the outbreak and the effect of the external intervention to contain the infection. Thus the exponential phase termimnates with a peak of maximum rate of new infected cases and then is followed by a critical period where the number of infections can decrease if the intervention remains stable.</p>
+First we modeled the number of infections over time based on the disease outbreak in China. Our model captures the initial exponential phase of the outbreak and the effect of the external intervention to contain the infection. Thus the exponential phase termimnates with a peak of maximum rate of new infected cases and then is followed by a critical period where the number of infections can decrease if the intervention remains stable.</p>
 
 <figure>
    <center><img src="Figures/Figure_stat_1.png" />
-   <figcaption> Fig. 1: Dynamics of the infection in the province of Henan, Mainland China </figcaption></center>
+   <figcaption> Fig. 1: Dynamics of the infection in Italy (last update 12/02/2020) </figcaption></center>
 </figure>
 
 <h2 id="the-model">The model</h2>
@@ -150,7 +154,7 @@ The lack of observations at early stages is captured by the factor $p(t)$ which 
 <h2 id="statistical-inference-and-model-predictions">Statistical inference and model predictions</h2>
 <p>By using the available daily reported cases in the public repository <a href="https://github.com/CSSEGISandData/COVID-19">CSSEGISandData/COVID-19</a> we can estimate the parameters of the model from the data for each country/region affected by the infection (see current state <a href="current_state">here</a>). Knowing the model parameters allow us to draw predictions on how the epidemics will evolve. For this analysis we assume that the rate of infection $\lambda$ is the same for all countries whereas all the other model parameters are country-dependent. This allows us to exploit the worldwide data to strengthen the predictive power of the model.</p>
 
-<p>The framework of statistical inference allows us to estimate the model parameters and make predictions while taking into account statistical uncertainties derived from the data and the prior uncertainty. We performed a global analysis on 255 countries included in the CSSE dataset [1].</p>
+<p>The framework of statistical inference allows us to estimate the model parameters and make predictions while taking into account statistical uncertainties derived from the data and the prior uncertainty. We performed a global analysis on 404 areas included in the CSSE dataset [1].</p>
 
 <p>The interactive chart below gives an overview of the course of the infection for each country. Data are updated every day.</p>
 
