@@ -5,12 +5,12 @@ mathjax: true
 
 {% include mathjax.html %}
 
-### Authors
+## Authors
  Giovanni Diana and Diana Passaro
 
-***
+___
 
-* [Summary of the outbreak by country](current_state))
+* [Summary of the outbreak by country](current_state)
 * [Supplementary Methods](SM)
 
 
