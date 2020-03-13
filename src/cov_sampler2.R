@@ -286,7 +286,7 @@ cov.PriorSample <- function(NITER){
 cov.GlobalMCMC <- function(NITER,show=1,adaptive=FALSE,init=NA,init_labels=NA,verbose=F){
 	Al=1
 	Bl=10
-	A=c(1,1,1,1)
+	A=c(5,1,1,1)
 	B=c(100,0.1,0.001,1)
 	nvar=5
 	nc=nrow(data)
@@ -406,7 +406,7 @@ cov.GlobalMCMC <- function(NITER,show=1,adaptive=FALSE,init=NA,init_labels=NA,ve
 				plot(LL_samples[max(1,i-500):i],type='l')
 				plot(unlist(lapply(params_samples[max(1,i-500):i],function(x) x$lambda)),col=prop_choice[max(1,i-500):i],type='l')
 		       	for(l in 1:4) 
-				plot(unlist(lapply(params_samples[max(1,i-500):i],function(x) x$param[59,l])),col=prop_choice[max(1,i-500):i],type='l')
+				plot(unlist(lapply(params_samples[max(1,i-500):i],function(x) x$param[show,l])),col=prop_choice[max(1,i-500):i],type='l')
 		}
 	}
 
@@ -422,7 +422,7 @@ cov.plot_param <- function(ind,param,tf,ymax){
 }
 
 cov.plot_last <- function(X,samples,tf,n=10,ymax=max(X)){
-	plot(X,xlim=c(1,tf),ylim=c(0,ymax))
+	plot(X,xlim=c(1,tf),ylim=c(1e-3,ymax),log='y')
 	Nsam=nrow(samples)
 	randsam=sample((Nsam/2):Nsam,n)
 	for(i in 1:n){
@@ -435,7 +435,7 @@ cov.plot_last <- function(X,samples,tf,n=10,ymax=max(X)){
 }
 
 cov.plotFromGlobal <- function(ind,samples,tf,n=10,ymax=max(data[ind,])){
-	plot(data[ind,],xlim=c(1,tf),main=country[ind,],ylim=c(0,ymax))
+	plot(data[ind,],xlim=c(1,tf),main=country[ind,],ylim=c(1e-2,ymax))
 	Nsam=length(samples)
 	randsam=sample((Nsam/2):Nsam,n)
 	for(i in 1:n){
