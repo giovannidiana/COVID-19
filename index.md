@@ -85,7 +85,7 @@ By using the available daily reported cases in the public repository [CSSEGISand
 ### Parameter estimation in individual areas
 The framework of Bayesian statistics allows us to estimate the parameters of our model and their uncertainty by targeting their posterior distributions, namely their probability density conditional to the observed data. The uncertainty in the parameters propagates to the predicted dynamics of the infection, giving a way to explore the scenarios which are statistically compatible with the data. 
 
-Here we used the Markov-chain monte carlo (MCMC) approach which allows us to draw posterior samples of the parameters. We can apply this method to individual countries affected by COVID-19 outbreak and extract country-specific model parameters as shown below in the case of the UK
+Here we used the Markov-chain monte carlo (MCMC) approach which allows us to draw posterior samples of the parameters. We can apply this method to individual countries affected by COVID-19 outbreak and extract country-specific model parameters as shown below in the case of the UK, where no specific interventions have been applied to date. As a consequence, the exponential phase generates a pronounced uncertainty in the model prediction of the future number of infected individuals. 
 
 <figure>
 <center><img src="Figures/Figure_stat_UK.png"/>
