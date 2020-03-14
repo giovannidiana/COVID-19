@@ -422,7 +422,7 @@ cov.plot_param <- function(ind,param,tf,ymax){
 }
 
 cov.plot_last <- function(X,samples,tf,n=10,ymax=max(X)){
-	plot(X,xlim=c(1,tf),ylim=c(1e-3,ymax),log='y')
+	plot(X,xlim=c(1,tf),ylim=c(1e-3,ymax))
 	Nsam=nrow(samples)
 	randsam=sample((Nsam/2):Nsam,n)
 	for(i in 1:n){
@@ -437,9 +437,8 @@ cov.plot_last <- function(X,samples,tf,n=10,ymax=max(X)){
 cov.plotFromGlobal <- function(ind,samples,tf,n=10,ymax=max(data[ind,])){
 	plot(data[ind,],xlim=c(1,tf),main=country[ind,],ylim=c(1e-2,ymax))
 	Nsam=length(samples)
-	randsam=sample((Nsam/2):Nsam,n)
+	randsam=sample(1:Nsam,n)
 	for(i in 1:n){
-		ranind=sample((Nsam/2):Nsam,1)
 		params=c(samples[[randsam[i]]]$lambda,samples[[randsam[i]]]$param[ind,])
 		names(params)<-c("lambda","h","x0","k","g")
 		res=cov.sim(params,tf)

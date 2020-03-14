@@ -83,9 +83,19 @@ Of particular importance, the intervention coefficient $h$ and strenght $A(t)$ d
 By using the available daily reported cases in the public repository [CSSEGISandData/COVID-19](https://github.com/CSSEGISandData/COVID-19) we can estimate the parameters of the model from the data for each country/region affected by the infection (see current state [here](current_state)). Knowing the model parameters allow us to draw predictions on how the epidemics will evolve. 
 
 ### Parameter estimation in individual areas
+The framework of Bayesian statistics allows us to estimate the parameters of our model and their uncertainty by targeting their posterior distributions, namely their probability density conditional to the observed data. The uncertainty in the parameters propagates to the predicted dynamics of the infection, giving a way to explore the scenarios which are statistically compatible with the data. 
 
+Here we used the Markov-chain monte carlo (MCMC) approach which allows us to draw posterior samples of the parameters. We can apply this method to individual countries affected by COVID-19 outbreak and extract country-specific model parameters as shown below in the case of the UK
 
-### Global analysis of all countries 
+<figure>
+<center><img src="Figures/Figure_stat_UK.png"/>
+<figcaption> Curves generated from 100 posterior samples of model parameters obtained by using data from the UK.</figcaption>
+</center>
+</figure>
+
+  
+
+### Worldwide analysis 
 For this analysis we assume that the rate of infection $\lambda$ is the same for all countries whereas all the other model parameters are country-dependent. This allows us to exploit the worldwide data to strengthen the predictive power of the model.
 
 The framework of statistical inference allows us to estimate the model parameters and make predictions while taking into account statistical uncertainties derived from the data and the prior uncertainty. We performed a global analysis on the areas included in the CSSE dataset [1].

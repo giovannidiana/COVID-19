@@ -5,7 +5,7 @@
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,maximum-scale=2">
-    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=0020783525e4d079b253aaffa2cacdfe83c67e0f">
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=5033eff5eea20cab00064eacec9fe91add2d33ee">
 
 <!-- Begin Jekyll SEO tag v2.6.1 -->
 <title>Statistical analysis of COVID-19 epidemics | Inference and predictions on the course of the outbreak</title>
@@ -77,11 +77,16 @@
 <p>Using data on disease spread and containment through the public repository <a href="https://github.com/CSSEGISandData/COVID-19">CSSEGISandData/COVID-19</a> we established a predictive model to estimate the outbreak of the infection in a given population.</p>
 
 <p>In some regions of China the infection rate has significantly decreased compared to the initial exponential spread of the infection. This information can be used to build predictive models which can help other countries to estimate the extent of the outbreak.<br />
-First we modeled the number of infections over time based on the disease outbreak in China. Our model captures the initial exponential phase of the outbreak and the effect of the external intervention to contain the infection. Thus the exponential phase termimnates with a peak of maximum rate of new infected cases and then is followed by a critical period where the number of infections can decrease if the intervention remains stable.</p>
+First we modeled the number of infections over time based on the disease outbreak in China. Our model captures the initial exponential phase of the outbreak and the effect of the external intervention to contain the infection. Thus the exponential phase termimnates with a peak of maximum rate of new infected cases and then is followed by a critical period where the number of infections can decrease if the intervention remains stable. Below we show the dynamics of the infection in two areas in which the outbreak is contained (top) or in the exponential phase (bottom).</p>
+
+<figure>
+   <center><img src="Figures/Figure_henan.png" />
+   <figcaption> Fig. 1b: Dynamics of the infection in the Henan province, China (last update 14/02/2020) </figcaption></center>
+</figure>
 
 <figure>
    <center><img src="Figures/Figure_stat_1.png" />
-   <figcaption> Fig. 1: Dynamics of the infection in Italy (last update 12/02/2020) </figcaption></center>
+   <figcaption> Fig. 1a: Dynamics of the infection in Italy (last update 14/02/2020) </figcaption></center>
 </figure>
 
 <h2 id="the-model">The model</h2>
@@ -152,12 +157,26 @@ The lack of observations at early stages is captured by the factor $p(t)$ which 
 
 <p>Table 1: Summary of parameters and variable used in the model.</p>
 
-<p>Of particular importance, the intervention coefficient h and strenght A(t) describe the investment the country is putting in place to contain the epidemy (plotted in supplementary Figure 3 and 4). Linked to these parameter, the time to intervention can be calculated for each country (supplementary figure 5), and together with the hill scale k (supplementary figure 6) is indicative of the readiness of the country to put in place a containment programme.</p>
+<p>Of particular importance, the intervention coefficient $h$ and strenght $A(t)$ describe the investment the country is putting in place to contain the epidemy (plotted in supplementary Figure 3 and 4). Linked to this parameter, the time to intervention can be calculated for each country (supplementary figure 5), and together with the hill scale $k$ (supplementary figure 6) is indicative of the readiness of the country to put in place a containment programme.</p>
 
 <h2 id="statistical-inference-and-model-predictions">Statistical inference and model predictions</h2>
-<p>By using the available daily reported cases in the public repository <a href="https://github.com/CSSEGISandData/COVID-19">CSSEGISandData/COVID-19</a> we can estimate the parameters of the model from the data for each country/region affected by the infection (see current state <a href="current_state">here</a>). Knowing the model parameters allow us to draw predictions on how the epidemics will evolve. For this analysis we assume that the rate of infection $\lambda$ is the same for all countries whereas all the other model parameters are country-dependent. This allows us to exploit the worldwide data to strengthen the predictive power of the model.</p>
+<p>By using the available daily reported cases in the public repository <a href="https://github.com/CSSEGISandData/COVID-19">CSSEGISandData/COVID-19</a> we can estimate the parameters of the model from the data for each country/region affected by the infection (see current state <a href="current_state">here</a>). Knowing the model parameters allow us to draw predictions on how the epidemics will evolve.</p>
 
-<p>The framework of statistical inference allows us to estimate the model parameters and make predictions while taking into account statistical uncertainties derived from the data and the prior uncertainty. We performed a global analysis on 404 areas included in the CSSE dataset [1].</p>
+<h3 id="parameter-estimation-in-individual-areas">Parameter estimation in individual areas</h3>
+<p>The framework of Bayesian statistics allows us to estimate the parameters of our model and their uncertainty by targeting their posterior distributions, namely their probability density conditional to the observed data. The uncertainty in the parameters propagates to the predicted dynamics of the infection, giving a way to explore the scenarios which are statistically compatible with the data.</p>
+
+<p>Here we used the Markov-chain monte carlo (MCMC) approach which allows us to draw posterior samples of the parameters. We can apply this method to individual countries affected by COVID-19 outbreak and extract country-specific model parameters as shown below in the case of the UK</p>
+
+<figure>
+<center><img src="Figures/Figure_stat_UK.png" />
+<figcaption> Curves generated from 100 posterior samples of model parameters obtained by using data from the UK.</figcaption>
+</center>
+</figure>
+
+<h3 id="worldwide-analysis">Worldwide analysis</h3>
+<p>For this analysis we assume that the rate of infection $\lambda$ is the same for all countries whereas all the other model parameters are country-dependent. This allows us to exploit the worldwide data to strengthen the predictive power of the model.</p>
+
+<p>The framework of statistical inference allows us to estimate the model parameters and make predictions while taking into account statistical uncertainties derived from the data and the prior uncertainty. We performed a global analysis on the areas included in the CSSE dataset [1].</p>
 
 <p>The interactive chart below gives an overview of the course of the infection for each country. Data are updated every day.</p>
 
