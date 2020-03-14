@@ -24,17 +24,18 @@ Spread of COVID-19 in early 2020 has raised important concerns about the ability
   Using data on disease spread and containment through the public repository [CSSEGISandData/COVID-19](https://github.com/CSSEGISandData/COVID-19) we established a predictive model to estimate the outbreak of the infection in a given population. 
 
 In some regions of China the infection rate has significantly decreased compared to the initial exponential spread of the infection. This information can be used to build predictive models which can help other countries to estimate the extent of the outbreak.  
-First we modeled the number of infections over time based on the disease outbreak in China. Our model captures the initial exponential phase of the outbreak and the effect of the external intervention to contain the infection. Thus the exponential phase termimnates with a peak of maximum rate of new infected cases and then is followed by a critical period where the number of infections can decrease if the intervention remains stable.  
+First we modeled the number of infections over time based on the disease outbreak in China. Our model captures the initial exponential phase of the outbreak and the effect of the external intervention to contain the infection. Thus the exponential phase termimnates with a peak of maximum rate of new infected cases and then is followed by a critical period where the number of infections can decrease if the intervention remains stable. Below we show the dynamics of the infection in two areas in which the outbreak is contained (top) or in the exponential phase (bottom).
+
+<figure>
+   <center><img src="Figures/Figure_henan.png"/>
+   <figcaption> Fig. 1b: Dynamics of the infection in the Henan province, China (last update 14/02/2020) </figcaption></center>
+</figure>
 
 <figure>
    <center><img src="Figures/Figure_stat_1.png"/>
    <figcaption> Fig. 1a: Dynamics of the infection in Italy (last update 14/02/2020) </figcaption></center>
 </figure>
 
-<figure>
-   <center><img src="Figures/Figure_henan.png"/>
-   <figcaption> Fig. 1b: Dynamics of the infection in the Henan province, China (last update 14/02/2020) </figcaption></center>
-</figure>
 
 ## The model
 We used a generative model to describe the dynamics of the infected population in a given geographic area. Our model takes into account the effect of the local interventions by coupling the average number of infections $$X(t)$$ with a dynamical variable $$A(t)$$ which acts against the spread. The observed number of cases is then generated from a Poisson distribution with rate $X(t)\cdot p(t)$, where $p(t)$ is a fraction of the true number of infections which varies over time (due for instance to the increased number of tests during the acute phase).
