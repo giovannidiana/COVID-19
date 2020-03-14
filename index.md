@@ -72,7 +72,7 @@ Table 1: Summary of parameters and variable used in the model.
 
 
 
-Of particular importance, the intervention coefficient h and strenght A(t) describe the investment the country is putting in place to contain the epidemy (plotted in supplementary Figure 3 and 4). Linked to these parameter, the time to intervention can be calculated for each country (supplementary figure 5), and together with the hill scale k (supplementary figure 6) is indicative of the readiness of the country to put in place a containment programme.  
+Of particular importance, the intervention coefficient h and strenght A(t) describe the investment the country is putting in place to contain the epidemy (plotted in supplementary Figure 3 and 4). Linked to this parameter, the time to intervention can be calculated for each country (supplementary figure 5), and together with the hill scale k (supplementary figure 6) is indicative of the readiness of the country to put in place a containment programme.  
 
 
 ## Statistical inference and model predictions
