@@ -28,12 +28,12 @@ First we modeled the number of infections over time based on the disease outbrea
 
 <figure>
    <center><img src="Figures/Figure_henan.png"/>
-   <figcaption> Fig. 1b: Dynamics of the infection in the Henan province, China (last update 14/02/2020) </figcaption></center>
+   <figcaption> Figure 1a: Dynamics of the infection in the Henan province, China (last update 14/02/2020) </figcaption></center>
 </figure>
 
 <figure>
    <center><img src="Figures/Figure_stat_1.png"/>
-   <figcaption> Fig. 1a: Dynamics of the infection in Italy (last update 14/02/2020) </figcaption></center>
+   <figcaption> Figure 1b: Dynamics of the infection in Italy (last update 14/02/2020) </figcaption></center>
 </figure>
 
 
@@ -60,7 +60,7 @@ Figure 2 illustrates the typical dynamics of the model.
 
 <figure>
 <img src="Figures/Figure_1.png"/>
-<figcaption> Fig. 2: Dynamics of the number of infections</figcaption>
+<figcaption> Figure 2: Dynamics of the number of infections</figcaption>
 </figure>
 
 |name |	description|
@@ -76,7 +76,7 @@ Figure 2 illustrates the typical dynamics of the model.
 
 Table 1: Summary of parameters and variable used in the model.
 
-Of particular importance, the intervention coefficient $h$ and strenght $A(t)$ describe the investment the country is putting in place to contain the epidemy (plotted in supplementary Figure 3 and 4). Linked to this parameter, the time to intervention can be calculated for each country (supplementary figure 5), and together with the hill scale $k$ (supplementary figure 6) is indicative of the readiness of the country to put in place a containment programme.  
+Of particular importance, the intervention coefficient $h$ describes the investment the country is putting in place to contain the epidemy (plotted in Supplementary figure 1). Linked to this parameter, the hill scale can be calculated for each country (Supplementary figure 3), and together with the hill shape $k$ (Supplementary figure 4) is indicative of the readiness of the country to put in place a containment programme.  
 
 
 ## Statistical inference and model predictions
