@@ -28,12 +28,12 @@ First we modeled the number of infections over time based on the disease outbrea
 
 <figure>
    <center><img src="Figures/Figure_stat_1.png"/>
-   <figcaption> Fig. 1: Dynamics of the infection in Italy (last update 14/02/2020) </figcaption></center>
+   <figcaption> Fig. 1a: Dynamics of the infection in Italy (last update 14/02/2020) </figcaption></center>
 </figure>
 
 <figure>
    <center><img src="Figures/Figure_henan.png"/>
-   <figcaption> Fig. 1: Dynamics of the infection in the Henan province, China (last update 14/02/2020) </figcaption></center>
+   <figcaption> Fig. 1b: Dynamics of the infection in the Henan province, China (last update 14/02/2020) </figcaption></center>
 </figure>
 
 ## The model
@@ -75,13 +75,17 @@ Figure 2 illustrates the typical dynamics of the model.
 
 Table 1: Summary of parameters and variable used in the model.
 
-
-
-Of particular importance, the intervention coefficient h and strenght A(t) describe the investment the country is putting in place to contain the epidemy (plotted in supplementary Figure 3 and 4). Linked to this parameter, the time to intervention can be calculated for each country (supplementary figure 5), and together with the hill scale k (supplementary figure 6) is indicative of the readiness of the country to put in place a containment programme.  
+Of particular importance, the intervention coefficient $h$ and strenght $A(t)$ describe the investment the country is putting in place to contain the epidemy (plotted in supplementary Figure 3 and 4). Linked to this parameter, the time to intervention can be calculated for each country (supplementary figure 5), and together with the hill scale $k$ (supplementary figure 6) is indicative of the readiness of the country to put in place a containment programme.  
 
 
 ## Statistical inference and model predictions
-By using the available daily reported cases in the public repository [CSSEGISandData/COVID-19](https://github.com/CSSEGISandData/COVID-19) we can estimate the parameters of the model from the data for each country/region affected by the infection (see current state [here](current_state)). Knowing the model parameters allow us to draw predictions on how the epidemics will evolve. For this analysis we assume that the rate of infection $\lambda$ is the same for all countries whereas all the other model parameters are country-dependent. This allows us to exploit the worldwide data to strengthen the predictive power of the model.
+By using the available daily reported cases in the public repository [CSSEGISandData/COVID-19](https://github.com/CSSEGISandData/COVID-19) we can estimate the parameters of the model from the data for each country/region affected by the infection (see current state [here](current_state)). Knowing the model parameters allow us to draw predictions on how the epidemics will evolve. 
+
+### Parameter estimation in individual areas
+
+
+### Global analysis of all countries 
+For this analysis we assume that the rate of infection $\lambda$ is the same for all countries whereas all the other model parameters are country-dependent. This allows us to exploit the worldwide data to strengthen the predictive power of the model.
 
 The framework of statistical inference allows us to estimate the model parameters and make predictions while taking into account statistical uncertainties derived from the data and the prior uncertainty. We performed a global analysis on the areas included in the CSSE dataset [1].
 
