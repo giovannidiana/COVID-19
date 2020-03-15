@@ -210,8 +210,8 @@ cov.GlobalLogLikelihood_vec <- function(gparlist,paramlist,Al,Bl,A,B,tf,temperat
 }
 
 cov.MCMC <- function(ind,NITER){
-	A=c(1,1,3,1,3)
-	B=c(10,10,50,0.1,0.01)
+	A=c(1,1,3,1,1)
+	B=c(10,10,50,0.1,0.10)
 	nvar=5
 	tf=ncol(data)
 
@@ -287,7 +287,7 @@ cov.GlobalMCMC <- function(NITER,show=1,adaptive=FALSE,init=NA,init_labels=NA,ve
 	Al=1
 	Bl=10
 	A=c(5,1,1,1)
-	B=c(100,0.01,0.001,0.1)
+	B=c(100,0.01,0.001,0.01)
 	nvar=5
 	nc=nrow(data)
 	tf=ncol(data)
