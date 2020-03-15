@@ -120,6 +120,11 @@ While China is now at the final stage of the spread, several countries in Europe
 </center>
 </figure>
 
+<figure>
+<center><img src="Figures/fig_china.pdf"/>
+<figcaption> ?</figcaption>
+</center>
+</figure>
 ## References
 1. Dong, Ensheng, Hongru Du, and Lauren Gardner. "An interactive web-based dashboard to track COVID-19 in real time." The Lancet Infectious Diseases (2020).   
 
