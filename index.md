@@ -121,7 +121,7 @@ While China is now at the final stage of the spread, several countries in Europe
 </figure>
 
 <figure>
-<center><img src="Figures/fig_china.pdf"/>
+<center><img src="Figures/fig_china.png"/>
 <figcaption> ?</figcaption>
 </center>
 </figure>
