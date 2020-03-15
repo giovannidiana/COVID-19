@@ -120,11 +120,11 @@ While China is now at the final stage of the spread, several countries in Europe
 </center>
 </figure>
 
-The intervention coefficient is estimated from each country from the data and is a fundamental parameter to bring down the peak of infected individuals, as it is shown by manual adjustment test.
+The intervention coefficient is estimated from each country from the data and is a fundamental parameter to bring down the peak of infected individuals, as it is shown by testing different values of $h$ from the estimated one.
 
 <figure>
 <center><img src="Figures/fig_china.png"/>
-<figcaption> ?</figcaption>
+<figcaption> Fig. 5: Effect of changing the intervetion coefficient on the Henan dataset.</figcaption>
 </center>
 </figure>
 

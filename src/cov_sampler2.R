@@ -286,8 +286,8 @@ cov.PriorSample <- function(NITER){
 cov.GlobalMCMC <- function(NITER,show=1,adaptive=FALSE,init=NA,init_labels=NA,verbose=F){
 	Al=1
 	Bl=10
-	A=c(5,1,1,1)
-	B=c(100,0.01,0.001,0.01)
+	A=c(3,1,1,2)
+	B=c(300,0.01,0.001,2)
 	nvar=5
 	nc=nrow(data)
 	tf=ncol(data)
@@ -320,6 +320,17 @@ cov.GlobalMCMC <- function(NITER,show=1,adaptive=FALSE,init=NA,init_labels=NA,ve
 	
 	GLL=cov.GlobalLogLikelihood_vec(lambda,params,Al,Bl,A,B,tf,temperature=temp)
 
+	while(any(is.infinite(GLL$LogLikVec))){
+		print(labels[which(is.infinite(GLL$LogLikVec))])
+		lambda=rgamma(1,Al,Bl)
+		for(i in 1:nc){ 
+			params[i,]=rgamma(nvar-1,A,B)
+		}
+	        	
+		GLL=cov.GlobalLogLikelihood_vec(lambda,params,Al,Bl,A,B,tf,temperature=temp)
+	}
+
+	params_samples[[1]]=list(param=params,lambda=lambda)
 	LL_samples[1]=GLL$LogLik
 
 	for(i in 1:NITER){
@@ -339,13 +350,9 @@ cov.GlobalMCMC <- function(NITER,show=1,adaptive=FALSE,init=NA,init_labels=NA,ve
 		## recalculate the LogLikelihood
 		GLL$LogLik=dgamma(lambda,Al,Bl,log=T)+sum(GLL$LogLikVec)
 		LL_samples[i]=GLL$LogLik
-		
-		if(any(is.infinite(GLL$LogLikVec))){
-		       	cat("log likelihood vector is infinite\n")
-			cat(GLL$LogLikVec-GLL_old$LogLikVec)
-			stop()
-		}
 
+
+		
 		if(is.infinite(GLL$LogLik)) stop("log likelihood is infinite")
 		GLL_new=cov.GlobalLogLikelihood_vec(lambda_new,params,Al,Bl,A,B,tf,temperature=temp)
 		
