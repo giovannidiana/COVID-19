@@ -128,7 +128,7 @@ The intervention coefficient is estimated from each country from the data and is
 </center>
 </figure>
 
-## Inclusion of recovered population, inference on the SIR model 
+## Inference on the SIR model 
 In this section we introduce a more detailed model to take into account the individuals who recovered from the COVID-19 infection. 
 The model is characterized by the following dynamical equations
 
@@ -177,7 +177,6 @@ $$
 <figcaption> Fig. 7: Effect of changing the intervetion coefficient on the Henan dataset in the SIR model.</figcaption>
 </center>
 </figure>
-
 
 <center><iframe width="800" height="400" frameborder="0" scrolling="no"
 src="notebooks/plotly_chart_sir.html"></iframe>
