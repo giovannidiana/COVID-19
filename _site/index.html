@@ -5,20 +5,18 @@
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,maximum-scale=2">
-    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=5033eff5eea20cab00064eacec9fe91add2d33ee">
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=34cede2bc7d69f58e19da62d5778f833a70f794b">
 
 <!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Statistical analysis of COVID-19 epidemics | Inference and predictions on the course of the outbreak</title>
+<title>Statistical analysis of COVID-19 epidemics</title>
 <meta name="generator" content="Jekyll v3.8.5" />
 <meta property="og:title" content="Statistical analysis of COVID-19 epidemics" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Inference and predictions on the course of the outbreak" />
-<meta property="og:description" content="Inference and predictions on the course of the outbreak" />
 <link rel="canonical" href="http://localhost:4000/" />
 <meta property="og:url" content="http://localhost:4000/" />
 <meta property="og:site_name" content="Statistical analysis of COVID-19 epidemics" />
 <script type="application/ld+json">
-{"@type":"WebSite","url":"http://localhost:4000/","headline":"Statistical analysis of COVID-19 epidemics","name":"Statistical analysis of COVID-19 epidemics","description":"Inference and predictions on the course of the outbreak","@context":"https://schema.org"}</script>
+{"@type":"WebSite","url":"http://localhost:4000/","headline":"Statistical analysis of COVID-19 epidemics","name":"Statistical analysis of COVID-19 epidemics","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
   </head>
@@ -31,7 +29,7 @@
           <a id="forkme_banner" href="https://github.com/giovannidiana/COVID-19">View on GitHub</a>
 
           <h1 id="project_title">Statistical analysis of COVID-19 epidemics</h1>
-          <h2 id="project_tagline">Inference and predictions on the course of the outbreak </h2>
+          <h2 id="project_tagline"></h2>
 
           
         </header>
@@ -81,12 +79,12 @@ First we modeled the number of infections over time based on the disease outbrea
 
 <figure>
    <center><img src="Figures/Figure_henan.png" />
-   <figcaption> Fig. 1b: Dynamics of the infection in the Henan province, China (last update 14/02/2020) </figcaption></center>
+   <figcaption> Figure 1a: Dynamics of the infection in the Henan province, China (last update 14/02/2020) </figcaption></center>
 </figure>
 
 <figure>
    <center><img src="Figures/Figure_stat_1.png" />
-   <figcaption> Fig. 1a: Dynamics of the infection in Italy (last update 14/02/2020) </figcaption></center>
+   <figcaption> Figure 1b: Dynamics of the infection in Italy (last update 14/02/2020) </figcaption></center>
 </figure>
 
 <h2 id="the-model">The model</h2>
@@ -109,7 +107,7 @@ The lack of observations at early stages is captured by the factor $p(t)$ which 
 
 <figure>
 <img src="Figures/Figure_1.png" />
-<figcaption> Fig. 2: Dynamics of the number of infections</figcaption>
+<figcaption> Figure 2: Dynamics of the number of infections</figcaption>
 </figure>
 
 <table>
@@ -157,7 +155,7 @@ The lack of observations at early stages is captured by the factor $p(t)$ which 
 
 <p>Table 1: Summary of parameters and variable used in the model.</p>
 
-<p>Of particular importance, the intervention coefficient $h$ and strenght $A(t)$ describe the investment the country is putting in place to contain the epidemy (plotted in supplementary Figure 3 and 4). Linked to this parameter, the time to intervention can be calculated for each country (supplementary figure 5), and together with the hill scale $k$ (supplementary figure 6) is indicative of the readiness of the country to put in place a containment programme.</p>
+<p>Of particular importance, the intervention coefficient $h$ describes the investment the country is putting in place to contain the epidemy (plotted in Supplementary figure 1). Linked to this parameter, the hill scale can be calculated for each country (Supplementary figure 3), and together with the hill shape $k$ (Supplementary figure 4) is indicative of the readiness of the country to put in place a containment programme.</p>
 
 <h2 id="statistical-inference-and-model-predictions">Statistical inference and model predictions</h2>
 <p>By using the available daily reported cases in the public repository <a href="https://github.com/CSSEGISandData/COVID-19">CSSEGISandData/COVID-19</a> we can estimate the parameters of the model from the data for each country/region affected by the infection (see current state <a href="current_state">here</a>). Knowing the model parameters allow us to draw predictions on how the epidemics will evolve.</p>
@@ -194,6 +192,59 @@ The lack of observations at early stages is captured by the factor $p(t)$ which 
 <figure>
 <center><img src="Figures/Figure_ranking_duration.png" />
 <figcaption> Fig. 4: Top 10 countries by duration of the outbreak</figcaption>
+</center>
+</figure>
+
+<p>The intervention coefficient is estimated from each country from the data and is a fundamental parameter to bring down the peak of infected individuals, as it is shown by testing different values of $h$ from the estimated one.</p>
+
+<figure>
+<center><img src="Figures/fig_china.png" />
+<figcaption> Fig. 5: Effect of changing the intervetion coefficient on the Henan dataset.</figcaption>
+</center>
+</figure>
+
+<h2 id="inclusion-of-recovered-population-inference-on-the-sir-model">Inclusion of recovered population, inference on the SIR model</h2>
+<p>In this section we introduce a more detailed model to take into account the individuals who recovered from the COVID-19 infection. 
+The model is characterized by the following dynamical equations</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align*}
+\frac{dI}{dt} &= \frac{\beta(t)}{N}\cdot S(t)I(t)-\gamma(t)\cdot I(t),\quad I(t_0) = I_0\\
+\frac{dS}{dt} &= -\frac{\beta(t)}{N}\cdot S(t)I(t),\quad S(t_0) = N\\
+\frac{dR}{dt} &= \gamma(t)\cdot I(t),\quad R(t_0)=0
+\end{align*} %]]></script>
+
+<p>where $S$, $I$ and $R$ are the susceptible, infected and recovered population respectively. In order to include the effect of the intervention we allowed the contagion rate $\beta$ and the recovery rate $\gamma$ to vary according to the Hill functions</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align*}
+\beta(t) &= \beta_0\cdot\left(1+\frac{h}{1+(k/t)^g}\right)^{-1}\\
+\lambda_R(t) &= \gamma_0\cdot\left(1+\frac{h_R}{1+(k_R/t)^{g_R}}\right)
+\end{align*} %]]></script>
+
+<p>To include the effect of introducing tests for COVID-19 infection we modeled the observed numbers of infections and recovery as</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align*}
+I^{obs}(t)&=\nu(t) I(t)\\
+R^{obs}(t)&=\nu(t) R(t)
+\end{align*} %]]></script>
+
+<p>with</p>
+
+<script type="math/tex; mode=display">\begin{align*}
+\nu(t)=\frac{\nu_\infty}{1+(k_T/t)^{g_T}}
+\end{align*}</script>
+
+<figure>
+<center><img src="Figures/Figure_SIR_Henan.png" />
+<figcaption> Fig. 6: Fit of the SIR model and comparison with the Henan data.</figcaption>
+</center>
+</figure>
+
+<figure>
+<center><img src="Figures/figpost_sir_henan.png" />
+<figcaption> Fig. 7: Effect of changing the intervetion coefficient on the Henan dataset in the SIR model.</figcaption>
 </center>
 </figure>
 

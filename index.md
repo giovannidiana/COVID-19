@@ -128,6 +128,58 @@ The intervention coefficient is estimated from each country from the data and is
 </center>
 </figure>
 
+## Inclusion of recovered population, inference on the SIR model 
+In this section we introduce a more detailed model to take into account the individuals who recovered from the COVID-19 infection. 
+The model is characterized by the following dynamical equations
+
+$$
+\begin{align*}
+\frac{dI}{dt} &= \frac{\beta(t)}{N}\cdot S(t)I(t)-\gamma(t)\cdot I(t),\quad I(t_0) = I_0\\
+\frac{dS}{dt} &= -\frac{\beta(t)}{N}\cdot S(t)I(t),\quad S(t_0) = N\\
+\frac{dR}{dt} &= \gamma(t)\cdot I(t),\quad R(t_0)=0
+\end{align*}
+$$ 
+
+where $S$, $I$ and $R$ are the susceptible, infected and recovered population respectively. In order to include the effect of the intervention we allowed the contagion rate $\beta$ and the recovery rate $\gamma$ to vary according to the Hill functions
+
+$$
+\begin{align*}
+\beta(t) &= \beta_0\cdot\left(1+\frac{h}{1+(k/t)^g}\right)^{-1}\\
+\lambda_R(t) &= \gamma_0\cdot\left(1+\frac{h_R}{1+(k_R/t)^{g_R}}\right)
+\end{align*}
+$$
+
+To include the effect of introducing tests for COVID-19 infection we modeled the observed numbers of infections and recovery as
+
+$$
+\begin{align*}
+I^{obs}(t)&=\nu(t) I(t)\\
+R^{obs}(t)&=\nu(t) R(t)
+\end{align*}
+$$
+
+with 
+
+$$
+\begin{align*}
+\nu(t)=\frac{\nu_\infty}{1+(k_T/t)^{g_T}}
+\end{align*}
+$$
+
+<figure>
+<center><img src="Figures/Figure_SIR_Henan.png"/>
+<figcaption> Fig. 6: Fit of the SIR model and comparison with the Henan data.</figcaption>
+</center>
+</figure>
+
+<figure>
+<center><img src="Figures/figpost_sir_henan.png"/>
+<figcaption> Fig. 7: Effect of changing the intervetion coefficient on the Henan dataset in the SIR model.</figcaption>
+</center>
+</figure>
+
+
+
 ## References
 1. Dong, Ensheng, Hongru Du, and Lauren Gardner. "An interactive web-based dashboard to track COVID-19 in real time." The Lancet Infectious Diseases (2020).   
 
