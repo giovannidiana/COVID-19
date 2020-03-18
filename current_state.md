@@ -1,251 +1,270 @@
 |                                       | confirmed| recovered| deaths|
 |:--------------------------------------|---------:|---------:|------:|
-|Afghanistan                            |        11|         0|      0|
-|Albania                                |        38|         0|      1|
-|Algeria                                |        37|        12|      3|
-|Andorra                                |         1|         1|      0|
+|Afghanistan                            |        21|         1|      0|
+|Albania                                |        51|         0|      1|
+|Algeria                                |        54|        12|      4|
+|Andorra                                |         2|         1|      0|
 |Antigua and Barbuda                    |         1|         0|      0|
-|Argentina                              |        34|         1|      2|
-|Armenia                                |        18|         0|      0|
+|Argentina                              |        56|         1|      2|
+|Armenia                                |        52|         0|      0|
 |Aruba                                  |         2|         0|      0|
-|Australia,New South Wales              |       112|         4|      2|
-|Australia,Victoria                     |        49|         8|      0|
-|Australia,Queensland                   |        46|         8|      0|
-|Australia,South Australia              |        19|         3|      0|
+|Australia,New South Wales              |       171|         4|      2|
+|Australia,Victoria                     |        71|         8|      0|
+|Australia,Queensland                   |        68|         8|      0|
+|Australia,South Australia              |        29|         3|      0|
 |Australia,From Diamond Princess        |         0|         0|      0|
-|Australia,Western Australia            |        17|         0|      1|
-|Australia,Tasmania                     |         5|         0|      0|
+|Australia,Western Australia            |        28|         0|      1|
+|Australia,Tasmania                     |         7|         0|      0|
 |Australia,Northern Territory           |         1|         0|      0|
-|Australia,Australian Capital Territory |         1|         0|      0|
-|Austria                                |       655|         6|      1|
-|Azerbaijan                             |        15|         3|      1|
-|Bahrain                                |       210|        44|      0|
-|Bangladesh                             |         3|         0|      0|
-|Belarus                                |        27|         3|      0|
-|Belgium                                |       689|         1|      4|
+|Australia,Australian Capital Territory |         2|         0|      0|
+|Austria                                |      1018|         6|      3|
+|Azerbaijan                             |        15|         6|      1|
+|Bahrain                                |       214|        77|      1|
+|Bangladesh                             |         8|         2|      0|
+|Belarus                                |        36|         3|      0|
+|Belgium                                |      1058|         1|      5|
+|Benin                                  |         1|         0|      0|
 |Bhutan                                 |         1|         0|      0|
-|Bolivia                                |        10|         0|      0|
-|Bosnia and Herzegovina                 |        18|         0|      0|
-|Brazil                                 |       151|         0|      0|
-|Brunei                                 |        40|         0|      0|
-|Bulgaria                               |        41|         0|      2|
-|Burkina Faso                           |         2|         0|      0|
+|Bolivia                                |        11|         0|      0|
+|Bosnia and Herzegovina                 |        25|         0|      0|
+|Brazil                                 |       200|         1|      0|
+|Brunei                                 |        54|         0|      0|
+|Bulgaria                               |        52|         0|      2|
+|Burkina Faso                           |        15|         0|      0|
 |Cambodia                               |         7|         1|      0|
-|Cameroon                               |         2|         0|      0|
-|Canada,British Columbia                |        64|         4|      1|
-|Canada,Ontario                         |        79|         4|      0|
-|Canada,Alberta                         |        29|         0|      0|
-|Canada,Quebec                          |        17|         0|      0|
-|Canada,New Brunswick                   |         1|         0|      0|
-|Canada,Manitoba                        |         4|         0|      0|
-|Canada,Saskatchewan                    |         2|         0|      0|
+|Cameroon                               |         4|         0|      0|
+|Canada,British Columbia                |       103|         4|      4|
+|Canada,Ontario                         |       177|         5|      0|
+|Canada,Alberta                         |        56|         0|      0|
+|Canada,Quebec                          |        50|         0|      0|
+|Canada,New Brunswick                   |         6|         0|      0|
+|Canada,Manitoba                        |         7|         0|      0|
+|Canada,Saskatchewan                    |         7|         0|      0|
 |Canada,Grand Princess                  |         2|         0|      0|
-|Cayman Islands                         |         1|         0|      0|
-|Chile                                  |        61|         0|      0|
-|China,Hubei                            |     67790|     52960|   3075|
-|China,Guangdong                        |      1356|      1299|      8|
+|Canada,Newfoundland and Labrador       |         1|         0|      0|
+|Canada,Prince Edward Island            |         1|         0|      0|
+|Canada,Nova Scotia                     |         5|         0|      0|
+|Central African Republic               |         1|         0|      0|
+|Chile                                  |       155|         0|      0|
+|China,Hubei                            |     67798|     55142|   3099|
+|China,Guangdong                        |      1361|      1306|      8|
 |China,Henan                            |      1273|      1250|     22|
-|China,Zhejiang                         |      1227|      1211|      1|
+|China,Zhejiang                         |      1231|      1216|      1|
 |China,Hunan                            |      1018|      1014|      4|
 |China,Anhui                            |       990|       984|      6|
 |China,Jiangxi                          |       935|       934|      1|
-|China,Shandong                         |       760|       741|      7|
-|China,Jiangsu                          |       631|       630|      0|
-|China,Chongqing                        |       576|       569|      6|
-|China,Sichuan                          |       539|       511|      3|
-|China,Heilongjiang                     |       482|       447|     13|
-|China,Beijing                          |       437|       349|      8|
-|China,Shanghai                         |       353|       324|      3|
+|China,Shandong                         |       760|       746|      7|
+|China,Jiangsu                          |       631|       631|      0|
+|China,Chongqing                        |       576|       570|      6|
+|China,Sichuan                          |       539|       516|      3|
+|China,Heilongjiang                     |       482|       455|     13|
+|China,Beijing                          |       452|       360|      8|
+|China,Shanghai                         |       355|       325|      3|
 |China,Hebei                            |       318|       310|      6|
 |China,Fujian                           |       296|       295|      1|
-|China,Guangxi                          |       252|       243|      2|
-|China,Shaanxi                          |       245|       232|      2|
-|China,Yunnan                           |       174|       172|      2|
-|China,Hainan                           |       168|       160|      6|
-|China,Guizhou                          |       146|       143|      2|
-|China,Tianjin                          |       136|       132|      3|
+|China,Guangxi                          |       252|       248|      2|
+|China,Shaanxi                          |       245|       233|      2|
+|China,Yunnan                           |       176|       172|      2|
+|China,Hainan                           |       168|       161|      6|
+|China,Guizhou                          |       146|       144|      2|
+|China,Tianjin                          |       136|       133|      3|
 |China,Shanxi                           |       133|       133|      0|
-|China,Gansu                            |       129|        89|      2|
-|China,Hong Kong                        |       140|        78|      4|
-|China,Liaoning                         |       125|       113|      1|
-|China,Jilin                            |        93|        91|      1|
+|China,Gansu                            |       133|        91|      2|
+|China,Hong Kong                        |       155|        84|      4|
+|China,Liaoning                         |       125|       115|      1|
+|China,Jilin                            |        93|        92|      1|
 |China,Xinjiang                         |        76|        73|      3|
-|China,Inner Mongolia                   |        75|        71|      1|
-|China,Ningxia                          |        75|        73|      0|
+|China,Inner Mongolia                   |        75|        73|      1|
+|China,Ningxia                          |        75|        75|      0|
 |China,Qinghai                          |        18|        18|      0|
-|China,Macau                            |        10|        10|      0|
+|China,Macau                            |        11|        10|      0|
 |China,Tibet                            |         1|         1|      0|
-|Colombia                               |        22|         0|      0|
+|Colombia                               |        54|         0|      0|
+|Congo (Brazzaville)                    |         1|         0|      0|
 |Congo (Kinshasa)                       |         2|         0|      0|
-|Costa Rica                             |        26|         0|      0|
+|Costa Rica                             |        35|         0|      0|
 |Cote d'Ivoire                          |         1|         0|      0|
-|Croatia                                |        38|         1|      0|
+|Croatia                                |        57|         2|      0|
 |Cruise Ship,Diamond Princess           |       696|       325|      7|
 |Cuba                                   |         4|         0|      0|
-|Curacao                                |         1|         0|      0|
-|Cyprus                                 |        26|         0|      0|
-|Czechia                                |       189|         0|      0|
-|Denmark,Denmark                        |       827|         1|      1|
-|Denmark,Faroe Islands                  |         9|         0|      0|
+|Cyprus                                 |        33|         0|      0|
+|Czechia                                |       298|         3|      0|
+|Denmark,Denmark                        |       914|         1|      3|
+|Denmark,Faroe Islands                  |        18|         0|      0|
 |Dominican Republic                     |        11|         0|      0|
-|Ecuador                                |        28|         0|      2|
-|Egypt                                  |       109|        27|      2|
-|Estonia                                |       115|         0|      0|
+|Ecuador                                |        37|         0|      2|
+|Egypt                                  |       150|        27|      2|
+|Equatorial Guinea                      |         1|         0|      0|
+|Estonia                                |       205|         1|      0|
 |Eswatini                               |         1|         0|      0|
-|Ethiopia                               |         1|         0|      0|
-|Finland                                |       225|         1|      0|
-|France,France                          |      4469|        12|     91|
+|Ethiopia                               |         5|         0|      0|
+|Finland                                |       277|        10|      0|
+|France,France                          |      6633|        12|    148|
 |France,St Martin                       |         2|         0|      0|
-|France,Saint Barthelemy                |         1|         0|      0|
+|France,Saint Barthelemy                |         3|         0|      0|
 |France,French Polynesia                |         3|         0|      0|
-|France,Fench Guiana                    |         5|         0|      0|
-|French Guiana                          |         5|         0|      0|
+|France,French Guiana                   |         5|         0|      0|
+|France,Mayotte                         |         1|         0|      0|
+|France,Guadeloupe                      |         3|         0|      0|
+|French Guiana                          |        11|         0|      0|
 |Gabon                                  |         1|         0|      0|
-|Georgia                                |        30|         0|      0|
-|Germany                                |      4585|        46|      9|
-|Ghana                                  |         3|         0|      0|
-|Greece                                 |       228|         8|      3|
-|Guadeloupe                             |         1|         0|      0|
-|Guatemala                              |         1|         0|      0|
+|Georgia                                |        33|         1|      0|
+|Germany                                |      7272|        67|     17|
+|Ghana                                  |         6|         0|      0|
+|Greece                                 |       331|         8|      4|
+|Greenland                              |         1|         0|      0|
+|Guadeloupe                             |         6|         0|      0|
+|Guam                                   |         3|         0|      0|
+|Guatemala                              |         2|         0|      1|
 |Guernsey                               |         1|         0|      0|
 |Guinea                                 |         1|         0|      0|
-|Guyana                                 |         1|         0|      1|
+|Guyana                                 |         4|         0|      1|
 |Holy See                               |         1|         0|      0|
-|Honduras                               |         2|         0|      0|
-|Hungary                                |        30|         1|      0|
-|Iceland                                |       156|         1|      0|
-|India                                  |       102|         4|      2|
-|Indonesia                              |        96|         8|      5|
-|Iran                                   |     12729|      2959|    611|
-|Iraq                                   |       110|        26|     10|
-|Ireland                                |       129|         0|      2|
-|Israel                                 |       193|         4|      0|
-|Italy                                  |     21157|      1966|   1441|
-|Jamaica                                |         8|         0|      0|
-|Japan                                  |       773|       118|     22|
+|Honduras                               |         6|         0|      0|
+|Hungary                                |        39|         1|      1|
+|Iceland                                |       180|         0|      0|
+|India                                  |       119|        13|      2|
+|Indonesia                              |       134|         8|      5|
+|Iran                                   |     14991|      4590|    853|
+|Iraq                                   |       124|        26|     10|
+|Ireland                                |       169|         0|      2|
+|Israel                                 |       255|         4|      0|
+|Italy                                  |     27980|      2749|   2158|
+|Jamaica                                |        10|         2|      0|
+|Japan                                  |       825|       144|     27|
 |Jersey                                 |         2|         0|      0|
-|Jordan                                 |         1|         1|      0|
-|Kazakhstan                             |         6|         0|      0|
-|Kenya                                  |         1|         0|      0|
-|Korea, South                           |      8086|       510|     72|
-|Kuwait                                 |       104|         5|      0|
-|Latvia                                 |        26|         1|      0|
-|Lebanon                                |        93|         1|      3|
+|Jordan                                 |        17|         1|      0|
+|Kazakhstan                             |        10|         0|      0|
+|Kenya                                  |         3|         0|      0|
+|Korea, South                           |      8236|      1137|     75|
+|Kosovo                                 |         2|         0|      0|
+|Kuwait                                 |       123|         9|      0|
+|Latvia                                 |        34|         1|      0|
+|Lebanon                                |        99|         1|      3|
+|Liberia                                |         1|         0|      0|
 |Liechtenstein                          |         4|         0|      0|
-|Lithuania                              |         8|         0|      0|
-|Luxembourg                             |        51|         0|      1|
-|Malaysia                               |       238|        35|      0|
-|Maldives                               |        10|         0|      0|
-|Malta                                  |        18|         1|      0|
-|Martinique                             |         9|         0|      0|
+|Lithuania                              |        17|         1|      0|
+|Luxembourg                             |        77|         0|      1|
+|Malaysia                               |       566|        42|      0|
+|Maldives                               |        13|         0|      0|
+|Malta                                  |        30|         2|      0|
+|Martinique                             |        15|         0|      1|
 |Mauritania                             |         1|         0|      0|
-|Mexico                                 |        26|         4|      0|
-|Moldova                                |        12|         0|      0|
-|Monaco                                 |         2|         0|      0|
+|Mayotte                                |         1|         0|      0|
+|Mexico                                 |        53|         4|      0|
+|Moldova                                |        23|         0|      0|
+|Monaco                                 |         7|         0|      0|
 |Mongolia                               |         1|         0|      0|
-|Morocco                                |        17|         1|      1|
+|Morocco                                |        29|         1|      1|
 |Namibia                                |         2|         0|      0|
 |Nepal                                  |         1|         1|      0|
-|Netherlands                            |       959|         2|     12|
-|New Zealand                            |         6|         0|      0|
+|Netherlands,Netherlands                |      1413|         2|     24|
+|Netherlands,Curacao                    |         1|         0|      0|
+|New Zealand                            |         8|         0|      0|
 |Nigeria                                |         2|         0|      0|
-|North Macedonia                        |        14|         1|      0|
-|Norway                                 |      1090|         1|      3|
+|North Macedonia                        |        18|         1|      0|
+|Norway                                 |      1333|         1|      3|
 |occupied Palestinian territory         |         0|         0|      0|
-|Oman                                   |        19|         9|      0|
-|Pakistan                               |        31|         2|      0|
-|Panama                                 |        36|         0|      1|
-|Paraguay                               |         6|         0|      0|
-|Peru                                   |        38|         0|      0|
-|Philippines                            |       111|         2|      8|
-|Poland                                 |       103|         0|      3|
-|Portugal                               |       169|         2|      0|
-|Qatar                                  |       337|         4|      0|
-|Reunion                                |         6|         0|      0|
-|Romania                                |       123|         9|      0|
-|Russia                                 |        59|         8|      0|
-|Rwanda                                 |         1|         0|      0|
-|Saint Lucia                            |         1|         0|      0|
+|Oman                                   |        22|         9|      0|
+|Pakistan                               |       136|         2|      0|
+|Panama                                 |        55|         0|      1|
+|Paraguay                               |         8|         0|      0|
+|Peru                                   |        86|         0|      0|
+|Philippines                            |       142|         2|     12|
+|Poland                                 |       177|        13|      4|
+|Portugal                               |       331|         3|      0|
+|Puerto Rico                            |         3|         0|      0|
+|Qatar                                  |       439|         4|      0|
+|Republic of the Congo                  |         1|         0|      0|
+|Reunion                                |         9|         0|      0|
+|Romania                                |       158|         9|      0|
+|Russia                                 |        90|         8|      0|
+|Rwanda                                 |         5|         0|      0|
+|Saint Lucia                            |         2|         0|      0|
 |Saint Vincent and the Grenadines       |         1|         0|      0|
-|San Marino                             |        80|         4|      5|
-|Saudi Arabia                           |       103|         1|      0|
-|Senegal                                |        10|         1|      0|
-|Serbia                                 |        46|         0|      0|
-|Seychelles                             |         2|         0|      0|
-|Singapore                              |       212|       105|      0|
-|Slovakia                               |        44|         0|      0|
-|Slovenia                               |       181|         0|      1|
-|South Africa                           |        38|         0|      0|
-|Spain                                  |      6391|       517|    195|
-|Sri Lanka                              |        10|         1|      0|
+|San Marino                             |       109|         4|      7|
+|Saudi Arabia                           |       118|         2|      0|
+|Senegal                                |        24|         2|      0|
+|Serbia                                 |        55|         1|      0|
+|Seychelles                             |         3|         0|      0|
+|Singapore                              |       243|       109|      0|
+|Slovakia                               |        63|         0|      0|
+|Slovenia                               |       253|         0|      1|
+|Somalia                                |         1|         0|      0|
+|South Africa                           |        62|         0|      0|
+|Spain                                  |      9942|       530|    342|
+|Sri Lanka                              |        28|         1|      0|
 |Sudan                                  |         1|         0|      1|
 |Suriname                               |         1|         0|      0|
-|Sweden                                 |       961|         1|      2|
-|Switzerland                            |      1359|         4|     13|
-|Taiwan*                                |        53|        20|      1|
-|Thailand                               |        82|        35|      1|
+|Sweden                                 |      1103|         1|      6|
+|Switzerland                            |      2200|         4|     14|
+|Taiwan*                                |        67|        20|      1|
+|Tanzania                               |         1|         0|      0|
+|Thailand                               |       147|        35|      1|
+|The Bahamas                            |         1|         0|      0|
 |Togo                                   |         1|         0|      0|
-|Trinidad and Tobago                    |         2|         0|      0|
-|Tunisia                                |        18|         0|      0|
-|Turkey                                 |         5|         0|      0|
-|Ukraine                                |         3|         0|      1|
-|United Arab Emirates                   |        85|        17|      0|
-|United Kingdom,Channel Islands         |         2|         0|      0|
+|Trinidad and Tobago                    |         4|         0|      0|
+|Tunisia                                |        20|         0|      0|
+|Turkey                                 |        18|         0|      0|
+|Ukraine                                |         7|         0|      1|
+|United Arab Emirates                   |        98|        23|      0|
+|United Kingdom,Channel Islands         |         6|         0|      0|
 |United Kingdom,Gibraltar               |         1|         1|      0|
-|United Kingdom,United Kingdom          |      1140|        18|     21|
-|Uruguay                                |         4|         0|      0|
-|US,Washington                          |       572|         1|     37|
-|US,New York                            |       525|         0|      2|
-|US,California                          |       340|         6|      5|
-|US,Massachusetts                       |       138|         1|      0|
-|US,Diamond Princess                    |        46|         0|      0|
-|US,Grand Princess                      |        21|         0|      0|
-|US,Georgia                             |        66|         0|      1|
-|US,Colorado                            |       101|         0|      1|
-|US,Florida                             |        76|         0|      3|
-|US,New Jersey                          |        69|         0|      1|
-|US,Oregon                              |        32|         0|      0|
-|US,Texas                               |        57|         0|      0|
-|US,Illinois                            |        64|         2|      0|
-|US,Pennsylvania                        |        47|         0|      0|
-|US,Iowa                                |        17|         0|      0|
-|US,Maryland                            |        26|         0|      0|
-|US,North Carolina                      |        24|         0|      0|
-|US,South Carolina                      |        19|         0|      0|
-|US,Tennessee                           |        32|         0|      0|
-|US,Virginia                            |        41|         0|      1|
-|US,Arizona                             |        12|         1|      0|
-|US,Indiana                             |        16|         0|      0|
-|US,Kentucky                            |        14|         0|      0|
-|US,District of Columbia                |        10|         0|      0|
-|US,Nevada                              |        21|         0|      0|
-|US,New Hampshire                       |         7|         0|      0|
-|US,Minnesota                           |        21|         0|      0|
-|US,Nebraska                            |        14|         0|      0|
-|US,Ohio                                |        26|         0|      0|
-|US,Rhode Island                        |        20|         0|      0|
-|US,Wisconsin                           |        27|         1|      0|
-|US,Connecticut                         |        22|         0|      0|
-|US,Hawaii                              |         4|         0|      0|
-|US,Oklahoma                            |         4|         0|      0|
-|US,Utah                                |        10|         0|      0|
-|US,Kansas                              |         8|         0|      1|
-|US,Louisiana                           |        77|         0|      1|
-|US,Missouri                            |         4|         0|      0|
-|US,Vermont                             |         5|         0|      0|
+|United Kingdom,United Kingdom          |      1543|        20|     55|
+|United Kingdom,Cayman Islands          |         1|         0|      1|
+|Uruguay                                |         8|         0|      0|
+|US,Washington                          |       904|         1|     48|
+|US,New York                            |       967|         0|     10|
+|US,California                          |       557|         6|      7|
+|US,Massachusetts                       |       197|         1|      0|
+|US,Diamond Princess                    |        47|         0|      0|
+|US,Grand Princess                      |        20|         0|      0|
+|US,Georgia                             |       121|         0|      1|
+|US,Colorado                            |       160|         0|      1|
+|US,Florida                             |       155|         0|      5|
+|US,New Jersey                          |       178|         1|      2|
+|US,Oregon                              |        39|         0|      1|
+|US,Texas                               |        85|         0|      0|
+|US,Illinois                            |       105|         2|      0|
+|US,Pennsylvania                        |        77|         0|      0|
+|US,Iowa                                |        23|         0|      0|
+|US,Maryland                            |        41|         3|      0|
+|US,North Carolina                      |        38|         0|      0|
+|US,South Carolina                      |        33|         0|      1|
+|US,Tennessee                           |        52|         0|      0|
+|US,Virginia                            |        49|         0|      1|
+|US,Arizona                             |        18|         1|      0|
+|US,Indiana                             |        25|         0|      1|
+|US,Kentucky                            |        21|         1|      1|
+|US,District of Columbia                |        22|         0|      0|
+|US,Nevada                              |        45|         0|      1|
+|US,New Hampshire                       |        17|         0|      0|
+|US,Minnesota                           |        54|         0|      0|
+|US,Nebraska                            |        18|         0|      0|
+|US,Ohio                                |        50|         0|      0|
+|US,Rhode Island                        |        21|         0|      0|
+|US,Wisconsin                           |        47|         1|      0|
+|US,Connecticut                         |        30|         0|      0|
+|US,Hawaii                              |         7|         0|      0|
+|US,Oklahoma                            |        10|         0|      0|
+|US,Utah                                |        39|         0|      0|
+|US,Kansas                              |        11|         0|      1|
+|US,Louisiana                           |       136|         0|      3|
+|US,Missouri                            |         6|         0|      0|
+|US,Vermont                             |        12|         0|      0|
 |US,Alaska                              |         1|         0|      0|
-|US,Arkansas                            |        12|         0|      0|
-|US,Delaware                            |         6|         0|      0|
-|US,Idaho                               |         2|         0|      0|
-|US,Maine                               |         3|         0|      0|
-|US,Michigan                            |        25|         0|      0|
-|US,Mississippi                         |         6|         0|      0|
-|US,Montana                             |         5|         0|      0|
-|US,New Mexico                          |        10|         0|      0|
+|US,Arkansas                            |        22|         0|      0|
+|US,Delaware                            |         8|         0|      0|
+|US,Idaho                               |         5|         0|      0|
+|US,Maine                               |        17|         0|      0|
+|US,Michigan                            |        53|         0|      0|
+|US,Mississippi                         |        13|         0|      0|
+|US,Montana                             |         7|         0|      0|
+|US,New Mexico                          |        17|         0|      0|
 |US,North Dakota                        |         1|         0|      0|
-|US,South Dakota                        |         9|         0|      1|
+|US,South Dakota                        |        10|         0|      1|
 |US,West Virginia                       |         0|         0|      0|
-|US,Wyoming                             |         2|         0|      0|
+|US,Wyoming                             |         3|         0|      0|
 |US,Kitsap, WA                          |         0|         0|      0|
 |US,Solano, CA                          |         0|         0|      0|
 |US,Santa Cruz, CA                      |         0|         0|      0|
@@ -437,8 +456,10 @@
 |US,Oakland, MI                         |         0|         0|      0|
 |US,Wayne, MI                           |         0|         0|      0|
 |US,New Castle, DE                      |         0|         0|      0|
-|US,Alabama                             |         6|         0|      0|
-|US,Puerto Rico                         |         3|         0|      0|
-|US,Virgin Islands, U.S.                |         1|         0|      0|
-|Venezuela                              |         2|         0|      0|
-|Vietnam                                |        53|        16|      0|
+|US,Alabama                             |        29|         0|      0|
+|US,Puerto Rico                         |         5|         0|      0|
+|US,Guam                                |         3|         0|      0|
+|US,Virgin Islands                      |         1|         0|      0|
+|Uzbekistan                             |         6|         0|      0|
+|Venezuela                              |        17|         0|      0|
+|Vietnam                                |        61|        16|      0|
