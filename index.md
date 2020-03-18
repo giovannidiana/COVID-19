@@ -129,8 +129,8 @@ The intervention coefficient is estimated from each country from the data and is
 </figure>
 
 ## Inference on the SIR model 
-In this section we introduce a more detailed model to take into account the individuals who recovered from the COVID-19 infection. 
-The model is characterized by the following dynamical equations
+In this section we introduce the SIR model to describe susceptible, infected and recovered individuals in a population. The intervention is accounted in two ways, first by reducing the infection rate $\beta$, and second by increasing the recovery rate $\gamma$. The first effect is due to restriction in social activity, reducing the probability of being infected, the second is due to the treatment of patients in hospitals which might improve over time.  
+The model is characterized by the following population dynamics
 
 $$
 \begin{align*}
@@ -140,15 +140,16 @@ $$
 \end{align*}
 $$ 
 
-where $S$, $I$ and $R$ are the susceptible, infected and recovered population respectively. In order to include the effect of the intervention we allowed the contagion rate $\beta$ and the recovery rate $\gamma$ to vary according to the Hill functions
+where $S$, $I$ and $R$ are the susceptible, infected and recovered population respectively. In order to include the effect of the intervention we parameterized the time dependency of the infection rate $\beta$ and the recovery rate $\gamma$ using the Hill functions
 
 $$
 \begin{align*}
 \beta(t) &= \beta_0\cdot\left(1+\frac{h}{1+(k/t)^g}\right)^{-1}\\
-\lambda_R(t) &= \gamma_0\cdot\left(1+\frac{h_R}{1+(k_R/t)^{g_R}}\right)
+\gamma(t) &= \gamma_0\cdot\left(1+\frac{h_R}{1+(k_R/t)^{g_R}}\right)
 \end{align*}
 $$
 
+Note that the main difference with respect to the empirical model described in the previous section where the intervention had its own dynamical equation whereas here the time dependency is entirely modeled by the Hill functions.
 To include the effect of introducing tests for COVID-19 infection we modeled the observed numbers of infections and recovery as
 
 $$
@@ -166,6 +167,18 @@ $$
 \end{align*}
 $$
 
+|name |	description|
+|:----|-----------:|
+|$S$ |	Susceptible population|
+|$I$ |  Infected population |
+|$R$ |  Recovered population |
+|$\beta$ | time-dependent infection rate|
+|$\gamma$ | time-dependent recovery rate |
+|$\nu$ | Observed fraction of cases |
+
+Table 2: Summary of parameters and variable used in the SIR model.
+
+
 <figure>
 <center><img src="Figures/Figure_SIR_Henan.png"/>
 <figcaption> Fig. 6: Fit of the SIR model and comparison with the Henan data.</figcaption>
@@ -177,6 +190,8 @@ $$
 <figcaption> Fig. 7: Effect of changing the intervetion coefficient on the Henan dataset in the SIR model.</figcaption>
 </center>
 </figure>
+
+Here is an interactive figure showing the dynamics of the infected population according to the SIR model in all countries
 
 <center><iframe width="800" height="400" frameborder="0" scrolling="no"
 src="notebooks/plotly_chart_sir.html"></iframe>
