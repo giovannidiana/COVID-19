@@ -5,11 +5,11 @@ mathjax: true
 
 {% include mathjax.html %}
 
- **Giovanni Diana**$^1$ and **Diana Passaro**$^2$
+ **Giovanni Diana**$^{1,2}$ and **Diana Passaro**$^3$
 
 $^1$ Center for Developmental Neurobiology & MRC Center for Neurodevelopmental Disorders, King’s College London, Guy’s Hospital Campus, London, United Kingdom
-
-$^2$ Leukemia and Niche Dynamics Laboratory, Cochin Institute, 27 rue du Faubourg Saint Jacques, 75014 Paris, France
+$^2$Institut Pasteur, Dynamic Neuronal Imaging Unit, CNRS UMR 3571, Paris, France.
+$^3$ Leukemia and Niche Dynamics Laboratory, Cochin Institute, 27 rue du Faubourg Saint Jacques, 75014 Paris, France
 
 ***
 
