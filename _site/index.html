@@ -80,8 +80,7 @@
 
 <hr />
 
-<p><a id="intro"></a></p>
-<h2 id="introduction">Introduction</h2>
+<h2 id="introduction--">Introduction <a name="intro"> </a></h2>
 <p>Spread of COVID-19 in early 2020 has raised important concerns about the ability of national health systems to detect the positive cases, as well as the intervention rate a country is expected to put in place to contain the infection.</p>
 
 <p>Using data on disease spread and containment through the public repository <a href="https://github.com/CSSEGISandData/COVID-19">CSSEGISandData/COVID-19</a> we established a predictive model to estimate the outbreak of the infection in a given population.</p>
@@ -99,8 +98,7 @@ First we modeled the number of infections over time based on the disease outbrea
    <figcaption> Figure 1b: Dynamics of the infection in Italy (last update 14/02/2020) </figcaption></center>
 </figure>
 
-<p><a id="model"></a></p>
-<h2 id="the-model">The model</h2>
+<h2 id="the-model--">The model <a name="model"> </a></h2>
 <p>We used a generative model to describe the dynamics of the infected population in a given geographic area. Our model takes into account the effect of the local interventions by coupling the average number of infections <script type="math/tex">X(t)</script> with a dynamical variable <script type="math/tex">A(t)</script> which acts against the spread. The observed number of cases is then generated from a Poisson distribution with rate $X(t)\cdot p(t)$, where $p(t)$ is a fraction of the true number of infections which varies over time (due for instance to the increased number of tests during the acute phase).</p>
 
 <p>The model is defined by two differential equations for the size of the infected population $X(t)$ and the action $A(t)$ and a probabilistic rule on the observed infections</p>
@@ -170,8 +168,7 @@ The lack of observations at early stages is captured by the factor $p(t)$ which 
 
 <p>Of particular importance, the intervention coefficient $h$ describes the investment the country is putting in place to contain the epidemy (plotted in Supplementary figure 1). Linked to this parameter, the hill scale can be calculated for each country (Supplementary figure 3), and together with the hill shape $k$ (Supplementary figure 4) is indicative of the readiness of the country to put in place a containment programme.</p>
 
-<p><a id="inference1"></a></p>
-<h2 id="statistical-inference-and-model-predictions">Statistical inference and model predictions</h2>
+<h2 id="statistical-inference-and-model-predictions--">Statistical inference and model predictions <a name="inference1"> </a></h2>
 <p>By using the available daily reported cases in the public repository <a href="https://github.com/CSSEGISandData/COVID-19">CSSEGISandData/COVID-19</a> we can estimate the parameters of the model from the data for each country/region affected by the infection (see current state <a href="current_state">here</a>). Knowing the model parameters allow us to draw predictions on how the epidemics will evolve.</p>
 
 <h3 id="parameter-estimation-in-individual-areas">Parameter estimation in individual areas</h3>
@@ -220,8 +217,7 @@ The lack of observations at early stages is captured by the factor $p(t)$ which 
 </center>
 </figure>
 
-<p><a id="SIR"></a></p>
-<h2 id="sir-model">SIR model</h2>
+<h2 id="sir-model">SIR model<a id="SIR"></a></h2>
 <p>In this section we introduce the SIR model to describe susceptible, infected and recovered individuals in a population. The intervention is accounted in two ways, first by reducing the infection rate $\beta$, and second by increasing the recovery rate $\gamma$. The first effect is due to restriction in social activity, reducing the probability of being infected, the second is due to the treatment of patients in hospitals which might improve over time.<br />
 The model is characterized by the following population dynamics</p>
 

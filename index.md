@@ -25,8 +25,7 @@ $^3$ Leukemia and Niche Dynamics Laboratory, Cochin Institute, 27 rue du Faubour
 
 ***
 
-<a id="intro"> 
-## Introduction 
+## Introduction <a name="intro"> </a>
 Spread of COVID-19 in early 2020 has raised important concerns about the ability of national health systems to detect the positive cases, as well as the intervention rate a country is expected to put in place to contain the infection.
 
   Using data on disease spread and containment through the public repository [CSSEGISandData/COVID-19](https://github.com/CSSEGISandData/COVID-19) we established a predictive model to estimate the outbreak of the infection in a given population. 
@@ -45,8 +44,8 @@ First we modeled the number of infections over time based on the disease outbrea
 </figure>
 
 
-<a id="model">
-## The model
+
+## The model <a name="model"> </a>
 We used a generative model to describe the dynamics of the infected population in a given geographic area. Our model takes into account the effect of the local interventions by coupling the average number of infections $$X(t)$$ with a dynamical variable $$A(t)$$ which acts against the spread. The observed number of cases is then generated from a Poisson distribution with rate $X(t)\cdot p(t)$, where $p(t)$ is a fraction of the true number of infections which varies over time (due for instance to the increased number of tests during the acute phase).
 
 The model is defined by two differential equations for the size of the infected population $X(t)$ and the action $A(t)$ and a probabilistic rule on the observed infections 
@@ -87,8 +86,8 @@ Table 1: Summary of parameters and variable used in the model.
 
 Of particular importance, the intervention coefficient $h$ describes the investment the country is putting in place to contain the epidemy (plotted in Supplementary figure 1). Linked to this parameter, the hill scale can be calculated for each country (Supplementary figure 3), and together with the hill shape $k$ (Supplementary figure 4) is indicative of the readiness of the country to put in place a containment programme.  
 
-<a id="inference1"> 
-## Statistical inference and model predictions
+
+## Statistical inference and model predictions <a name="inference1"> </a>
 By using the available daily reported cases in the public repository [CSSEGISandData/COVID-19](https://github.com/CSSEGISandData/COVID-19) we can estimate the parameters of the model from the data for each country/region affected by the infection (see current state [here](current_state)). Knowing the model parameters allow us to draw predictions on how the epidemics will evolve. 
 
 ### Parameter estimation in individual areas
@@ -140,8 +139,8 @@ The intervention coefficient is estimated from each country from the data and is
 </center>
 </figure>
 
-<a id="SIR">
-## SIR model
+
+## SIR model<a id="SIR"></a>
 In this section we introduce the SIR model to describe susceptible, infected and recovered individuals in a population. The intervention is accounted in two ways, first by reducing the infection rate $\beta$, and second by increasing the recovery rate $\gamma$. The first effect is due to restriction in social activity, reducing the probability of being infected, the second is due to the treatment of patients in hospitals which might improve over time.  
 The model is characterized by the following population dynamics
 
