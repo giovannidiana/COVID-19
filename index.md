@@ -5,19 +5,27 @@ mathjax: true
 
 {% include mathjax.html %}
 
- **Giovanni Diana**$^{1,2}$ and **Diana Passaro**$^3$
+**Giovanni Diana**$^{1,2}$ and **Diana Passaro**$^3$ 
 
 $^1$ Center for Developmental Neurobiology & MRC Center for Neurodevelopmental Disorders, King’s College London, Guy’s Hospital Campus, London, United Kingdom
+
 $^2$Institut Pasteur, Dynamic Neuronal Imaging Unit, CNRS UMR 3571, Paris, France.
+
 $^3$ Leukemia and Niche Dynamics Laboratory, Cochin Institute, 27 rue du Faubourg Saint Jacques, 75014 Paris, France
 
 ***
+* <a href="#intro"> Introduction </a>
+* <a href="#model"> Simple model of infection </a>
+* <a href="#inference1"> Statistical inference and model predictions </a>
+* <a href="#SIR"> The SIR model </a>
 
+***
 * [Summary of the outbreak by country](current_state)
 * [Supplementary Methods](SM)
 
 ***
 
+<a id="intro"> 
 ## Introduction 
 Spread of COVID-19 in early 2020 has raised important concerns about the ability of national health systems to detect the positive cases, as well as the intervention rate a country is expected to put in place to contain the infection.
 
@@ -37,6 +45,7 @@ First we modeled the number of infections over time based on the disease outbrea
 </figure>
 
 
+<a id="model">
 ## The model
 We used a generative model to describe the dynamics of the infected population in a given geographic area. Our model takes into account the effect of the local interventions by coupling the average number of infections $$X(t)$$ with a dynamical variable $$A(t)$$ which acts against the spread. The observed number of cases is then generated from a Poisson distribution with rate $X(t)\cdot p(t)$, where $p(t)$ is a fraction of the true number of infections which varies over time (due for instance to the increased number of tests during the acute phase).
 
@@ -78,7 +87,7 @@ Table 1: Summary of parameters and variable used in the model.
 
 Of particular importance, the intervention coefficient $h$ describes the investment the country is putting in place to contain the epidemy (plotted in Supplementary figure 1). Linked to this parameter, the hill scale can be calculated for each country (Supplementary figure 3), and together with the hill shape $k$ (Supplementary figure 4) is indicative of the readiness of the country to put in place a containment programme.  
 
-
+<a id="inference1"> 
 ## Statistical inference and model predictions
 By using the available daily reported cases in the public repository [CSSEGISandData/COVID-19](https://github.com/CSSEGISandData/COVID-19) we can estimate the parameters of the model from the data for each country/region affected by the infection (see current state [here](current_state)). Knowing the model parameters allow us to draw predictions on how the epidemics will evolve. 
 
@@ -102,10 +111,13 @@ The framework of statistical inference allows us to estimate the model parameter
 
 The interactive chart below gives an overview of the course of the infection for each country. Data are updated every day.
 
+<div class="container" style="width: 100%; margin: 0 auto;">
+<div class="iframe-container">
 <center><iframe width="800" height="400" frameborder="0" scrolling="no"
 src="notebooks/plotly_chart.html"></iframe>
 </center>
-
+</div>
+</div>
 While China is now at the final stage of the spread, several countries in Europe are now facing the exponential phase. By quantifying the number of infected individual at the peak predicted by our model we found that Italy, Germany, France and Iran are at high risk of pandemic spread. During the exponential phase it is really hard to draw reliable estimates of when the diffusion of the virus will start displaying a reduction, therefore it is extremely important for these countries to strenghten the interventions to contain the eponential increase of new cases.  
 
 <figure>
@@ -128,7 +140,8 @@ The intervention coefficient is estimated from each country from the data and is
 </center>
 </figure>
 
-## Inference on the SIR model 
+<a id="SIR">
+## SIR model
 In this section we introduce the SIR model to describe susceptible, infected and recovered individuals in a population. The intervention is accounted in two ways, first by reducing the infection rate $\beta$, and second by increasing the recovery rate $\gamma$. The first effect is due to restriction in social activity, reducing the probability of being infected, the second is due to the treatment of patients in hospitals which might improve over time.  
 The model is characterized by the following population dynamics
 
@@ -193,9 +206,13 @@ Table 2: Summary of parameters and variable used in the SIR model.
 
 Here is an interactive figure showing the dynamics of the infected population according to the SIR model in all countries
 
+<div class="container" style="width: 100%; margin: 0 auto;">
+<div class="iframe-container">
 <center><iframe width="800" height="400" frameborder="0" scrolling="no"
 src="notebooks/plotly_chart_sir.html"></iframe>
 </center>
+</div>
+</div>
 
 ## References
 1. Dong, Ensheng, Hongru Du, and Lauren Gardner. "An interactive web-based dashboard to track COVID-19 in real time." The Lancet Infectious Diseases (2020).   

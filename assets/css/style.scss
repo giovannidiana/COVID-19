@@ -4,5 +4,15 @@
 @import "{{ site.theme }}";
 
 .inner {
-  max-width: 75%;
+  max-width: 50%;
 }
+
+.iframe-container {
+	position: relative;
+	width: 100vw;
+	margin-left: -50vw;
+ 	margin-top: 0px;
+ 	left: 50%;
+}
+
+

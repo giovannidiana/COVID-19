@@ -5,18 +5,20 @@
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,maximum-scale=2">
-    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=34cede2bc7d69f58e19da62d5778f833a70f794b">
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=e31bdfc7ff7fa56f8b738d6e70fbeab14acd70cc">
 
 <!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Statistical analysis of COVID-19 epidemics</title>
+<title>Statistical analysis of COVID-19 epidemics | Inference and predictions on the course of the outbreak</title>
 <meta name="generator" content="Jekyll v3.8.5" />
 <meta property="og:title" content="Statistical analysis of COVID-19 epidemics" />
 <meta property="og:locale" content="en_US" />
+<meta name="description" content="Inference and predictions on the course of the outbreak" />
+<meta property="og:description" content="Inference and predictions on the course of the outbreak" />
 <link rel="canonical" href="http://localhost:4000/" />
 <meta property="og:url" content="http://localhost:4000/" />
 <meta property="og:site_name" content="Statistical analysis of COVID-19 epidemics" />
 <script type="application/ld+json">
-{"@type":"WebSite","url":"http://localhost:4000/","headline":"Statistical analysis of COVID-19 epidemics","name":"Statistical analysis of COVID-19 epidemics","@context":"https://schema.org"}</script>
+{"@type":"WebSite","url":"http://localhost:4000/","headline":"Statistical analysis of COVID-19 epidemics","name":"Statistical analysis of COVID-19 epidemics","description":"Inference and predictions on the course of the outbreak","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
   </head>
@@ -29,7 +31,7 @@
           <a id="forkme_banner" href="https://github.com/giovannidiana/COVID-19">View on GitHub</a>
 
           <h1 id="project_title">Statistical analysis of COVID-19 epidemics</h1>
-          <h2 id="project_tagline"></h2>
+          <h2 id="project_tagline">Inference and predictions on the course of the outbreak </h2>
 
           
         </header>
@@ -54,14 +56,23 @@
 <script type="text/javascript" charset="utf-8" src="https://vincenttam.github.io/javascripts/MathJaxLocal.js">
 </script>
 
-<p><strong>Giovanni Diana</strong>$^1$ and <strong>Diana Passaro</strong>$^2$</p>
+<p><strong>Giovanni Diana</strong>$^{1,2}$ and <strong>Diana Passaro</strong>$^3$</p>
 
 <p>$^1$ Center for Developmental Neurobiology &amp; MRC Center for Neurodevelopmental Disorders, King’s College London, Guy’s Hospital Campus, London, United Kingdom</p>
 
-<p>$^2$ Leukemia and Niche Dynamics Laboratory, Cochin Institute, 27 rue du Faubourg Saint Jacques, 75014 Paris, France</p>
+<p>$^2$Institut Pasteur, Dynamic Neuronal Imaging Unit, CNRS UMR 3571, Paris, France.</p>
+
+<p>$^3$ Leukemia and Niche Dynamics Laboratory, Cochin Institute, 27 rue du Faubourg Saint Jacques, 75014 Paris, France</p>
 
 <hr />
+<ul>
+  <li><a href="#intro"> Introduction </a></li>
+  <li><a href="#model"> Simple model of infection </a></li>
+  <li><a href="#inference1"> Statistical inference and model predictions </a></li>
+  <li><a href="#SIR"> The SIR model </a></li>
+</ul>
 
+<hr />
 <ul>
   <li><a href="current_state">Summary of the outbreak by country</a></li>
   <li><a href="SM">Supplementary Methods</a></li>
@@ -69,6 +80,7 @@
 
 <hr />
 
+<p><a id="intro"></a></p>
 <h2 id="introduction">Introduction</h2>
 <p>Spread of COVID-19 in early 2020 has raised important concerns about the ability of national health systems to detect the positive cases, as well as the intervention rate a country is expected to put in place to contain the infection.</p>
 
@@ -87,6 +99,7 @@ First we modeled the number of infections over time based on the disease outbrea
    <figcaption> Figure 1b: Dynamics of the infection in Italy (last update 14/02/2020) </figcaption></center>
 </figure>
 
+<p><a id="model"></a></p>
 <h2 id="the-model">The model</h2>
 <p>We used a generative model to describe the dynamics of the infected population in a given geographic area. Our model takes into account the effect of the local interventions by coupling the average number of infections <script type="math/tex">X(t)</script> with a dynamical variable <script type="math/tex">A(t)</script> which acts against the spread. The observed number of cases is then generated from a Poisson distribution with rate $X(t)\cdot p(t)$, where $p(t)$ is a fraction of the true number of infections which varies over time (due for instance to the increased number of tests during the acute phase).</p>
 
@@ -157,6 +170,7 @@ The lack of observations at early stages is captured by the factor $p(t)$ which 
 
 <p>Of particular importance, the intervention coefficient $h$ describes the investment the country is putting in place to contain the epidemy (plotted in Supplementary figure 1). Linked to this parameter, the hill scale can be calculated for each country (Supplementary figure 3), and together with the hill shape $k$ (Supplementary figure 4) is indicative of the readiness of the country to put in place a containment programme.</p>
 
+<p><a id="inference1"></a></p>
 <h2 id="statistical-inference-and-model-predictions">Statistical inference and model predictions</h2>
 <p>By using the available daily reported cases in the public repository <a href="https://github.com/CSSEGISandData/COVID-19">CSSEGISandData/COVID-19</a> we can estimate the parameters of the model from the data for each country/region affected by the infection (see current state <a href="current_state">here</a>). Knowing the model parameters allow us to draw predictions on how the epidemics will evolve.</p>
 
@@ -178,9 +192,12 @@ The lack of observations at early stages is captured by the factor $p(t)$ which 
 
 <p>The interactive chart below gives an overview of the course of the infection for each country. Data are updated every day.</p>
 
+<div class="container" style="width: 100%; margin: 0 auto;">
+<div class="iframe-container">
 <center><iframe width="800" height="400" frameborder="0" scrolling="no" src="notebooks/plotly_chart.html"></iframe>
 </center>
-
+</div>
+</div>
 <p>While China is now at the final stage of the spread, several countries in Europe are now facing the exponential phase. By quantifying the number of infected individual at the peak predicted by our model we found that Italy, Germany, France and Iran are at high risk of pandemic spread. During the exponential phase it is really hard to draw reliable estimates of when the diffusion of the virus will start displaying a reduction, therefore it is extremely important for these countries to strenghten the interventions to contain the eponential increase of new cases.</p>
 
 <figure>
@@ -203,9 +220,10 @@ The lack of observations at early stages is captured by the factor $p(t)$ which 
 </center>
 </figure>
 
-<h2 id="inclusion-of-recovered-population-inference-on-the-sir-model">Inclusion of recovered population, inference on the SIR model</h2>
-<p>In this section we introduce a more detailed model to take into account the individuals who recovered from the COVID-19 infection. 
-The model is characterized by the following dynamical equations</p>
+<p><a id="SIR"></a></p>
+<h2 id="sir-model">SIR model</h2>
+<p>In this section we introduce the SIR model to describe susceptible, infected and recovered individuals in a population. The intervention is accounted in two ways, first by reducing the infection rate $\beta$, and second by increasing the recovery rate $\gamma$. The first effect is due to restriction in social activity, reducing the probability of being infected, the second is due to the treatment of patients in hospitals which might improve over time.<br />
+The model is characterized by the following population dynamics</p>
 
 <script type="math/tex; mode=display">% <![CDATA[
 \begin{align*}
@@ -214,15 +232,16 @@ The model is characterized by the following dynamical equations</p>
 \frac{dR}{dt} &= \gamma(t)\cdot I(t),\quad R(t_0)=0
 \end{align*} %]]></script>
 
-<p>where $S$, $I$ and $R$ are the susceptible, infected and recovered population respectively. In order to include the effect of the intervention we allowed the contagion rate $\beta$ and the recovery rate $\gamma$ to vary according to the Hill functions</p>
+<p>where $S$, $I$ and $R$ are the susceptible, infected and recovered population respectively. In order to include the effect of the intervention we parameterized the time dependency of the infection rate $\beta$ and the recovery rate $\gamma$ using the Hill functions</p>
 
 <script type="math/tex; mode=display">% <![CDATA[
 \begin{align*}
 \beta(t) &= \beta_0\cdot\left(1+\frac{h}{1+(k/t)^g}\right)^{-1}\\
-\lambda_R(t) &= \gamma_0\cdot\left(1+\frac{h_R}{1+(k_R/t)^{g_R}}\right)
+\gamma(t) &= \gamma_0\cdot\left(1+\frac{h_R}{1+(k_R/t)^{g_R}}\right)
 \end{align*} %]]></script>
 
-<p>To include the effect of introducing tests for COVID-19 infection we modeled the observed numbers of infections and recovery as</p>
+<p>Note that the main difference with respect to the empirical model described in the previous section where the intervention had its own dynamical equation whereas here the time dependency is entirely modeled by the Hill functions.
+To include the effect of introducing tests for COVID-19 infection we modeled the observed numbers of infections and recovery as</p>
 
 <script type="math/tex; mode=display">% <![CDATA[
 \begin{align*}
@@ -236,6 +255,43 @@ R^{obs}(t)&=\nu(t) R(t)
 \nu(t)=\frac{\nu_\infty}{1+(k_T/t)^{g_T}}
 \end{align*}</script>
 
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">name</th>
+      <th style="text-align: right">description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">$S$</td>
+      <td style="text-align: right">Susceptible population</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">$I$</td>
+      <td style="text-align: right">Infected population</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">$R$</td>
+      <td style="text-align: right">Recovered population</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">$\beta$</td>
+      <td style="text-align: right">time-dependent infection rate</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">$\gamma$</td>
+      <td style="text-align: right">time-dependent recovery rate</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">$\nu$</td>
+      <td style="text-align: right">Observed fraction of cases</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Table 2: Summary of parameters and variable used in the SIR model.</p>
+
 <figure>
 <center><img src="Figures/Figure_SIR_Henan.png" />
 <figcaption> Fig. 6: Fit of the SIR model and comparison with the Henan data.</figcaption>
@@ -247,6 +303,15 @@ R^{obs}(t)&=\nu(t) R(t)
 <figcaption> Fig. 7: Effect of changing the intervetion coefficient on the Henan dataset in the SIR model.</figcaption>
 </center>
 </figure>
+
+<p>Here is an interactive figure showing the dynamics of the infected population according to the SIR model in all countries</p>
+
+<div class="container" style="width: 100%; margin: 0 auto;">
+<div class="iframe-container">
+<center><iframe width="800" height="400" frameborder="0" scrolling="no" src="notebooks/plotly_chart_sir.html"></iframe>
+</center>
+</div>
+</div>
 
 <h2 id="references">References</h2>
 <ol>
