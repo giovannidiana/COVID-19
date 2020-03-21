@@ -28,7 +28,8 @@ rawdata_deaths<-read_csv(file_deaths)
 country=rawdata_conf[,"Country/Region"]
 province=rawdata_conf[,"Province/State"]
 
-nc=ncol(rawdata_conf)-1
+nc=ncol(rawdata_conf)
+selectedCountries = rawdata_conf
 rawdata_conf=as.matrix(rawdata_conf[,5:nc])
 rawdata_rec=as.matrix(rawdata_rec[,5:nc])
 rawdata_deaths=as.matrix(rawdata_deaths[,5:nc])
@@ -76,7 +77,6 @@ for(i in 1:nrow(data)){
     } 
 }
 
-
 ## read labels for which the population size is available
 pop<-read.table("../data/countries_population2.csv",header=T,sep=';')
 selected_labels=match(pop[,1],labels)
@@ -118,6 +118,28 @@ cov.MixedGamma <- function(x1,a1,b1,x2,a2,b2){
 	return(r)
 }
 
+cov.evol <- function(params,t,Y,N){
+	fun=rep(NA,3)
+	fA = 1+params['hA']/(1+(params['kA']/t)^params['gA'])
+	fR = 1+params['hR']/(1+(params['kR']/t)^params['gR'])
+	fun[1] = ((params['lambda']/fA)*Y[3]/N-params['lambdaR']*fR)*Y[1]
+	fun[2] = (                             params['lambdaR']*fR)*Y[1]
+	fun[3] =-((params['lambda']/fA)*Y[3]/N                     )*Y[1]
+	
+	return(fun)
+}
+
+cov.EVOL <- function(params,t,Y,N){
+	fun=matrix(NA,nrow(params),3)
+	fA = 1+params[,'hA']/(1+(params[,'kA']/t)^params[,'gA'])
+	fR = 1+params[,'hR']/(1+(params[,'kR']/t)^params[,'gR'])
+	fun[,1] = ((params[,'lambda']/fA)*Y[,3]/N-params[,'lambdaR']*fR)*Y[,1]
+	fun[,2] = (                               params[,'lambdaR']*fR)*Y[,1]
+	fun[,3] =-((params[,'lambda']/fA)*Y[,3]/N                      )*Y[,1]
+	
+	return(fun)
+}
+
 cov.sim <- function(params,tf,dt=.01,N=10000){
 	names(params)<-c("lambda","lambdaR",
 			 "hR","kR","gR",
@@ -125,34 +147,29 @@ cov.sim <- function(params,tf,dt=.01,N=10000){
 			 "hT","kT","gT",
 			 "x0")
 
-	t=seq(0,tf,dt)
+	t=seq(dt,tf,dt)
 	
 	x0=rep(0,tf/dt)
 	r0=rep(0,tf/dt)
 	x=rep(0,tf/dt)
 	r=rep(0,tf/dt)
 	s=rep(0,tf/dt)
-	fA=rep(0,tf/dt)
-	fR=rep(0,tf/dt)
-	fT=rep(0,tf/dt)
+	fA = 1+params['hA']/(1+(params['kA']/t)^params['gA'])
+	#fR = 1+params['hR']/(1+(params['kR']/t)^params['gR'])
+	fR = 1+params['hR']/(1+(params['kA']/t)^params['gR'])
+	#fR = rep(1,tf/dt)
+	fT =   params['hT']/(1+(params['kT']/t)^params['gT'])
 	
 	x0[1]=params['x0']
-	fA[1]=1
-	fR[1]=1
-	fT[1]=0
 	s[1]=N-x0[1]
 
 	Rx=rep(0,tf)
-	Rx0=rep(0,tf)
 	Rr=rep(0,tf)
-	Rr0=rep(0,tf)
+	Rs=rep(0,tf)
 	
 	counter=1
 	
 	for(i in 2:length(t)){
-		fA[i] = 1+params['hA']/(1+(params['kA']/t[i])^params['gA'])
-		fR[i] = 1+params['hR']/(1+(params['kR']/t[i])^params['gR'])
-		fT[i] =   params['hT']/(1+(params['kT']/t[i])^params['gT'])
 		x0[i] = x0[i-1]+dt*((params['lambda']/fA[i-1])*s[i-1]/N-params['lambdaR']*fR[i-1])*x0[i-1]
 		r0[i] = r0[i-1]+dt*(                                    params['lambdaR']*fR[i-1])*x0[i-1]
 		s[i]  = s[i-1] -dt*((params['lambda']/fA[i-1])*s[i-1]/N                          )*x0[i-1]
@@ -160,15 +177,54 @@ cov.sim <- function(params,tf,dt=.01,N=10000){
 		r[i]  = r0[i]*fT[i]
 		if(t[i]+dt>counter) {
 			Rx[counter] = x[i]
-			Rx0[counter] = x0[i]
 			Rr[counter] = r[i]
-			Rr0[counter] = r0[i]
+			Rs[counter] = s[i]
 			counter=counter+1
 		}
 	}
 
-	return(list(Rx=Rx,Rr=Rr,Rx0=Rx0,Rr0=Rr0))
+	return(list(Rx=Rx,Rr=Rr,Rs=Rs))
 }
+
+cov.sim_rk <- function(params,tf,dt=.01,N=10000){
+	names(params)<-c("lambda","lambdaR",
+			 "hR","kR","gR",
+			 "hA","kA","gA",
+			 "hT","kT","gT",
+			 "x0")
+
+	t=seq(dt,tf,dt)
+
+        Y=matrix(0,3,tf/dt)	
+	x=rep(0,tf/dt)
+	r=rep(0,tf/dt)
+	fT=params['hT']/(1+(params['kT']/t)^params['gT'])
+	
+	Y[1,1]=params['x0']
+	Y[3,1]=N-Y[1,1]
+
+	Rx=rep(0,tf)
+	Rr=rep(0,tf)
+	
+	counter=1
+	
+	for(i in 2:length(t)){
+		k1=cov.evol(params,t[i]-dt,Y[,i-1],N)
+		k2=cov.evol(params,t[i]-dt/2,Y[,i-1]+dt/2*k1,N)
+		k3=cov.evol(params,t[i]-dt/2,Y[,i-1]+dt/2*k2,N)
+		k4=cov.evol(params,t[i],Y[,i-1]+dt*k3,N)
+		Y[,i] = Y[,i-1]+dt/6*(k1+2*k2+2*k3+k4)
+		if(t[i]+dt>counter) {
+			Rx[counter] = Y[1,i]*fT[i]
+			Rr[counter] = Y[2,i]*fT[i]
+			counter=counter+1
+		}
+	}
+
+	return(list(Rx=Rx,Rr=Rr))
+}
+
+
 
 cov.SIM <- function(p,tf,dt=0.1){
 	nr=nrow(p)
@@ -195,7 +251,8 @@ cov.SIM <- function(p,tf,dt=0.1){
 	counter=1
 	for(i in 2:length(t)){
 		fA[,i] = 1+p[,'hA']/(1+(p[,'kA']/t[i])^p[,'gA'])
-		fR[,i] = 1+p[,'hR']/(1+(p[,'kR']/t[i])^p[,'gR'])
+		#fR[,i] = 1+p[,'hR']/(1+(p[,'kR']/t[i])^p[,'gR'])
+		fR[,i] = 1+p[,'hR']/(1+(p[,'kA']/t[i])^p[,'gR'])
 		fT[,i] =   p[,'hT']/(1+(p[,'kT']/t[i])^p[,'gT'])
 		
 		x0[,i] = x0[,i-1]+dt*(p[,'lambda']/fA[,i-1]*s[,i-1]/popsize-p[,'lambdaR']*fR[,i-1])*x0[,i-1]
@@ -205,8 +262,8 @@ cov.SIM <- function(p,tf,dt=0.1){
 		r[,i] = r0[,i]*fT[,i] 
 		
 		if(t[i]+dt>counter) {
-			Rx[,counter] = x[,i]
-			Rr[,counter] = r[,i]
+			Rx[,counter] = pmax(1e-300,x[,i])
+			Rr[,counter] = pmax(1e-300,r[,i])
 			counter=counter+1
 		}
 	}
@@ -222,6 +279,46 @@ cov.SIM <- function(p,tf,dt=0.1){
 	#}
 }
 
+cov.SIM_rk <- function(p,tf,dt=0.1){
+	nr=nrow(p)
+	t=seq(dt,tf,l=tf/dt)
+	
+	Y=array(0,dim=c(nr,3,tf/dt))
+	fT=matrix(0,nr,tf/dt)
+	
+	Rx=matrix(0,nr,tf)
+	Rr=matrix(0,nr,tf)
+	
+	Y[,1,1]=p[,'x0']
+	fT = p[,'hT']/(1+(p[,'kT']/matrix(t,nr,tf/dt,byrow=1))^p[,'gT'])
+	Y[,3,1]=popsize-p[,'x0']
+
+	counter=1
+	for(i in 2:length(t)){		
+		
+		k1=cov.EVOL(p,t[i]-dt,Y[,,i-1],popsize)
+		k2=cov.EVOL(p,t[i]-dt/2,Y[,,i-1]+dt/2*k1,popsize)
+		k3=cov.EVOL(p,t[i]-dt/2,Y[,,i-1]+dt/2*k2,popsize)
+		k4=cov.EVOL(p,t[i],Y[,,i-1]+dt*k3,popsize)
+		Y[,,i] = Y[,,i-1]+dt/6*(k1+2*k2+2*k3+k4)
+		
+		if(t[i]+dt>counter) {
+			Rx[,counter] = Y[,1,i]*fT[,i]
+			Rr[,counter] = Y[,2,i]*fT[,i]
+			counter=counter+1
+		}
+	}
+
+	return(list(Rx=Rx,Rr=Rr))
+	
+	#if(any(is.na(c(Rx,Ry)))) {
+	#	return(cov.SIM(params,tf,dt/10))
+	#} else if(any(c(Rx,Ry)<0)){ 
+	#	return(cov.SIM(params,tf,dt/10))
+	#} else {
+	#	return(list(Rx=Rx,Ry=Ry))
+	#}
+}
 cov.LogLikelihood <- function(ind,params,A,B,tf){
 	names(params)<-c("lambda","lambdaR",
 			 "hR","kR","gR",
@@ -236,53 +333,37 @@ cov.LogLikelihood <- function(ind,params,A,B,tf){
 	return(LogLik)
 }
 
-cov.GlobalLogLikelihood <- function(gparlist,paramlist,Al,Bl,A,B,tf,temperature=1,print=F){
-	
-	nr=nrow(paramlist)
-	p=cbind(lambda=gparlist[1],
-		lambdaR=gparlist[2],
-		paramlist)
-	
-	res=cov.SIM(p,tf)
-	LogLik = sum(dgamma(gparlist,Al,Bl,log=T))+
-		 sum(dpois(data,lambda=res$Rx,log=T)) + 
-		 sum(dpois(datar,lambda=res$Rr,log=T)) + 
-		 sum(dgamma(paramlist,matrix(A,nr,length(A),byrow=1),matrix(B,nr,length(B),byrow=1),log=T))
-
-	return(LogLik)
-}
-
 cov.GlobalLogLikelihood_vec <- function(gparlist,paramlist,Al,Bl,A,B,tf,temperature=1,print=F){
 	
 	nr=nrow(data)
 	p=cbind(lambda=gparlist[1],
 		lambdaR=gparlist[2],
 		paramlist)
-	res=cov.SIM(p,tf)
+	res=cov.SIM(p,tf,dt=.1)
 	
-	LogLikVec = rowSums(dpois(data,lambda=res$Rx,log=T)) + 
-		    rowSums(dpois(datar,lambda=res$Rr,log=T)) +
+	LogLikVec = temperature*rowSums(dpois(data,lambda=res$Rx,log=T)) + 
+		    temperature*rowSums(dpois(datar,lambda=res$Rr,log=T)) +
 		    rowSums(dgamma(paramlist,matrix(A,nr,length(A),byrow=1),matrix(B,nr,length(B),byrow=1),log=T))
 
 	LogLik=sum(LogLikVec)+sum(dgamma(gparlist,Al,Bl,log=T))
-	return(list(LogLik=temperature*LogLik,LogLikVec=temperature*LogLikVec))
+	return(list(LogLik=LogLik,LogLikVec=LogLikVec))
 }
 
 cov.MCMC <- function(ind,NITER){
 	A=c(1,1,
-	    1,1,2,
-	    1,1,2,
-	    1,1,2,
-	    1)
-	B=c(10,20,
-	    1,.01,2,
-	    1,.01,2,
-	    1,.1,2,
-	    1)
+	    1,2,2, # R 
+	    1,2,2, # A
+	    1,1,2, # T
+	    1) 
+	B=c(1,10,
+	    .01,.1,.2,
+	    .01,.1,.2,
+	    10,.1,.2,
+	    .1)
 	nvar=12
 	tf=ncol(data)
 
-	prop_size=100
+	prop_size=10
 
 	params=rgamma(nvar,A,B)
 	params_samples=matrix(NA,NITER,nvar)
@@ -327,27 +408,27 @@ cov.MCMC <- function(ind,NITER){
 	return(params_samples)
 }
 
-cov.GlobalMCMC <- function(NITER,show=1,adaptive=FALSE,init=NA,init_labels=NA,verbose=F){
+cov.GlobalMCMC <- function(NITER,show=1,init=NA,init_labels=NA,init_temp=0,verbose=F){
 	Al=c(1,1)
-	Bl=c(1,2)
+	Bl=c(1,10)
 
-	A=c(1,1,2, # R 
-	    1,1,2, # A
+	A=c(1,2,2, # R 
+	    1,2,2, # A
 	    1,1,2, # T
 	    1)     # x0
-	B=c(.01,.01,2,
-	    .01,.01,2,
-	    100,.1,2,
-	    1)
+	B=c(0.01,.1,.2,
+	    0.01,.1,.2,
+	    10,  .1,.2,
+	    .1)
 
 
 	nvar=12
 	nc=nrow(data)
 	tf=ncol(data)
 
-	temp=1
+	temp=init_temp
 	prop_size_lam=100
-	prop_size=matrix(10,nc,nvar-2) #* rowSums(data)
+	prop_size=matrix(5,nc,nvar-2) #* rowSums(data)
 
 	params=matrix(NA,nc,nvar-2)
 	colnames(params)=c('hR','kR','gR',
@@ -357,7 +438,7 @@ cov.GlobalMCMC <- function(NITER,show=1,adaptive=FALSE,init=NA,init_labels=NA,ve
 
 	## init using single MCMC
 
-	lambda=rgamma(1,Al[1],Bl[1])
+	lambda=0.1
 	lambdaR=rgamma(1,Al[2],Bl[2])
 	for(i in 1:nc){ 
 		params[i,]=rgamma(nvar-2,A,B)
@@ -380,9 +461,8 @@ cov.GlobalMCMC <- function(NITER,show=1,adaptive=FALSE,init=NA,init_labels=NA,ve
 
 	LL_samples[1]=GLL$LogLik
 
-	while(any(is.na(GLL$LogLikVec))){
-		print(labels[which(is.na(GLL$LogLikVec))])
-		lambda=rgamma(1,Al[1],Bl[1])
+	while(any(is.na(GLL$LogLikVec) | is.infinite(GLL$LogLikVec))){
+		lambda=0.1
 		lambdaR=rgamma(1,Al[2],Bl[2])
 		for(i in 1:nc){ 
 			params[i,]=rgamma(nvar-2,A,B)
@@ -393,7 +473,8 @@ cov.GlobalMCMC <- function(NITER,show=1,adaptive=FALSE,init=NA,init_labels=NA,ve
 
 	for(i in 1:NITER){
 		
-		cat(i,' ',GLL$LogLik,"     \r")	
+		
+		cat(i,' ',GLL$LogLik,' ',temp,"     \r")	
 		
 		## first update lambda
 		if(runif(1)<0.5){
@@ -405,8 +486,10 @@ cov.GlobalMCMC <- function(NITER,show=1,adaptive=FALSE,init=NA,init_labels=NA,ve
 			prop_ind=2
 		}
 
+		temp=init_temp+(1-init_temp)/(1+((NITER/2)/i)^7)
 		## recalculate the LogLikelihood from previous iteration
-		GLL$LogLik=sum(dgamma(c(lambda,lambdaR),Al,Bl,log=T))+sum(GLL$LogLikVec)
+		#GLL$LogLik=sum(dgamma(c(lambda,lambdaR),Al,Bl,log=T))+sum(GLL$LogLikVec)
+		GLL=cov.GlobalLogLikelihood_vec(c(lambda,lambdaR),params,Al,Bl,A,B,tf,temperature=temp)
 		LL_samples[i]=GLL$LogLik
 		
 		GLL_new=cov.GlobalLogLikelihood_vec(c(lambda_new,lambdaR),params,Al,Bl,A,B,tf,temperature=temp)
@@ -480,7 +563,12 @@ cov.GlobalMCMC <- function(NITER,show=1,adaptive=FALSE,init=NA,init_labels=NA,ve
 		}
 
 		params_samples[[i]]=list(param=params,lambda=lambda,lambdaR=lambdaR)
-		if(i>20 && i%%20==0 && show){
+		if(i>0 && i%%10==0 && show){
+			if(1){
+				cov.plotFromGlobal(show,params_samples[max(1,i-200):i],ncol(data)+100,10,ymax=max(data[show,]+50))
+			} else {
+
+
 			par(mar=c(0,3,0,0))
 			layout(matrix(1:7,7))
 				plot(LL_samples[max(1,i-200):i],type='l',xaxt='n',xlab="")
@@ -488,6 +576,7 @@ cov.GlobalMCMC <- function(NITER,show=1,adaptive=FALSE,init=NA,init_labels=NA,ve
 				plot(unlist(lapply(params_samples[max(1,i-200):i],function(x) x$lambdaR)),type='l',xaxt='n',xlab="")
 		       	for(l in 1:4) 
 				plot(unlist(lapply(params_samples[max(1,i-200):i],function(x) x$param[show,l])),type='l',xaxt='n',xlab="")
+			}
 		}
 	}
 
@@ -517,14 +606,14 @@ cov.plot_last <- function(ind,samples,tf,n=10,ymax=max(data[ind,])){
 			 	 "hT","kT","gT",
 			 	 "x0")
 		res=cov.sim(params,tf,N=popsize[ind])
-	       	lines(res$Rx,col="grey",lty=2)
+	       	lines(res$Rx,col="red",lty=2)
 	       	lines(res$Rr,col="green",lty=2)
 	}
 }
 
 cov.plotFromGlobal <- function(ind,samples,tf,n=10,ymax=NA,log=""){
 	Nsam=length(samples)
-	randsam=sample((Nsam-1000+1):Nsam,n)
+	randsam=sample((Nsam-10+1):Nsam,n)
 	params=c(samples[[Nsam]]$lambda,samples[[Nsam]]$lambdaR,samples[[Nsam]]$param[ind,])
 	names(params)<-c("lambda","lambdaR",
 			 "hR","kR","gR",
@@ -549,6 +638,7 @@ cov.plotFromGlobal <- function(ind,samples,tf,n=10,ymax=NA,log=""){
 	       	
 		#lines(res$Rx0,col=rgb(1,0,0,.5),lty=3)
 	       	#lines(res$Rr0,col=rgb(0,1,0,.5),lty=3)
+		abline(v=params[c('kA','kT')],col=c("red","grey"),lty=2)
 	}
 }
 
