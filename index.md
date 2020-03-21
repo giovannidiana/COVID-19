@@ -197,10 +197,10 @@ The intervention coefficient is estimated from each country from the data and is
 
 <div class="row">
    <div class="column">
-   <img src="Figures/fig_china.png" style="width:100%">
+   	<img src="Figures/fig_china.png" style="width:100%">
    </div>
    <div class="column">
-   <img src="Figures/figpost_sir_henan.png" style="width:100%">
+   	<img src="Figures/figpost_sir_henan.png" style="width:100%">
    </div>
 </div>
    <figcaption> Fig. 5: Effect of changing the intervention coefficient on the Henan dataset.</figcaption>
