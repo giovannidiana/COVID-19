@@ -157,7 +157,8 @@ For this analysis we assume that infection and recovery rates in the absence of 
 
 The framework of statistical inference allows us to estimate model parameters and make predictions while taking into account statistical uncertainties derived from the data and the prior uncertainty. We performed a global analysis on the areas included in the CSSE dataset [1].
 
-The interactive charts below give an overview of the course of the infection for each country for the two models employed. Data are updated every day.
+The interactive charts below give an overview of the course of the infection for each country for the two models employed. On the left, predictions based on the heuristic model show the dynamics of the infection rate with the 90% confidence interval (purple curves). On the right, the dynamics of infection (purple curves) obtained with the SIR model, which includes additional features such as the recovery rate (green curves). Data are updated every day. 
+
 
 <div class="container" style="width: 100%; margin: 0 auto;">
 <div class="iframe-container">
@@ -195,10 +196,7 @@ While China is now at the final stage of the spread, several countries in Europe
 
 The intervention coefficient is estimated from each country from the data and is a fundamental parameter to bring down the peak of infected individuals, as it is shown by testing different values of $h$ from the estimated one.
 
-<div class="row">
-   <div class="column">
-   	<img src="Figures/fig_china.png" style="width:100%">
-   </div>
+
    <div class="column">
    	<img src="Figures/figpost_sir_henan.png" style="width:100%">
    </div>
