@@ -5,6 +5,8 @@ mathjax: true
 
 {% include mathjax.html %}
 
+<script src = "https://d3js.org/d3.v4.js"></script>
+
 **Giovanni Diana**$^{1,2}$ and **Diana Passaro**$^3$ 
 
 $^1$ Center for Developmental Neurobiology & MRC Center for Neurodevelopmental Disorders, King’s College London, Guy’s Hospital Campus, London, United Kingdom
@@ -169,13 +171,11 @@ src="notebooks/plotly_chart.html"></iframe>
 </div>
 Interactive chart 1: Heuristic model predictions. 
 
-<div class="container" style="width: 100%; margin: 0 auto;">
-<div class="iframe-container">
-<center><iframe width="800" height="400" frameborder="0" scrolling="no"
-src="notebooks/plotly_chart_sir.html"></iframe>
-</center>
-</div>
-</div>
+<div id="my_dataviz"></div>
+<select id="dropdown"> </select>
+<script src="{{site.baseurl}}/js/d3Chart_SIR.js" > </script>
+<p id="logvalue"> </p>
+
 Interactive chart 2: SIR model predictions. 
 
 While China is now at the final stage of the spread, several countries in Europe are now facing the exponential phase. By quantifying the number of infected individual at the peak predicted by our model we found that Italy, Germany, France and Iran are at high risk of pandemic spread. During the exponential phase it is really hard to draw reliable estimates of when the diffusion of the virus will start displaying a reduction, therefore it is extremely important for these countries to strenghten the interventions to contain the eponential increase of new cases.  
