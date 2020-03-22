@@ -1,7 +1,7 @@
 // set the dimensions and margins of the graph
 var margin = {top: 10, right: 30, bottom: 60, left: 60},
-	          width = 800 - margin.left - margin.right,
-			  height = 600 - margin.top - margin.bottom;
+	          width = 600 - margin.left - margin.right,
+			  height = 400 - margin.top - margin.bottom;
 
 // append the svg object to the body of the page
 
@@ -29,14 +29,16 @@ d3.csv("https://raw.githubusercontent.com/giovannidiana/COVID-19/gh-pages/src/Ar
 					});
 
 	// Deal with select button
-		var dropDown = d3.select("#dropdown")
+		
+	currentGroup="Italy";
+	var dropDown = d3.select("#dropdown")
 	                     .selectAll("option")
 	                     .data(keys)
 						 .enter()
 						 .append('option')
 						 .text(function(d) {return d;})
-						 .attr("value", function(d) { return d; });
-		currentGroup="Italy";
+						 .attr("value", function(d) { return d; })
+						 .property("selected",function(d) { return d===currentGroup;});
 
 	// get observations
 	var observations = data.filter(function(d){
