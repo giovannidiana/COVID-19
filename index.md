@@ -161,14 +161,10 @@ The framework of statistical inference allows us to estimate model parameters an
 
 The interactive charts below give an overview of the course of the infection for each country for the two models employed. On the left, predictions based on the heuristic model show the dynamics of the infection rate with the 90% confidence interval (purple curves). On the right, the dynamics of infection (purple curves) obtained with the SIR model, which includes additional features such as the recovery rate (green curves). Data are updated every day. 
 
+<div id="my_dataviz"></div>
+<select id="dropdown"> </select>
+<script src="{{site.baseurl}}/js/d3Chart_HM.js" > </script>
 
-<div class="container" style="width: 100%; margin: 0 auto;">
-<div class="iframe-container">
-<center><iframe width="800" height="400" frameborder="0" scrolling="no"
-src="notebooks/plotly_chart.html"></iframe>
-</center>
-</div>
-</div>
 Interactive chart 1: Heuristic model predictions. 
 
 <div id="my_dataviz"></div>
