@@ -117,6 +117,7 @@ d3.csv("https://raw.githubusercontent.com/giovannidiana/COVID-19/gh-pages/src/Ar
                .datum(data)
 			   .attr("fill", "red")
 			   .attr("stroke", "black")
+			   .style("opacity", 0.6)
 			   .attr("d", d3.area()
 							   .x(function(d) { return x(d.t) })
 							   .y0(function(d) { return y(d[currentGroup+'_qi1']) })
@@ -127,6 +128,7 @@ d3.csv("https://raw.githubusercontent.com/giovannidiana/COVID-19/gh-pages/src/Ar
                .datum(data)
 			   .attr("fill", "green")
 			   .attr("stroke", "black")
+			   .style("opacity", 0.6)
 			   .attr("d", d3.area()
 							   .x(function(d) { return x(d.t) })
 							   .y0(function(d) { return y(d[currentGroup+'_qr1']) })
@@ -191,8 +193,6 @@ d3.csv("https://raw.githubusercontent.com/giovannidiana/COVID-19/gh-pages/src/Ar
 		};
 
 		function onSelectionChange(currentGroup) {
-				d3.select("#logvalue")
-						.text(currentGroup);
 
 				x.domain(d3.extent(data, function(d) { return d.t; }))
 				y.domain([0, d3.max(data, function(d) { return +d[currentGroup+'_qi3'];})])

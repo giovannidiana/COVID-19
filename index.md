@@ -174,7 +174,6 @@ Interactive chart 1: Heuristic model predictions.
 <div id="my_dataviz"></div>
 <select id="dropdown"> </select>
 <script src="{{site.baseurl}}/js/d3Chart_SIR.js" > </script>
-<p id="logvalue"> </p>
 
 Interactive chart 2: SIR model predictions. 
 
