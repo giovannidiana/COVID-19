@@ -64,7 +64,7 @@ The interactive charts below give an overview of the course of the infection for
 <script src="{{site.baseurl}}/js/d3Chart_HM.js" > </script>
 
 
-Interactive chart 1: Heuristic model predictions. 
+Interactive chart 1: Heuristic model predictions. Choose the country from the dropdown button, zoom in by selecting a square region and zoom out by double click on the image.
 
 
 <div id="areaSIR"></div>

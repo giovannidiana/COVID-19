@@ -18,7 +18,7 @@ var svg1 = d3.select("#areaSIR")
 					 "translate(" + margin.left + "," + margin.top + ")");
 
 //Read the data
-d3.csv("https://raw.githubusercontent.com/giovannidiana/COVID-19/gh-pages/src/AreaList.csv", function(data) {
+d3.csv("https://raw.githubusercontent.com/giovannidiana/COVID-19/gh-pages/src/AreaListCsv_sir_2303.csv", function(data) {
 
 	var keys0 = d3.keys(data[0]).slice(1,)
 	                           .map(function(d) {return d.slice(0,-4);});
