@@ -123,9 +123,10 @@ The model is characterized by the following population dynamics
 
 $$
 \begin{align*}
-\frac{dI}{dt} &= \frac{\beta(t)}{N}\cdot S(t)I(t)-\gamma(t)\cdot I(t),\quad I(t_0) = I_0\\
-\frac{dS}{dt} &= -\frac{\beta(t)}{N}\cdot S(t)I(t),\quad S(t_0) = N\\
-\frac{dR}{dt} &= \gamma(t)\cdot I(t),\quad R(t_0)=0
+&\frac{dI}{dt} = \frac{\beta(t)}{N}\cdot S(t)I(t)-\gamma(t)\cdot I(t),\\
+&\frac{dS}{dt} = -\frac{\beta(t)}{N}\cdot S(t)I(t),\\
+&\frac{dR}{dt} = \gamma(t)\cdot I(t),\\
+& I(t_0) = I_0,\quad S(t_0) = N-I_0, \quad R(t_0)=0
 \end{align*}
 $$ 
 

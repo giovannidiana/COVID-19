@@ -206,9 +206,10 @@ The model is characterized by the following population dynamics</p>
 
 <script type="math/tex; mode=display">% <![CDATA[
 \begin{align*}
-\frac{dI}{dt} &= \frac{\beta(t)}{N}\cdot S(t)I(t)-\gamma(t)\cdot I(t),\quad I(t_0) = I_0\\
-\frac{dS}{dt} &= -\frac{\beta(t)}{N}\cdot S(t)I(t),\quad S(t_0) = N\\
-\frac{dR}{dt} &= \gamma(t)\cdot I(t),\quad R(t_0)=0
+&\frac{dI}{dt} = \frac{\beta(t)}{N}\cdot S(t)I(t)-\gamma(t)\cdot I(t),\\
+&\frac{dS}{dt} = -\frac{\beta(t)}{N}\cdot S(t)I(t),\\
+&\frac{dR}{dt} = \gamma(t)\cdot I(t),\\
+& I(t_0) = I_0,\quad S(t_0) = N-I_0, \quad R(t_0)=0
 \end{align*} %]]></script>
 
 <p>where $S$, $I$ and $R$ are the susceptible, infected and recovered population respectively. In order to include the effect of the intervention we parameterized the time dependency of the infection rate $\beta$ and the recovery rate $\gamma$ using the Hill functions</p>
