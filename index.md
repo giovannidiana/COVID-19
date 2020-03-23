@@ -6,6 +6,7 @@ mathjax: true
 {% include mathjax.html %}
 
 <script src = "https://d3js.org/d3.v4.js"></script>
+<script src = "{{site.baseurl}}/js/responsiveD3.js"></script>
 
 **Giovanni Diana**$^{1,2}$ and **Diana Passaro**$^3$ 
 

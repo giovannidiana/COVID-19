@@ -11,6 +11,7 @@ var svg = d3.select("#areaHM")
 			   .attr("id","svg")
 			   .attr("width", width + margin.left + margin.right)
 			   .attr("height", height + margin.top + margin.bottom)
+			   .call(responsivefy)
 			   .append("g")
 			   .attr("transform",
 					 "translate(" + margin.left + "," + margin.top + ")");

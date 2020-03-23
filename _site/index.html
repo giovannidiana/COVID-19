@@ -5,7 +5,7 @@
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,maximum-scale=2">
-    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=d920957e27f24febf4808d74da1e0666863fc49e">
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=313992d0ce869b1bd0e189437722a89c35041ced">
 
 <!-- Begin Jekyll SEO tag v2.6.1 -->
 <title>Statistical analysis of COVID-19 epidemics | Inference and predictions on the course of the outbreak</title>
@@ -58,6 +58,8 @@
 
 <script src="https://d3js.org/d3.v4.js"></script>
 
+<script src="/js/responsiveD3.js"></script>
+
 <p><strong>Giovanni Diana</strong>$^{1,2}$ and <strong>Diana Passaro</strong>$^3$</p>
 
 <p>$^1$ Center for Developmental Neurobiology &amp; MRC Center for Neurodevelopmental Disorders, King’s College London, Guy’s Hospital Campus, London, United Kingdom</p>
@@ -102,6 +104,31 @@
 <p>First, we introduce a minimal heuristic model of the number of infections based on the disease outbreak in China. This model captures the initial exponential phase of the outbreak and the effect of the external intervention to contain the infection. Next we extend the SIR model employed to describe susceptible, infected and recovered populations to account for external interventaions.</p>
 
 <p>For both models we employ Bayesian inference to determine model parameters and generate predictions of the future evolution of the infection.</p>
+
+<h3 id="worldwide-analysis">Worldwide analysis</h3>
+<p>For this analysis we assume that infection and recovery rates in the absence of external intervention are the same for all countries whereas all the other model parameters are country-dependent. This allows us to exploit the worldwide data to strengthen the predictive power of both models.</p>
+
+<p>The framework of statistical inference allows us to estimate model parameters and make predictions while taking into account statistical uncertainties derived from the data and the prior uncertainty. We performed a global analysis on the areas included in the CSSE dataset [1].</p>
+
+<p>The interactive charts below give an overview of the course of the infection for each country for the two models employed. On the left, predictions based on the heuristic model show the dynamics of the infection rate with the 90% confidence interval (red curves). On the right, the dynamics of infection (red curves) obtained with the SIR model, which includes additional features such as the recovery rate (green curves). Data are updated every day.</p>
+
+<div id="areaHM"></div>
+
+<p><select id="dropdown_HM"> </select></p>
+
+<script src="/js/d3Chart_HM.js"> </script>
+
+<p>Interactive chart 1: Heuristic model predictions.</p>
+
+<div id="areaSIR"></div>
+
+<p><select id="dropdown_SIR"> </select></p>
+
+<script src="/js/d3Chart_SIR.js"> </script>
+
+<p>Interactive chart 2: SIR model predictions.</p>
+
+<p>While China is now at the final stage of the spread, several countries in Europe are now facing the exponential phase. By quantifying the number of infected individual at the peak predicted by our model we found that Italy, Germany, France and Iran are at high risk of pandemic spread. During the exponential phase it is really hard to draw reliable estimates of when the diffusion of the virus will start displaying a reduction, therefore it is extremely important for these countries to strenghten the interventions to contain the eponential increase of new cases.</p>
 
 <h2 id="heuristic-model--">Heuristic model <a name="model"> </a></h2>
 <p>We used a generative model to describe the dynamics of the infected population in a given geographic area. The model takes into account the effect of the local interventions by coupling the average number of infections $X(t)$ with a dynamical variable $A(t)$ which acts against the spread. The observed number of cases is then generated from a Poisson distribution with rate $X(t)\cdot p(t)$, where $p(t)$ is a fraction of the true number of infections which varies over time (due for instance to the increased number of tests during the acute phase).</p>
@@ -257,31 +284,6 @@ R^{obs}(t)&=\nu(t) R(t)
 <figcaption> Curves generated from 100 posterior samples of model parameters obtained by using data from the UK.</figcaption>
 </center>
 </figure>
-
-<h3 id="worldwide-analysis">Worldwide analysis</h3>
-<p>For this analysis we assume that infection and recovery rates in the absence of external intervention are the same for all countries whereas all the other model parameters are country-dependent. This allows us to exploit the worldwide data to strengthen the predictive power of both models.</p>
-
-<p>The framework of statistical inference allows us to estimate model parameters and make predictions while taking into account statistical uncertainties derived from the data and the prior uncertainty. We performed a global analysis on the areas included in the CSSE dataset [1].</p>
-
-<p>The interactive charts below give an overview of the course of the infection for each country for the two models employed. On the left, predictions based on the heuristic model show the dynamics of the infection rate with the 90% confidence interval (purple curves). On the right, the dynamics of infection (purple curves) obtained with the SIR model, which includes additional features such as the recovery rate (green curves). Data are updated every day.</p>
-
-<div id="areaHM"></div>
-
-<p><select id="dropdown_HM"> </select></p>
-
-<script src="/js/d3Chart_HM.js"> </script>
-
-<p>Interactive chart 1: Heuristic model predictions.</p>
-
-<div id="areaSIR"></div>
-
-<p><select id="dropdown_SIR"> </select></p>
-
-<script src="/js/d3Chart_SIR.js"> </script>
-
-<p>Interactive chart 2: SIR model predictions.</p>
-
-<p>While China is now at the final stage of the spread, several countries in Europe are now facing the exponential phase. By quantifying the number of infected individual at the peak predicted by our model we found that Italy, Germany, France and Iran are at high risk of pandemic spread. During the exponential phase it is really hard to draw reliable estimates of when the diffusion of the virus will start displaying a reduction, therefore it is extremely important for these countries to strenghten the interventions to contain the eponential increase of new cases.</p>
 
 <h3 id="additional-figures">Additional figures</h3>
 
