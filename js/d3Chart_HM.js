@@ -2,7 +2,7 @@
 var containerWidth = +d3.select('body').style('width').slice(0, -2)
 
 var margin = {top: 10, right: 30, bottom: 60, left: 60},
-	width = containerWidth - margin.left - margin.right,
+	width = 600 - margin.left - margin.right,
 	height = 400 - margin.top - margin.bottom;
 
 // append the svg object to the body of the page
@@ -61,14 +61,14 @@ d3.csv("https://raw.githubusercontent.com/giovannidiana/COVID-19/gh-pages/src/Ar
 		var xAxis=svg.append("g")
 		             .attr("transform", "translate(0," + height + ")")
 					 .call(d3.axisBottom(x))
-					 //.selectAll("text")
-					 //.style("text-anchor", "end")
-					 //.attr("transform","rotate(-65)");
+					 .selectAll("text")
+					 .style("text-anchor", "end")
+					 .attr("transform","rotate(-65)");
   
 		
 		// Add Y axis
 		var y = d3.scaleLinear()
-				  .domain([0, d3.max(data, function(d) { return +d[currentGroup+'_qi3'];})])
+				  .domain([0, d3.max(data, function(d) { return +d[currentGroup+'_qr3'];})])
 				  .range([ height, 0]);
 
 		var yAxis=svg.append("g")
@@ -138,7 +138,7 @@ d3.csv("https://raw.githubusercontent.com/giovannidiana/COVID-19/gh-pages/src/Ar
 				if(!extent){
 						if (!idleTimeout) return idleTimeout = setTimeout(idled, 350); // This allows to wait a little bit
 						x.domain(d3.extent(data, function(d) { return d.t; }))
-						y.domain([0, d3.max(data, function(d) { return +d[currentGroup+'_qi3'];})])
+						y.domain([0, d3.max(data, function(d) { return +d[currentGroup+'_qr3'];})])
 				} else {
 						x.domain([ x.invert(extent[0][0]), x.invert(extent[1][0]) ]);
 						y.domain([ y.invert(extent[1][1]), y.invert(extent[0][1]) ]);
@@ -168,7 +168,7 @@ d3.csv("https://raw.githubusercontent.com/giovannidiana/COVID-19/gh-pages/src/Ar
 		function onSelectionChange(currentGroup) {
 
 				x.domain(d3.extent(data, function(d) { return d.t; }))
-				y.domain([0, d3.max(data, function(d) { return +d[currentGroup+'_qi3'];})])
+				y.domain([0, d3.max(data, function(d) { return +d[currentGroup+'_qr3'];})])
 				xAxis.transition().duration(500)
 					              .call(d3.axisBottom(x))
 					              //.selectAll("text")
