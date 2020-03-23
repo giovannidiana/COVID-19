@@ -5,8 +5,9 @@ var margin = {top: 10, right: 30, bottom: 60, left: 60},
 
 // append the svg object to the body of the page
 
-var svg = d3.select("#my_dataviz")
+var svg = d3.select("#areaHM")
                .append("svg")
+			   .attr("id","svg")
 			   .attr("width", width + margin.left + margin.right)
 			   .attr("height", height + margin.top + margin.bottom)
 			   .append("g")
@@ -31,7 +32,7 @@ d3.csv("https://raw.githubusercontent.com/giovannidiana/COVID-19/gh-pages/src/Ar
 	// Deal with select button
 		
 	currentGroup="Italy";
-	var dropDown = d3.select("#dropdown")
+	var dropDown = d3.select("#dropdown_HM")
 	                     .selectAll("option")
 	                     .data(keys)
 						 .enter()
@@ -192,7 +193,7 @@ d3.csv("https://raw.githubusercontent.com/giovannidiana/COVID-19/gh-pages/src/Ar
 		
 
 		// Listen to the slider?
-		d3.select("#dropdown")
+		d3.select("#dropdown_HM")
 			.on("change", 
 				  function(d){
 				     currentGroup = this.value;

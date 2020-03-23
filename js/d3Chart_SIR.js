@@ -5,8 +5,9 @@ var margin = {top: 10, right: 30, bottom: 60, left: 60},
 
 // append the svg object to the body of the page
 
-var svg = d3.select("#my_dataviz")
+var svg1 = d3.select("#areaSIR")
                .append("svg")
+               .attr("id","svg")
 			   .attr("width", width + margin.left + margin.right)
 			   .attr("height", height + margin.top + margin.bottom)
 			   .append("g")
@@ -31,7 +32,7 @@ d3.csv("https://raw.githubusercontent.com/giovannidiana/COVID-19/gh-pages/src/Ar
 	// Deal with select button
 		
 	currentGroup="Italy";
-	var dropDown = d3.select("#dropdown")
+	var dropDown = d3.select("#dropdown_SIR")
 	                     .selectAll("option")
 	                     .data(keys)
 						 .enter()
@@ -55,7 +56,7 @@ d3.csv("https://raw.githubusercontent.com/giovannidiana/COVID-19/gh-pages/src/Ar
 		          .domain(d3.extent(data, function(d) { return d.t; }))
 				  .range([ 0, width ]);
 				  
-		var xAxis=svg.append("g")
+		var xAxis=svg1.append("g")
 		             .attr("transform", "translate(0," + height + ")")
 					 .call(d3.axisBottom(x))
 					 //.selectAll("text")
@@ -68,12 +69,12 @@ d3.csv("https://raw.githubusercontent.com/giovannidiana/COVID-19/gh-pages/src/Ar
 				  .domain([0, d3.max(data, function(d) { return +d[currentGroup+'_qi3'];})])
 				  .range([ height, 0]);
 
-		var yAxis=svg.append("g")
+		var yAxis=svg1.append("g")
                      .call(d3.axisLeft(y));
 
  // Add a clipPath: everything out of this area won't be drawn.
   
-		var clip = svg.append("defs").append("svg:clipPath")
+		var clip = svg1.append("defs").append("svg:clipPath")
                       .attr("id", "clip")
 					  .append("svg:rect")
 					  .attr("width", width )
@@ -87,7 +88,7 @@ d3.csv("https://raw.githubusercontent.com/giovannidiana/COVID-19/gh-pages/src/Ar
                       .on("end", updateChart); // Each
 
 	// Create the scatter variable: where both the circles and the brush take place
-		var scatter = svg.append('g')
+		var scatter = svg1.append('g')
                          .attr("clip-path", "url(#clip)");
 
 
@@ -237,7 +238,7 @@ d3.csv("https://raw.githubusercontent.com/giovannidiana/COVID-19/gh-pages/src/Ar
 		
 
 		// Listen to the slider?
-		d3.select("#dropdown")
+		d3.select("#dropdown_SIR")
 			.on("change", 
 				  function(d){
 				     currentGroup = this.value;
