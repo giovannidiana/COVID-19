@@ -87,7 +87,8 @@ $$
 \begin{align*}
 \frac{dX}{dt} &= (\beta-A(t))\cdot X(t),\quad X(t_0) = X_0\\
 \frac{dA}{dt} &= h X(t)p(t),\quad A(t_0)=0\\
-n(t) & \sim \mathrm{Poisson}(X(t) \cdot p(t)),\quad p(t)=\frac{1}{1+\left(\frac{k}{X(t)}\right)^g}
+n(t) & \sim \mathrm{Poisson}(X(t) \cdot p(t)),\\
+p(t)&=\frac{1}{1+\left(\frac{k}{X(t)}\right)^g}
 \end{align*}
 $$ 
 
