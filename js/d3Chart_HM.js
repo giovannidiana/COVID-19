@@ -1,7 +1,9 @@
 // set the dimensions and margins of the graph
+var containerWidth = +d3.select('body').style('width').slice(0, -2)
+
 var margin = {top: 10, right: 30, bottom: 60, left: 60},
-	          width = 600 - margin.left - margin.right,
-			  height = 400 - margin.top - margin.bottom;
+	width = containerWidth - margin.left - margin.right,
+	height = 400 - margin.top - margin.bottom;
 
 // append the svg object to the body of the page
 
