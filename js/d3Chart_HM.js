@@ -61,9 +61,9 @@ d3.csv("https://raw.githubusercontent.com/giovannidiana/COVID-19/gh-pages/src/Ar
 		var xAxis=svg.append("g")
 		             .attr("transform", "translate(0," + height + ")")
 					 .call(d3.axisBottom(x))
-					 .selectAll("text")
-					 .style("text-anchor", "end")
-					 .attr("transform","rotate(-65)");
+					 //.selectAll("text")
+					 //.style("text-anchor", "end")
+					 //.attr("transform","rotate(-65)");
   
 		
 		// Add Y axis
