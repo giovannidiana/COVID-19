@@ -28,7 +28,7 @@ rawdata_deaths<-read_csv(file_deaths)
 country=rawdata_conf[,"Country/Region"]
 province=rawdata_conf[,"Province/State"]
 
-nc=ncol(rawdata_conf)
+nc=ncol(rawdata_conf)-1
 selectedCountries = rawdata_conf
 rawdata_conf=as.matrix(rawdata_conf[,5:nc])
 rawdata_rec=as.matrix(rawdata_rec[,5:nc])
@@ -99,7 +99,7 @@ cov.MixedGammaVec <- function(x1,a1,b1,x2,a2,b2){
 
 	if(any(is.na(r))){
 		w=which(is.na(r))
-		print(l1[w],l2[w])
+		cat(l1[w],' ',l2[w])
 	}
 	return(r)
 }
@@ -224,8 +224,6 @@ cov.sim_rk <- function(params,tf,dt=.01,N=10000){
 	return(list(Rx=Rx,Rr=Rr))
 }
 
-
-
 cov.SIM <- function(p,tf,dt=0.1){
 	nr=nrow(p)
 	t=seq(0,tf,l=ceiling(tf/dt))
@@ -277,6 +275,62 @@ cov.SIM <- function(p,tf,dt=0.1){
 	#} else {
 	#	return(list(Rx=Rx,Ry=Ry))
 	#}
+}
+
+cov.SIMP <- function(p,tf,dt=0.1){
+	ncolPart=ncol(p)
+	nrowData=nrow(data)
+	npart=ncolPart/nrowData
+
+	t=seq(dt,tf,l=ceiling(tf/dt))
+	
+	popsizeRep=rep(popsize,npart)
+
+    x<-matrix(0,ncolPart,tf/dt)
+	x0<-matrix(0,ncolPart,tf/dt)
+	s<-matrix(0,ncolPart,tf/dt)
+	r<-matrix(0,ncolPart,tf/dt)
+	r0<-matrix(0,ncolPart,tf/dt)
+	fA<-matrix(0,ncolPart,tf/dt)
+	fR<-matrix(0,ncolPart,tf/dt)
+	fT<-matrix(0,ncolPart,tf/dt)
+	
+	Rx<-matrix(0,ncolPart,tf)
+	Rr<-matrix(0,ncolPart,tf)
+
+	x0[,1]<-p['x0',]
+	s[,1]<-popsizeRep-p['x0',]
+
+	fA <- 1+p['hA',]/(1+outer(p['kA',],t,"/")^p['gA',])
+	fR <- 1+p['hR',]/(1+outer(p['kA',],t,"/")^p['gR',])
+	fT <-   p['hT',]/(1+outer(p['kT',],t,"/")^p['gT',])
+
+	counter=1
+	for(i in 2:length(t)){
+	    U1=p['lambda',]/fA[,i-1]*s[,i-1]/popsizeRep*x0[,i-1]	
+		U2=p['lambdaR',]*fR[,i-1]*x0[,i-1]
+
+		x0[,i] = pmax(1e-300,x0[,i-1]+dt*(U1-U2))
+		s[,i]  = s[,i-1] -dt*U1
+		r0[,i] = r0[,i-1]+dt*U2
+		
+		if(t[i]+dt>counter) {
+			Rx[,counter] <- pmax(1e-300,x0[,i]*fT[,i])
+			Rr[,counter] <- pmax(1e-300,r0[,i]*fT[,i])
+			counter=counter+1
+		}
+
+		if(any(is.na(x0[,i]))) {
+				ind=which(is.na(x0[,i]))[1]
+				cat("na detected at time ",i,"\n")
+						print(x0[ind,])
+						print(p[,ind])
+						exit()
+		}
+	}
+
+	return(list(Rx=Rx,Rr=Rr))
+
 }
 
 cov.SIM_rk <- function(p,tf,dt=0.1){
@@ -349,6 +403,31 @@ cov.GlobalLogLikelihood_vec <- function(gparlist,paramlist,Al,Bl,A,B,tf,temperat
 	return(list(LogLik=LogLik,LogLikVec=LogLikVec))
 }
 
+cov.GlobalLogLikelihood_par <- function(particles,Al,Bl,A,B,tf,temperature=1,print=F){
+	
+	ncolPart=ncol(particles)
+	nrowData=nrow(data)
+	npart=ncolPart/nrowData
+
+	res=cov.SIMP(particles,tf,dt=.1)
+	
+	data_rep = data[rep(1:nrow(data),npart),]
+	datar_rep = datar[rep(1:nrow(datar),npart),]
+
+	LogLikVecMap = rowSums(dpois(data_rep,lambda=res$Rx,log=T)) + 
+		        rowSums(dpois(datar_rep,lambda=res$Rr,log=T)) +
+		        rowSums(dgamma(particles[3:12,],matrix(A,length(A),nrowData),matrix(B,length(B),nrowData),log=T))
+	
+	LogLikVec = matrix(LogLikVecMap,nrowData,npart)
+	LogLik=colSums(LogLikVec)+
+	       rowSums(dgamma(particles[1:2,seq(1,ncolPart,nrowData)],
+					  matrix(Al,2,npart),
+					  matrix(Bl,2,npart),
+					  log=T))
+	
+		   return(list(LogLik=LogLik,LogLikVec=LogLikVec))
+}
+
 cov.MCMC <- function(ind,NITER){
 	A=c(1,1,
 	    1,2,2, # R 
@@ -360,6 +439,7 @@ cov.MCMC <- function(ind,NITER){
 	    .01,.1,.2,
 	    10,.1,.2,
 	    .1)
+
 	nvar=12
 	tf=ncol(data)
 
@@ -583,6 +663,294 @@ cov.GlobalMCMC <- function(NITER,show=1,init=NA,init_labels=NA,init_temp=0,verbo
 	return(params_samples)
 }
 
+cov.GlobalSMC.moveParticle <- function(p,GlobalLogLikelihood,Al,Bl,A,B,prop_size_lam,prop_size){
+
+	    nc=nrow(data)
+		tf=ncol(data)
+		particle=p
+		GLL=GlobalLogLikelihood
+
+		## first update lambda
+		if(runif(1)<0.5){
+			fac=rgamma(1,prop_size_lam,prop_size_lam)
+			lambda_new=fac*particle$lambda
+		} else {
+			lambda_new=rgamma(1,Al,Bl)
+		}
+
+		GLL_new=cov.GlobalLogLikelihood_vec(c(lambda_new,particle$lambdaR),particle$params,Al,Bl,A,B,tf,temperature=1)
+		
+		logalpha = GLL_new$LogLik- GLL$LogLik + 
+			   cov.MixedGamma(particle$lambda,Al[1],Bl[1],particle$lambda/lambda_new,prop_size_lam,prop_size_lam)-
+			   cov.MixedGamma(lambda_new,Al[1],Bl[1],lambda_new/particle$lambda,prop_size_lam,prop_size_lam)
+
+
+		## and update lambda
+		u=runif(1)
+
+	    if(!is.na(logalpha)){	
+		if(log(u)<logalpha){
+			particle$lambda=lambda_new
+			GLL=GLL_new
+		}
+		}
+	
+		##  update lambdaR
+		if(runif(1)<0.5){
+			fac=rgamma(1,prop_size_lam,prop_size_lam)
+			lambdaR_new=fac*particle$lambdaR
+		} else {
+			lambdaR_new=rgamma(1,Al[2],Bl[2])
+		}
+
+		GLL_new=cov.GlobalLogLikelihood_vec(c(particle$lambda,lambdaR_new),particle$params,Al,Bl,A,B,tf,temperature=1)
+		
+		logalpha = GLL_new$LogLik- GLL$LogLik + 
+			   cov.MixedGamma(particle$lambdaR,Al[2],Bl[2],particle$lambdaR/lambdaR_new,prop_size_lam,prop_size_lam)-
+			   cov.MixedGamma(lambdaR_new,Al[2],Bl[2],lambdaR_new/particle$lambdaR,prop_size_lam,prop_size_lam)
+
+
+		## and update lambdaR
+		u=runif(1)
+
+	    if(!is.na(logalpha)){	
+		if(log(u)<logalpha){
+			particle$lambdaR=lambdaR_new
+			GLL=GLL_new
+		}
+		}
+
+		## then update the other parameters independently
+
+		for(var in 1:ncol(particle$params)){
+			which_from_prior=runif(nc)<0.5
+			params_new=particle$params
+
+
+			fac=rgamma(nc,prop_size[,var],prop_size[,var])
+			rprior=rgamma(nc,A[var],B[var])			
+
+			params_new[!which_from_prior,var]=fac[!which_from_prior]*particle$params[!which_from_prior,var]
+			params_new[which_from_prior,var]=rprior[which_from_prior]
+
+			GLL_new = cov.GlobalLogLikelihood_vec(c(particle$lambda,particle$lambdaR),params_new,Al,Bl,A,B,tf,temperature=1) 
+			logalpha = GLL_new$LogLikVec - GLL$LogLikVec + 
+				   cov.MixedGammaVec(particle$params[,var],rep(A[var],nc),rep(B[var],nc),particle$params[,var]/params_new[,var],prop_size[,var],prop_size[,var]) - 
+				   cov.MixedGammaVec(params_new[,var],rep(A[var],nc),rep(B[var],nc),params_new[,var]/particle$params[,var],prop_size[,var],prop_size[,var])
+
+			u=runif(nc)
+	        if(all(!is.na(logalpha))){	
+				selec=log(u)<logalpha
+				particle$params[selec,var]=params_new[selec,var]
+				GLL$LogLikVec[selec]=GLL_new$LogLikVec[selec]
+			}
+			
+		}
+
+		GLL=cov.GlobalLogLikelihood_vec(c(particle$lambda,particle$lambdaR),particle$params,Al,Bl,A,B,tf,temperature=1)
+		
+		return(list(p=particle,GLL=GLL))
+}
+
+cov.GlobalSMC.moveAllParticles <- function(p,GlobalLogLikelihood,Al,Bl,A,B,prop_size_lam,prop_size){
+
+	    nrowData=nrow(data)
+		ncolPart=ncol(p)
+		tf=ncol(data)
+		npart=ncolPart/nrowData
+		particles=p
+		GLL=GlobalLogLikelihood
+
+		## first update lambda
+		fac=rgamma(npart,prop_size_lam,prop_size_lam)
+		lambda_new=rep(fac,each=nrowData)*particles['lambda',]
+		pnew=particles
+		pnew['lambda',]=lambda_new
+
+		GLL_new=cov.GlobalLogLikelihood_par(pnew,Al,Bl,A,B,tf,temperature=1)
+		
+		logalpha = GLL_new$LogLik- GLL$LogLik + 
+			       dgamma(1/fac,prop_size_lam,prop_size_lam,log=T)-
+			       dgamma(fac,prop_size_lam,prop_size_lam,log=T)
+
+
+		## and update lambda
+		u=runif(npart)
+
+		selection=(u<logalpha)
+		particles['lambda',selection]=pnew['lambda',selection]
+		GLL$LogLik[selection]=GLL_new$LogLik[selection]
+		GLL$LogLikVec[,selection]=GLL_new$LogLikVec[,selection]
+
+        ## second update lambdaR
+		fac=rgamma(npart,prop_size_lam,prop_size_lam)
+		lambdaR_new=rep(fac,each=nrowData)*particles['lambdaR',]
+		pnew=particles
+		pnew['lambdaR',]=lambdaR_new
+
+		GLL_new=cov.GlobalLogLikelihood_par(pnew,Al,Bl,A,B,tf,temperature=1)
+		
+		logalpha = GLL_new$LogLik- GLL$LogLik + 
+			       dgamma(1/fac,prop_size_lam,prop_size_lam,log=T)-
+			       dgamma(fac,prop_size_lam,prop_size_lam,log=T)
+
+
+		## and update lambda
+		u=runif(npart)
+
+		selection=(u<logalpha)
+		particles['lambdaR',selection]=pnew['lambdaR',selection]
+		GLL$LogLik[selection]=GLL_new$LogLik[selection]
+		GLL$LogLikVec[,selection]=GLL_new$LogLikVec[,selection]
+
+		## then update the other parameters independently
+
+		for(var in 1:10){
+			pnew=particles
+
+			fac=rgamma(ncolPart,prop_size,prop_size)
+			fac.asMat=matrix(fac,nrowData,npart)
+
+			pnew[2+var,]=fac*particles[2+var,]
+
+			GLL_new = cov.GlobalLogLikelihood_par(pnew,Al,Bl,A,B,tf,temperature=1) 
+			logalpha = GLL_new$LogLikVec - GLL$LogLikVec + 
+				       dgamma(1/fac.asMat,prop_size,prop_size,log=T) - 
+				       dgamma(fac.asMat,prop_size,prop_size,log=T)  
+
+			u=matrix(runif(ncolPart),nrowData,npart)
+			selection=(log(u)<logalpha)
+			selection.flat=as.vector(log(u)<logalpha)
+			particles[2+var,selection.flat]=pnew[2+var,selection.flat]
+			GLL$LogLikVec[selection]=GLL_new$LogLikVec[selection]
+		}
+			
+	
+	GLL=cov.GlobalLogLikelihood_par(particles,Al,Bl,A,B,tf,temperature=1)
+		
+	return(list(p=particles,GLL=GLL))
+}
+
+cov.GlobalSMC <- function(NPART,STEPS){
+	Al=c(1,1)
+	Bl=c(1,10)
+
+	A=c(1,2,2, # R 
+	    1,2,2, # A
+	    1,1,2, # T
+	    1)     # x0
+	B=c(0.1,.1,.2,
+	    0.01,.1,.2,
+	    10,  .1,.2,
+	    .1)
+
+	nvar=12
+	nrowData=nrow(data)
+	tf=ncol(data)
+	dt=0.1
+	ncolPart=nrowData*NPART
+
+	temp=1
+	prop_size_lam=100
+	prop_size=10 #* rowSums(data)
+
+	## init using single MCMC
+
+	allParticles=matrix(NA,nvar,ncolPart)
+	
+## =======================================
+## Initialize memory list
+## =======================
+#	memList$x<<-matrix(0,ncolPart,ceiling(tf/dt))
+#	memList$x0<<-matrix(0,ncolPart,ceiling(tf/dt))
+#	memList$s<<-matrix(0,ncolPart,ceiling(tf/dt))
+#	memList$r<<-matrix(0,ncolPart,ceiling(tf/dt))
+#	memList$r0<<-matrix(0,ncolPart,ceiling(tf/dt))
+#	memList$fA<<-matrix(0,ncolPart,ceiling(tf/dt))
+#	memList$fR<<-matrix(0,ncolPart,ceiling(tf/dt))
+#	memList$fT<<-matrix(0,ncolPart,ceiling(tf/dt))
+#	
+#	memList$Rx<<-matrix(0,ncolPart,tf)
+#	memList$Rr<<-matrix(0,ncolPart,tf)
+## =======================================
+
+	cat("Initializing particles...\n")
+	for(k in 1:NPART){
+
+		allParticles[1:2,1:nrowData+(k-1)*nrowData]=matrix(rgamma(2,Al,Bl),nrowData,2,byrow=1)
+
+		for(i in 1:nrowData){
+				allParticles[3:12,i+(k-1)*nrowData]=rgamma(10,A,B)
+		}
+	}
+	cat("done\n")
+
+    LogML=0
+	protocol=seq(0,1,l=STEPS)
+	
+	W = rep(1.0/NPART,NPART)
+	ESS = rep(NA,STEPS)
+    logW=-log(NPART)
+
+    log_w_inc = rep(NA,NPART)
+
+	for(i in 1:STEPS){
+			cat(i,"     \r");
+			ESS[i]=1.0/sum(W^2)
+	
+            #if ESS<npart/2.0:
+			if(1){
+				allParticles.sample=sample(1:NPART,NPART,replace=T,prob=W)
+                dim(allParticles)=c(nvar,nrowData,NPART)
+				allParticles=allParticles[,,allParticles.sample]
+				dim(allParticles)=c(nvar,ncolPart)
+
+				rownames(allParticles)=c('lambda','lambdaR',
+					   'hR','kR','gR',
+                       'hA','kA','gA',
+                       'hT','kT','gT',
+                       'x0')
+
+            	W=rep(1/NPART,NPART)
+            	logW=-log(NPART)
+			}
+
+        	delta=protocol[i+1]-protocol[i]
+            
+			GLL=cov.GlobalLogLikelihood_par(
+						        allParticles,
+								Al,Bl,A,B,tf,temperature=temp)
+
+#=============================================================
+# Recalculate weights
+#====================
+			log_w_inc = delta*GLL$LogLik
+			
+        	log_w_un = log_w_inc + logW
+			
+			lwun_max=max(log_w_un)
+			
+			W = exp(log_w_un-lwun_max)
+			W = W/sum(W)
+
+            logML_inc = lwun_max+log(sum(exp(log_w_un-lwun_max)))
+			logW=log_w_un-logML_inc
+			
+			LogML=LogML+logML_inc
+#=============================================================
+
+
+            SMCmove=cov.GlobalSMC.moveAllParticles(allParticles,GLL,Al,Bl,A,B,prop_size_lam,prop_size)
+			
+			allParticles=SMCmove$p
+
+	}
+
+    return(list(ESS,allParticles,W,LogML))
+
+}
+	
+
 cov.plot_param <- function(ind,param,tf,ymax){
 
         nr=nrow(data)	
@@ -638,6 +1006,28 @@ cov.plotFromGlobal <- function(ind,samples,tf,n=10,ymax=NA,log=""){
 	       	
 		#lines(res$Rx0,col=rgb(1,0,0,.5),lty=3)
 	       	#lines(res$Rr0,col=rgb(0,1,0,.5),lty=3)
+		abline(v=params[c('kA','kT')],col=c("red","grey"),lty=2)
+	}
+}
+
+cov.plotFromSMC <- function(ind,samples,tf,n=10,ymax=NA,log=""){
+	nrowData=nrow(data)
+	npart=ncol(samples)/nrowData
+	randsam=1:n
+
+	params=samples[,ind]
+	
+	res=cov.sim(params,tf,N=popsize[ind])
+	if(is.na(ymax)) ymax=max(c(res$Rx,res$Rr))
+     
+	plot(data[ind,],xlim=c(1,tf),main=country[ind,],ylim=c(1,ymax),pch=19,log=log)
+	points(datar[ind,],xlim=c(1,tf),col="green",pch=19)
+	for(i in 1:n){
+		params=samples[,ind+(n-1)*nrowData]
+		res=cov.sim(params,tf,N=popsize[ind])
+	       	lines(res$Rx,col=rgb(1,0,0,.5),lty=2)
+	       	lines(res$Rr,col=rgb(0,1,0,.5),lty=2)
+	       	
 		abline(v=params[c('kA','kT')],col=c("red","grey"),lty=2)
 	}
 }

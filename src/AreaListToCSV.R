@@ -1,7 +1,7 @@
 ## This script should be ran right after generating the samples so that by loading the data through cov_sampler_SIR.R we have the same labels,data and datar that have been used to generate the posterior samples.
 
-source("../src/cov_sampler_SIR.R")
-load("../src/samples_sir_23mar.RData")
+#source("../src/cov_sampler_SIR.R")
+#load("../src/samples_sir_23mar.RData")
 samples=sam_glob_sir[4000:5000]
 
 cov.getAllAreas <- function(samples,tf,n){
@@ -45,9 +45,9 @@ cov.getAllAreas <- function(samples,tf,n){
 
 
 ## Collecting a posterior samples. This can take a few minutes
-#AreaList=cov.getAllAreas(samples,ncol(data)+300,1000)
+AreaList=cov.getAllAreas(samples,ncol(data)+300,1000)
 
-load(file="AreaList_sir-2303.RData")
+#load(file="AreaList_sir-2303.RData")
 
 AreaList$datar=datar
 
@@ -76,4 +76,4 @@ rownames(AreaList2$datar)=paste(labels,"_REC",sep="")
 
 AreaListCsv = cbind(t=time_axis,t(do.call(rbind,AreaList2[c('data','datar','q1','q2','q3','qr1','qr2','qr3')])))
 
-write.table(AreaListCsv,file="AreaListCsv_sir_2303.csv",row.names=F,sep=",")
+write.table(AreaListCsv,file="AreaListCsv_sir_2503.csv",row.names=F,sep=",")
