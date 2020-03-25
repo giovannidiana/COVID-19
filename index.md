@@ -8,13 +8,9 @@ mathjax: true
 <script src = "https://d3js.org/d3.v4.js"></script>
 <script src = "{{site.baseurl}}/js/responsiveD3.js"></script>
 
-**Giovanni Diana**$^{1,2}$ and **Diana Passaro**$^3$ 
+**Giovanni Diana** and **Diana Passaro** 
 
-$^1$ Center for Developmental Neurobiology & MRC Center for Neurodevelopmental Disorders, King’s College London, Guy’s Hospital Campus, London, United Kingdom
 
-$^2$Institut Pasteur, Dynamic Neuronal Imaging Unit, CNRS UMR 3571, Paris, France.
-
-$^3$ Leukemia and Niche Dynamics Laboratory, Cochin Institute, 27 rue du Faubourg Saint Jacques, 75014 Paris, France
 
 ***
 * <a href="#intro"> Introduction </a>
