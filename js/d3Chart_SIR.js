@@ -61,10 +61,10 @@ d3.csv("https://raw.githubusercontent.com/giovannidiana/COVID-19/gh-pages/src/Ar
 				  
 		var xAxis=svg1.append("g")
 		             .attr("transform", "translate(0," + height + ")")
-					 .call(d3.axisBottom(x))
-					 //.selectAll("text")
-					 //.style("text-anchor", "end")
-					 //.attr("transform","translate(-10,10)rotate(-65)")
+				xAxis.call(d3.axisBottom(x))
+					 .selectAll("text")
+					 .style("text-anchor", "end")
+					 .attr("transform","translate(-10,10)rotate(-65)");
   
 		
 		// Add Y axis
@@ -168,8 +168,10 @@ d3.csv("https://raw.githubusercontent.com/giovannidiana/COVID-19/gh-pages/src/Ar
 		  
 		  		// Update axis and circle position
 				xAxis.transition().duration(500)
-		             				.attr("transform", "translate(0," + height + ")")
-					              .call(d3.axisBottom(x))
+				xAxis.call(d3.axisBottom(x))
+					 .selectAll("text")
+					 .style("text-anchor", "end")
+					 .attr("transform","translate(-10,10)rotate(-65)");
 				yAxis.transition().duration(500).call(d3.axisLeft(y));
 				
 				scatter.selectAll("circle.inf")
@@ -204,9 +206,10 @@ d3.csv("https://raw.githubusercontent.com/giovannidiana/COVID-19/gh-pages/src/Ar
 				x.domain(d3.extent(data, function(d) { return d.t; }))
 				y.domain([0, d3.max(data, function(d) { return +d[currentGroup+'_qr3'];})])
 				xAxis.transition().duration(500)
-		             			  .attr("transform", "translate(0," + height + ")")
-					              .call(d3.axisBottom(x))
-
+				xAxis.call(d3.axisBottom(x))
+					 .selectAll("text")
+					 .style("text-anchor", "end")
+					 .attr("transform","translate(-10,10)rotate(-65)");
 				yAxis.transition().duration(500).call(d3.axisLeft(y));
 				
 				scatter.selectAll("circle.inf")
