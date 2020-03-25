@@ -496,7 +496,7 @@ cov.GlobalMCMC <- function(NITER,show=1,init=NA,init_labels=NA,init_temp=0,verbo
 	    1,2,2, # A
 	    1,1,2, # T
 	    1)     # x0
-	B=c(0.01,.1,.2,
+	B=c(1,.1,.2,
 	    0.01,.1,.2,
 	    10,  .1,.2,
 	    .1)
