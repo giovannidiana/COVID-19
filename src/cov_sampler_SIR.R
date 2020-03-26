@@ -1005,7 +1005,7 @@ cov.GlobalSMC <- function(NPART,STEPS){
 
 cov.Global.IBIS <- function(NPART){
 	Al=c(1,1)
-	Bl=c(1,10)
+	Bl=c(10,10)
 	protocol=seq(0,ncol(data),l=1)
 
 	A=c(1,2,2, # R 
@@ -1183,7 +1183,7 @@ cov.plotFromSMC <- function(ind,samples,tf,n=10,ymax=NA,log=""){
 	res=cov.sim(params,tf,N=popsize[ind])
 	if(is.na(ymax)) ymax=max(c(res$Rx,res$Rr))
      
-	plot(data[ind,],xlim=c(1,tf),main=country[ind,],ylim=c(1,ymax),pch=19,log=log)
+	plot(data[ind,],xlim=c(1,tf),main=country[ind,],ylim=c(0,ymax),pch=19)
 	points(datar[ind,],xlim=c(1,tf),col="green",pch=19)
 	for(i in 1:n){
 		params=samples[,ind+(n-1)*nrowData]

@@ -76,4 +76,4 @@ rownames(AreaList2$datar)=paste(labels,"_REC",sep="")
 
 AreaListCsv = cbind(t=time_axis,t(do.call(rbind,AreaList2[c('data','datar','q1','q2','q3','qr1','qr2','qr3')])))
 
-write.table(AreaListCsv,file="AreaListCsv_sir_2503.csv",row.names=F,sep=",")
+write.table(AreaListCsv,file="AreaListCsv_sir.csv",row.names=F,sep=",")
