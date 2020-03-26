@@ -16,76 +16,95 @@ library(readr)
 
 cat("Download data\n")
 
-file_conf = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv"
+file_conf = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv"
 rawdata_conf<-read_csv(file_conf)
 
-file_rec = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Recovered.csv"
+file_rec = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv"
 rawdata_rec<-read_csv(file_rec)
 
-file_deaths = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Deaths.csv"
+file_deaths = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv"
 rawdata_deaths<-read_csv(file_deaths)
 
-country=rawdata_conf[,"Country/Region"]
-province=rawdata_conf[,"Province/State"]
+country.conf=rawdata_conf[,"Country/Region"]
+province.conf=rawdata_conf[,"Province/State"]
+country.rec=rawdata_rec[,"Country/Region"]
+province.rec=rawdata_rec[,"Province/State"]
+country.deaths=rawdata_deaths[,"Country/Region"]
+province.deaths=rawdata_deaths[,"Province/State"]
 
 nc=ncol(rawdata_conf)-1
-selectedCountries = rawdata_conf
 rawdata_conf=as.matrix(rawdata_conf[,5:nc])
 rawdata_rec=as.matrix(rawdata_rec[,5:nc])
 rawdata_deaths=as.matrix(rawdata_deaths[,5:nc])
 
 # Clean confirmed
-data.C=rawdata_conf
-data.R=rawdata_rec
-data.D=rawdata_deaths
+data.conf=rawdata_conf
+data.rec=rawdata_rec
+data.deaths=rawdata_deaths
 
-for(i in 1:nrow(rawdata_conf)){
-	for(k in ncol(rawdata_conf):2){
-		if(data.C[i,k]<data.C[i,k-1]) data.C[i,k-1]=data.C[i,k]
-		if(data.R[i,k]<data.R[i,k-1]) data.R[i,k-1]=data.R[i,k]
-		if(data.D[i,k]<data.D[i,k-1]) data.D[i,k-1]=data.D[i,k]
-	}
-}
+#for(i in 1:nrow(rawdata_conf)){
+#	for(k in ncol(rawdata_conf):2){
+#		if(data.C[i,k]<data.C[i,k-1]) data.C[i,k-1]=data.C[i,k]
+#		if(data.R[i,k]<data.R[i,k-1]) data.R[i,k-1]=data.R[i,k]
+#		if(data.D[i,k]<data.D[i,k-1]) data.D[i,k-1]=data.D[i,k]
+#	}
+#}
 
 
-# check that deaths = rec are always less than confirmed after correction
-if(any(data.C-data.R-data.D<0)) stop("confirmed less than deaths plus recovered")
-
+## check that deaths = rec are always less than confirmed after correction
+#if(any(data.C-data.R-data.D<0)) stop("confirmed less than deaths plus recovered")
+#
 # if everything went fine then we can calculate the number of infected individuals as
-data.I=data.C-data.R-data.D
-data.I.diff=t(apply(data.I,1,diff))
-data.I.diff[data.I.diff<0]=0
-data.R.diff=t(apply(data.R,1,diff))
-data.R.diff[data.R.diff<0]=0
-data.D.diff=t(apply(data.D,1,diff))
-data.D.diff[data.D.diff<0]=0
-
-data=data.I
-datar=data.R+data.D
-
 
 ## set labels 
 
-labels=rep("",nrow(data))
+labels.conf=rep("",nrow(data.conf))
+labels.rec=rep("",nrow(data.rec))
+labels.deaths=rep("",nrow(data.deaths))
 
-with_province=!is.na(province[,1])
-for(i in 1:nrow(data)){
+with_province=!is.na(province.conf[,1])
+for(i in 1:nrow(data.conf)){
     if(with_province[i]){
-        labels[i]=paste(country[i,1],",",province[i,1],sep="")
+        labels.conf[i]=paste(country.conf[i,1],",",province.conf[i,1],sep="")
     } else {        
-        labels[i]=paste(country[i,1],sep="")
+        labels.conf[i]=paste(country.conf[i,1],sep="")
+    } 
+}
+
+with_province=!is.na(province.rec[,1])
+for(i in 1:nrow(data.rec)){
+    if(with_province[i]){
+        labels.rec[i]=paste(country.rec[i,1],",",province.rec[i,1],sep="")
+    } else {        
+        labels.rec[i]=paste(country.rec[i,1],sep="")
+    } 
+}
+
+with_province=!is.na(province.deaths[,1])
+for(i in 1:nrow(data.deaths)){
+    if(with_province[i]){
+        labels.deaths[i]=paste(country.deaths[i,1],",",province.deaths[i,1],sep="")
+    } else {        
+        labels.deaths[i]=paste(country.deaths[i,1],sep="")
     } 
 }
 
 ## read labels for which the population size is available
 pop<-read.table("../data/countries_population2.csv",header=T,sep=';')
-selected_labels=match(pop[,1],labels)
-labels=labels[selected_labels]
-data=data[selected_labels,]
-datar=datar[selected_labels,]
-country=country[selected_labels,]
-province=province[selected_labels,]
-popsize=pop[,2]
+labels=pop[ pop[,1] %in% labels.conf &
+            pop[,1] %in% labels.rec &
+            pop[,1] %in% labels.deaths,1]
+data.conf=data.conf[match(labels,labels.conf),]
+data.rec=data.rec[match(labels,labels.rec),]
+data.deaths=data.deaths[match(labels,labels.deaths),]
+
+data=data.conf
+datar=data.rec+data.deaths
+country=country.conf[match(labels,labels.conf),]
+province=province.conf[match(labels,labels.conf),]
+popsize=pop[ pop[,1] %in% labels.conf &
+            pop[,1] %in% labels.rec &
+            pop[,1] %in% labels.deaths,2]
 
 cov.MixedGammaVec <- function(x1,a1,b1,x2,a2,b2){
 	
@@ -414,10 +433,34 @@ cov.GlobalLogLikelihood_par <- function(particles,Al,Bl,A,B,tf,temperature=1,pri
 	data_rep = data[rep(1:nrow(data),npart),]
 	datar_rep = datar[rep(1:nrow(datar),npart),]
 
-	LogLikVecMap = rowSums(dpois(data_rep,lambda=res$Rx,log=T)) + 
-		        rowSums(dpois(datar_rep,lambda=res$Rr,log=T)) +
-		        rowSums(dgamma(particles[3:12,],matrix(A,length(A),nrowData),matrix(B,length(B),nrowData),log=T))
+	LogLikVecMap = rowSums(dpois(data_rep[,1:tf],lambda=res$Rx,log=T)) + 
+				   rowSums(dpois(datar_rep[,1:tf],lambda=res$Rr,log=T)) #+
+#		        rowSums(dgamma(particles[3:12,],matrix(A,length(A),nrowData),matrix(B,length(B),nrowData),log=T))
+
+	if(any(is.na(datar_rep))){
+			print(dim(datar_rep[,1:tf]))
+			print(dim(res$Rr))
+			cat("datar is NA\n")
+	 		exit()
+	}
+	LogLikVec = matrix(LogLikVecMap,nrowData,npart)
+	LogLik=colSums(LogLikVec)+
+	       rowSums(dgamma(particles[1:2,seq(1,ncolPart,nrowData)],
+					  matrix(Al,2,npart),
+					  matrix(Bl,2,npart),
+					  log=T))
 	
+		   return(list(LogLik=LogLik,LogLikVec=LogLikVec))
+}
+
+cov.GlobalLogPrior_par <- function(particles,Al,Bl,A,B,tf,temperature=1,print=F){
+	
+	ncolPart=ncol(particles)
+	nrowData=nrow(data)
+	npart=ncolPart/nrowData
+
+	LogLikVecMap = rowSums(dgamma(particles[3:12,],matrix(A,length(A),nrowData),matrix(B,length(B),nrowData),log=T))
+
 	LogLikVec = matrix(LogLikVecMap,nrowData,npart)
 	LogLik=colSums(LogLikVec)+
 	       rowSums(dgamma(particles[1:2,seq(1,ncolPart,nrowData)],
@@ -508,7 +551,7 @@ cov.GlobalMCMC <- function(NITER,show=1,init=NA,init_labels=NA,init_temp=0,verbo
 
 	temp=init_temp
 	prop_size_lam=100
-	prop_size=matrix(5,nc,nvar-2) #* rowSums(data)
+	prop_size=matrix(50,nc,nvar-2) #* rowSums(data)
 
 	params=matrix(NA,nc,nvar-2)
 	colnames(params)=c('hR','kR','gR',
@@ -752,11 +795,10 @@ cov.GlobalSMC.moveParticle <- function(p,GlobalLogLikelihood,Al,Bl,A,B,prop_size
 		return(list(p=particle,GLL=GLL))
 }
 
-cov.GlobalSMC.moveAllParticles <- function(p,GlobalLogLikelihood,Al,Bl,A,B,prop_size_lam,prop_size){
+cov.GlobalSMC.moveAllParticles <- function(p,GlobalLogLikelihood,Al,Bl,A,B,prop_size_lam,prop_size,tf){
 
 	    nrowData=nrow(data)
 		ncolPart=ncol(p)
-		tf=ncol(data)
 		npart=ncolPart/nrowData
 		particles=p
 		GLL=GlobalLogLikelihood
@@ -768,7 +810,10 @@ cov.GlobalSMC.moveAllParticles <- function(p,GlobalLogLikelihood,Al,Bl,A,B,prop_
 		pnew['lambda',]=lambda_new
 
 		GLL_new=cov.GlobalLogLikelihood_par(pnew,Al,Bl,A,B,tf,temperature=1)
-		
+		if(any(is.na(GLL_new$LogLik))) {
+				print(GLL_new$LogLik)
+				cat("problem while sampling lambda\n")
+		}
 		logalpha = GLL_new$LogLik- GLL$LogLik + 
 			       dgamma(1/fac,prop_size_lam,prop_size_lam,log=T)-
 			       dgamma(fac,prop_size_lam,prop_size_lam,log=T)
@@ -777,7 +822,7 @@ cov.GlobalSMC.moveAllParticles <- function(p,GlobalLogLikelihood,Al,Bl,A,B,prop_
 		## and update lambda
 		u=runif(npart)
 
-		selection=(u<logalpha)
+		selection=(u<logalpha & !is.na(logalpha))
 		particles['lambda',selection]=pnew['lambda',selection]
 		GLL$LogLik[selection]=GLL_new$LogLik[selection]
 		GLL$LogLikVec[,selection]=GLL_new$LogLikVec[,selection]
@@ -789,6 +834,10 @@ cov.GlobalSMC.moveAllParticles <- function(p,GlobalLogLikelihood,Al,Bl,A,B,prop_
 		pnew['lambdaR',]=lambdaR_new
 
 		GLL_new=cov.GlobalLogLikelihood_par(pnew,Al,Bl,A,B,tf,temperature=1)
+		if(any(is.na(GLL_new$LogLik))) {
+				print(GLL_new$LogLik)
+				cat("problem while sampling lambdaR\n")
+		}
 		
 		logalpha = GLL_new$LogLik- GLL$LogLik + 
 			       dgamma(1/fac,prop_size_lam,prop_size_lam,log=T)-
@@ -798,7 +847,7 @@ cov.GlobalSMC.moveAllParticles <- function(p,GlobalLogLikelihood,Al,Bl,A,B,prop_
 		## and update lambda
 		u=runif(npart)
 
-		selection=(u<logalpha)
+		selection=(u<logalpha & !is.na(logalpha))
 		particles['lambdaR',selection]=pnew['lambdaR',selection]
 		GLL$LogLik[selection]=GLL_new$LogLik[selection]
 		GLL$LogLikVec[,selection]=GLL_new$LogLikVec[,selection]
@@ -814,13 +863,17 @@ cov.GlobalSMC.moveAllParticles <- function(p,GlobalLogLikelihood,Al,Bl,A,B,prop_
 			pnew[2+var,]=fac*particles[2+var,]
 
 			GLL_new = cov.GlobalLogLikelihood_par(pnew,Al,Bl,A,B,tf,temperature=1) 
+		if(any(is.na(GLL_new$LogLik))) {
+				print(GLL_new$LogLik)
+				cat("problem while sampling var ",var,"\n")
+		}
 			logalpha = GLL_new$LogLikVec - GLL$LogLikVec + 
 				       dgamma(1/fac.asMat,prop_size,prop_size,log=T) - 
 				       dgamma(fac.asMat,prop_size,prop_size,log=T)  
 
 			u=matrix(runif(ncolPart),nrowData,npart)
-			selection=(log(u)<logalpha)
-			selection.flat=as.vector(log(u)<logalpha)
+			selection=(log(u)<logalpha & !is.na(logalpha))
+			selection.flat=as.vector(log(u)<logalpha & !is.na(logalpha))
 			particles[2+var,selection.flat]=pnew[2+var,selection.flat]
 			GLL$LogLikVec[selection]=GLL_new$LogLikVec[selection]
 		}
@@ -949,7 +1002,117 @@ cov.GlobalSMC <- function(NPART,STEPS){
     return(list(ESS,allParticles,W,LogML))
 
 }
+
+cov.Global.IBIS <- function(NPART){
+	Al=c(1,1)
+	Bl=c(1,10)
+	protocol=seq(0,ncol(data),l=1)
+
+	A=c(1,2,2, # R 
+	    1,2,2, # A
+	    1,1,2, # T
+	    1)     # x0
+	B=c(0.1,.1,.2,
+	    0.01,.1,.2,
+	    10,  .1,.2,
+	    .1)
+
+	nvar=12
+	nrowData=nrow(data)
+	tf=ncol(data)
+	dt=0.1
+	ncolPart=nrowData*NPART
+
+	temp=1
+	prop_size_lam=100
+	prop_size=10 #* rowSums(data)
+
+	## init using single MCMC
+
+	allParticles=matrix(NA,nvar,ncolPart)
+
+	cat("Initializing particles...\n")
+	for(k in 1:NPART){
+
+		allParticles[1:2,1:nrowData+(k-1)*nrowData]=matrix(rgamma(2,Al,Bl),nrowData,2,byrow=1)
+
+		for(i in 1:nrowData){
+				allParticles[3:12,i+(k-1)*nrowData]=rgamma(10,A,B)
+		}
+	}
+	cat("done\n")
+
+	GLL=cov.GlobalLogPrior_par(
+				        allParticles,
+						Al,Bl,A,B,protocol[i],temperature=temp)
+
+    LogML=0
 	
+	W = rep(1.0/NPART,NPART)
+	ESS = rep(NA,ncol(data))
+	ESS[1]=1.0/sum(W^2)
+    logW=-log(NPART)
+
+    log_w_inc = rep(NA,NPART)
+
+	for(time in 2:ncol(data)){
+			cat(time,"     \r");
+			ESS[time]=1.0/sum(W^2)
+	
+            #if ESS<npart/2.0:
+			if(1){
+				allParticles.sample=sample(1:NPART,NPART,replace=T,prob=W)
+                dim(allParticles)=c(nvar,nrowData,NPART)
+				allParticles=allParticles[,,allParticles.sample]
+				dim(allParticles)=c(nvar,ncolPart)
+				GLL$LogLikVec=GLL$LogLikVec[,allParticles.sample]
+				GLL$LogLik=GLL$LogLik[allParticles.sample]
+
+				rownames(allParticles)=c('lambda','lambdaR',
+					   'hR','kR','gR',
+                       'hA','kA','gA',
+                       'hT','kT','gT',
+                       'x0')
+
+            	W=rep(1/NPART,NPART)
+            	logW=-log(NPART)
+			}
+
+            SMCmove=cov.GlobalSMC.moveAllParticles(allParticles,GLL,Al,Bl,A,B,prop_size_lam,prop_size,time)
+			
+			allParticles=SMCmove$p
+			GLL_new=SMCmove$GLL
+
+#=============================================================
+# Recalculate weights
+#====================
+			log_w_inc = GLL_new$LogLik-GLL$LogLik
+			if(any(is.na(log_w_inc))) {
+					print(cbind(GLL_new$LogLik,GLL$LogLik))
+							stop()
+			}
+			
+        	log_w_un = log_w_inc + logW
+			
+			lwun_max=max(log_w_un)
+			
+			W = exp(log_w_un-lwun_max)
+			W = W/sum(W)
+
+            logML_inc = lwun_max+log(sum(exp(log_w_un-lwun_max)))
+			logW=log_w_un-logML_inc
+			
+			LogML=LogML+logML_inc
+#=============================================================
+
+			GLL=GLL_new
+
+	}
+
+    return(list(ESS,allParticles,W,LogML))
+
+}
+
 
 cov.plot_param <- function(ind,param,tf,ymax){
 
@@ -1030,14 +1193,6 @@ cov.plotFromSMC <- function(ind,samples,tf,n=10,ymax=NA,log=""){
 	       	
 		abline(v=params[c('kA','kT')],col=c("red","grey"),lty=2)
 	}
-}
-
-cov.plotData <- function(country_index){
-	barplot(rbind((data.I[country_index,]),
-	      (data.R[country_index,]), 
-	      (data.D[country_index,])),
-	col=c("red","green","purple" ),las=2,names.arg=names(rawdata_conf))
-legend("topleft",legend=c("infected","recovered","deaths"),fill=c("red","green","purple" ))
 }
 
 cov.plotHill <- function(h,k,g,tf,one=T){
