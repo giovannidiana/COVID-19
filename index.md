@@ -22,17 +22,11 @@ mathjax: true
 * [Summary of the outbreak by country](current_state)
 * [Supplementary Methods](SM)
 
- <svg height="4" width="500">
-  <line x1="0" y1="0" x2="200" y2="0" style="stroke:rgb(255,122,0);stroke-width:10" />
-</svg>
-> ### Update:
->
->  **26 Mar 2020**: The repository CSSEGISandData/COVID-19 is currently making major changes in the data structure. The analysis presented here will be updated soon according to the new data.
+<div style="background-color:rgb(255,122,0);color:white;padding:10px">
+<p style="font-size:20px"> <b>Update</b></p>
 
- <svg height="4" width="500">
-  <line x1="0" y1="0" x2="200" y2="0" style="stroke:rgb(255,122,0);stroke-width:10" />
-</svg>
-
+<p> 26 Mar 2020: The repository CSSEGISandData/COVID-19 is currently making major changes in the data structure. The analysis presented here will be updated soon according to the new data.</p>
+</div>
 ## Introduction <a name="intro"> </a>
 Spread of COVID-19 in early 2020 has raised important concerns about the ability of national health systems to detect the positive cases, as well as the intervention rate a country is expected to put in place to contain the infection.
 
