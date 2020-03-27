@@ -32,7 +32,7 @@ province.rec=rawdata_rec[,"Province/State"]
 country.deaths=rawdata_deaths[,"Country/Region"]
 province.deaths=rawdata_deaths[,"Province/State"]
 
-nc=ncol(rawdata_conf)-1
+nc=ncol(rawdata_conf)
 rawdata_conf=as.matrix(rawdata_conf[,5:nc])
 rawdata_rec=as.matrix(rawdata_rec[,5:nc])
 rawdata_deaths=as.matrix(rawdata_deaths[,5:nc])
