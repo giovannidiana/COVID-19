@@ -56,23 +56,13 @@ The framework of statistical inference allows us to estimate model parameters an
 
 The interactive charts below give an overview of the course of the infection for each country for the two models employed. On the left, predictions based on the heuristic model show the dynamics of the infection rate with the 90% confidence interval (red curves). On the right, the dynamics of infection (red curves) obtained with the SIR model, which includes additional features such as the recovery rate (green curves). Data are updated every day. 
 
-<div id="areaHM"></div>
-
-<select id="dropdown_HM"> </select>
-
-<script src="{{site.baseurl}}/js/d3Chart_HM.js" > </script>
-
-
-Interactive chart 1: Heuristic model predictions. Choose the country from the dropdown button, zoom in by selecting a square region and zoom out by double click on the image.
-
-
 <div id="areaSIR"></div>
 
 <select id="dropdown_SIR"> </select>
 
 <script src="{{site.baseurl}}/js/d3Chart_SIR.js" > </script>
 
-Interactive chart 2: SIR model predictions. 
+Interactive chart 1: Heuristic model predictions. Choose the country from the dropdown button, zoom in by selecting a square region and zoom out by double click on the image.
 
 While China is now at the final stage of the spread, several countries in Europe are now facing the exponential phase. By quantifying the number of infected individual at the peak predicted by our model we found that Italy, Germany, France and Iran are at high risk of pandemic spread. During the exponential phase it is really hard to draw reliable estimates of when the diffusion of the virus will start displaying a reduction, therefore it is extremely important for these countries to strenghten the interventions to contain the eponential increase of new cases.  
 
