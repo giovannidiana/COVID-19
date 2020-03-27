@@ -73,14 +73,14 @@ Costa Rica;5094118
 Croatia;4076000
 Cyprus;1207359
 Czechia;10650000
-Denmark,Denmark;5792202
+Denmark;5792202
 Denmark,Faroe Islands;51783
 Dominican Republic;10847910
 Ecuador;17643054
 Egypt;102334404
 Estonia;1326535
 Finland;5540720
-France,France;65273511
+France;65273511
 France,St Martin;32125
 France,Saint Barthelemy;9131
 Georgia;3989167
@@ -110,14 +110,14 @@ Luxembourg;625978
 Malaysia;32365999
 Maldives;540544
 Malta;441543
-Martinique;375265
+France,Martinique;375265
 Mexico;128932753
 Moldova;4033963
 Monaco;39242
 Mongolia;3278290
 Morocco;36910560
 Nepal;29136808
-Netherlands,Netherlands;17134872
+Netherlands;17134872
 New Zealand;4822233
 Nigeria;206139589
 North Macedonia;2083374
@@ -155,7 +155,7 @@ Ukraine;43733762
 United Arab Emirates;9890402
 United Kingdom,Channel Islands;173863
 United Kingdom,Gibraltar;33691
-United Kingdom,United Kingdom;67886011
+United Kingdom;67886011
 US,Washington;7797095
 US,New York;19440469
 US,California;39937489
