@@ -103,8 +103,8 @@ datar=data.rec+data.deaths
 country=country.conf[match(labels,labels.conf),]
 province=province.conf[match(labels,labels.conf),]
 popsize=pop[ pop[,1] %in% labels.conf &
-            pop[,1] %in% labels.rec &
-            pop[,1] %in% labels.deaths,2]
+             pop[,1] %in% labels.rec &
+             pop[,1] %in% labels.deaths,2]
 
 cov.MixedGammaVec <- function(x1,a1,b1,x2,a2,b2){
 	
