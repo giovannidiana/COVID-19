@@ -245,7 +245,7 @@ cov.sim_rk <- function(params,tf,dt=.01,N=10000){
 
 cov.SIM <- function(p,tf,dt=0.1){
 	nr=nrow(p)
-	t=seq(0,tf,l=ceiling(tf/dt))
+	t=seq(dt,tf,l=ceiling(tf/dt))
 	
 	x=matrix(0,nr,ceiling(tf/dt))
 	x0=matrix(0,nr,ceiling(tf/dt))
@@ -329,13 +329,13 @@ cov.SIMP <- function(p,tf,dt=0.1){
 	    U1=p['lambda',]/fA[,i-1]*s[,i-1]/popsizeRep*x0[,i-1]	
 		U2=p['lambdaR',]*fR[,i-1]*x0[,i-1]
 
-		x0[,i] = pmax(1e-300,x0[,i-1]+dt*(U1-U2))
+		x0[,i] = pmax(0,x0[,i-1]+dt*(U1-U2))
 		s[,i]  = s[,i-1] -dt*U1
 		r0[,i] = r0[,i-1]+dt*U2
 		
 		if(t[i]+dt>counter) {
-			Rx[,counter] <- pmax(1e-300,x0[,i]*fT[,i])
-			Rr[,counter] <- pmax(1e-300,r0[,i]*fT[,i])
+			Rx[,counter] <- pmax(0,x0[,i]*fT[,i])
+			Rr[,counter] <- pmax(0,r0[,i]*fT[,i])
 			counter=counter+1
 		}
 
@@ -414,28 +414,32 @@ cov.GlobalLogLikelihood_vec <- function(gparlist,paramlist,Al,Bl,A,B,tf,temperat
 		paramlist)
 	res=cov.SIM(p,tf,dt=.1)
 	
-	LogLikVec = temperature*rowSums(dpois(data,lambda=res$Rx,log=T)) + 
-		    temperature*rowSums(dpois(datar,lambda=res$Rr,log=T)) +
+	LogLikVec = temperature*rowSums(dpois(data[,1:tf],lambda=res$Rx,log=T)) + 
+		    temperature*rowSums(dpois(datar[,1:tf],lambda=res$Rr,log=T)) +
 		    rowSums(dgamma(paramlist,matrix(A,nr,length(A),byrow=1),matrix(B,nr,length(B),byrow=1),log=T))
 
 	LogLik=sum(LogLikVec)+sum(dgamma(gparlist,Al,Bl,log=T))
 	return(list(LogLik=LogLik,LogLikVec=LogLikVec))
 }
 
-cov.GlobalLogLikelihood_par <- function(particles,Al,Bl,A,B,tf,temperature=1,print=F){
+cov.GlobalLogLikelihood_par <- function(particles,Al,Bl,A,B,tf,temperature=1){
 	
 	ncolPart=ncol(particles)
 	nrowData=nrow(data)
 	npart=ncolPart/nrowData
 
 	res=cov.SIMP(particles,tf,dt=.1)
+
+	if(any(is.na(res$Rx))){
+		exit()
+	}
 	
 	data_rep = data[rep(1:nrow(data),npart),]
 	datar_rep = datar[rep(1:nrow(datar),npart),]
 
-	LogLikVecMap = rowSums(dpois(data_rep[,1:tf],lambda=res$Rx,log=T)) + 
-				   rowSums(dpois(datar_rep[,1:tf],lambda=res$Rr,log=T)) #+
-#		        rowSums(dgamma(particles[3:12,],matrix(A,length(A),nrowData),matrix(B,length(B),nrowData),log=T))
+	LogLikVecMap = temperature*rowSums(dpois(matrix(data_rep[,1:tf],ncolPart,tf),lambda=matrix(res$Rx,ncolPart,tf),log=T)) + 
+				   temperature*rowSums(dpois(matrix(datar_rep[,1:tf],ncolPart,tf),lambda=matrix(res$Rr,ncolPart,tf),log=T)) +
+		           colSums(dgamma(particles[3:12,],matrix(A,length(A),ncolPart),matrix(B,length(B),ncolPart),log=T))
 
 	if(any(is.na(datar_rep))){
 			print(dim(datar_rep[,1:tf]))
@@ -445,7 +449,7 @@ cov.GlobalLogLikelihood_par <- function(particles,Al,Bl,A,B,tf,temperature=1,pri
 	}
 	LogLikVec = matrix(LogLikVecMap,nrowData,npart)
 	LogLik=colSums(LogLikVec)+
-	       rowSums(dgamma(particles[1:2,seq(1,ncolPart,nrowData)],
+	       colSums(dgamma(particles[1:2,seq(1,ncolPart,nrowData)],
 					  matrix(Al,2,npart),
 					  matrix(Bl,2,npart),
 					  log=T))
@@ -453,17 +457,19 @@ cov.GlobalLogLikelihood_par <- function(particles,Al,Bl,A,B,tf,temperature=1,pri
 		   return(list(LogLik=LogLik,LogLikVec=LogLikVec))
 }
 
-cov.GlobalLogPrior_par <- function(particles,Al,Bl,A,B,tf,temperature=1,print=F){
+cov.GlobalLogPrior_par <- function(particles,Al,Bl,A,B,temperature=1,print=F){
 	
 	ncolPart=ncol(particles)
 	nrowData=nrow(data)
 	npart=ncolPart/nrowData
 
-	LogLikVecMap = rowSums(dgamma(particles[3:12,],matrix(A,length(A),nrowData),matrix(B,length(B),nrowData),log=T))
+	LogLikVecMap = colSums(dgamma(particles[3:12,],
+								  matrix(A,length(A),ncolPart),
+								  matrix(B,length(B),ncolPart),log=T))
 
 	LogLikVec = matrix(LogLikVecMap,nrowData,npart)
 	LogLik=colSums(LogLikVec)+
-	       rowSums(dgamma(particles[1:2,seq(1,ncolPart,nrowData)],
+	       colSums(dgamma(particles[1:2,seq(1,ncolPart,nrowData)],
 					  matrix(Al,2,npart),
 					  matrix(Bl,2,npart),
 					  log=T))
@@ -795,7 +801,7 @@ cov.GlobalSMC.moveParticle <- function(p,GlobalLogLikelihood,Al,Bl,A,B,prop_size
 		return(list(p=particle,GLL=GLL))
 }
 
-cov.GlobalSMC.moveAllParticles <- function(p,GlobalLogLikelihood,Al,Bl,A,B,prop_size_lam,prop_size,tf){
+cov.GlobalSMC.moveAllParticles <- function(p,GlobalLogLikelihood,Al,Bl,A,B,prop_size_lam,prop_size,tf,temp=1){
 
 	    nrowData=nrow(data)
 		ncolPart=ncol(p)
@@ -809,7 +815,7 @@ cov.GlobalSMC.moveAllParticles <- function(p,GlobalLogLikelihood,Al,Bl,A,B,prop_
 		pnew=particles
 		pnew['lambda',]=lambda_new
 
-		GLL_new=cov.GlobalLogLikelihood_par(pnew,Al,Bl,A,B,tf,temperature=1)
+		GLL_new=cov.GlobalLogLikelihood_par(pnew,Al,Bl,A,B,tf,temperature=temp)
 		if(any(is.na(GLL_new$LogLik))) {
 				print(GLL_new$LogLik)
 				cat("problem while sampling lambda\n")
@@ -822,7 +828,7 @@ cov.GlobalSMC.moveAllParticles <- function(p,GlobalLogLikelihood,Al,Bl,A,B,prop_
 		## and update lambda
 		u=runif(npart)
 
-		selection=(u<logalpha & !is.na(logalpha))
+		selection=(log(u)<logalpha & !is.na(logalpha))
 		particles['lambda',selection]=pnew['lambda',selection]
 		GLL$LogLik[selection]=GLL_new$LogLik[selection]
 		GLL$LogLikVec[,selection]=GLL_new$LogLikVec[,selection]
@@ -833,7 +839,7 @@ cov.GlobalSMC.moveAllParticles <- function(p,GlobalLogLikelihood,Al,Bl,A,B,prop_
 		pnew=particles
 		pnew['lambdaR',]=lambdaR_new
 
-		GLL_new=cov.GlobalLogLikelihood_par(pnew,Al,Bl,A,B,tf,temperature=1)
+		GLL_new=cov.GlobalLogLikelihood_par(pnew,Al,Bl,A,B,tf,temperature=temp)
 		if(any(is.na(GLL_new$LogLik))) {
 				print(GLL_new$LogLik)
 				cat("problem while sampling lambdaR\n")
@@ -847,7 +853,7 @@ cov.GlobalSMC.moveAllParticles <- function(p,GlobalLogLikelihood,Al,Bl,A,B,prop_
 		## and update lambda
 		u=runif(npart)
 
-		selection=(u<logalpha & !is.na(logalpha))
+		selection=(log(u)<logalpha & !is.na(logalpha))
 		particles['lambdaR',selection]=pnew['lambdaR',selection]
 		GLL$LogLik[selection]=GLL_new$LogLik[selection]
 		GLL$LogLikVec[,selection]=GLL_new$LogLikVec[,selection]
@@ -862,7 +868,7 @@ cov.GlobalSMC.moveAllParticles <- function(p,GlobalLogLikelihood,Al,Bl,A,B,prop_
 
 			pnew[2+var,]=fac*particles[2+var,]
 
-			GLL_new = cov.GlobalLogLikelihood_par(pnew,Al,Bl,A,B,tf,temperature=1) 
+			GLL_new = cov.GlobalLogLikelihood_par(pnew,Al,Bl,A,B,tf,temperature=temp) 
 		if(any(is.na(GLL_new$LogLik))) {
 				print(GLL_new$LogLik)
 				cat("problem while sampling var ",var,"\n")
@@ -879,7 +885,7 @@ cov.GlobalSMC.moveAllParticles <- function(p,GlobalLogLikelihood,Al,Bl,A,B,prop_
 		}
 			
 	
-	GLL=cov.GlobalLogLikelihood_par(particles,Al,Bl,A,B,tf,temperature=1)
+	GLL=cov.GlobalLogLikelihood_par(particles,Al,Bl,A,B,tf,temperature=temp)
 		
 	return(list(p=particles,GLL=GLL))
 }
@@ -1003,10 +1009,9 @@ cov.GlobalSMC <- function(NPART,STEPS){
 
 }
 
-cov.Global.IBIS <- function(NPART){
+cov.Global.IBIS <- function(NPART,tf){
 	Al=c(1,1)
 	Bl=c(10,10)
-	protocol=seq(0,ncol(data),l=1)
 
 	A=c(1,2,2, # R 
 	    1,2,2, # A
@@ -1019,13 +1024,12 @@ cov.Global.IBIS <- function(NPART){
 
 	nvar=12
 	nrowData=nrow(data)
-	tf=ncol(data)
 	dt=0.1
 	ncolPart=nrowData*NPART
 
 	temp=1
 	prop_size_lam=100
-	prop_size=10 #* rowSums(data)
+	prop_size=100 #* rowSums(data)
 
 	## init using single MCMC
 
@@ -1034,7 +1038,7 @@ cov.Global.IBIS <- function(NPART){
 	cat("Initializing particles...\n")
 	for(k in 1:NPART){
 
-		allParticles[1:2,1:nrowData+(k-1)*nrowData]=matrix(rgamma(2,Al,Bl),nrowData,2,byrow=1)
+		allParticles[1:2,1:nrowData+(k-1)*nrowData]=matrix(rgamma(2,Al,Bl),2,nrowData)
 
 		for(i in 1:nrowData){
 				allParticles[3:12,i+(k-1)*nrowData]=rgamma(10,A,B)
@@ -1044,18 +1048,18 @@ cov.Global.IBIS <- function(NPART){
 
 	GLL=cov.GlobalLogPrior_par(
 				        allParticles,
-						Al,Bl,A,B,protocol[i],temperature=temp)
+						Al,Bl,A,B,temperature=temp)
 
     LogML=0
 	
 	W = rep(1.0/NPART,NPART)
-	ESS = rep(NA,ncol(data))
+	ESS = rep(NA,tf)
 	ESS[1]=1.0/sum(W^2)
     logW=-log(NPART)
 
     log_w_inc = rep(NA,NPART)
 
-	for(time in 2:ncol(data)){
+	for(time in 1:tf){
 			cat(time,"     \r");
 			ESS[time]=1.0/sum(W^2)
 	
@@ -1078,7 +1082,7 @@ cov.Global.IBIS <- function(NPART){
             	logW=-log(NPART)
 			}
 
-            SMCmove=cov.GlobalSMC.moveAllParticles(allParticles,GLL,Al,Bl,A,B,prop_size_lam,prop_size,time)
+            SMCmove=cov.GlobalSMC.moveAllParticles(allParticles,GLL,Al,Bl,A,B,prop_size_lam,prop_size,time,temp)
 			
 			allParticles=SMCmove$p
 			GLL_new=SMCmove$GLL
