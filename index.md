@@ -22,10 +22,12 @@ mathjax: true
 * [Summary of the outbreak by country](current_state)
 * [Supplementary Methods](SM)
 
-<div style="background-color:rgb(255,122,0);color:white;padding:10px">
+<div style="background-color:rgb(200,100,0);color:white;padding:10px">
 <p style="font-size:20px"> <b>Update</b></p>
-
-<p> 26 Mar 2020: The repository CSSEGISandData/COVID-19 is currently making major changes in the data structure. The analysis presented here will be updated soon according to the new data.</p>
+<ul>
+<li> Last update, 29-03-2020</li>
+<li> 26 Mar 2020: The repository CSSEGISandData/COVID-19 is currently making major changes in the data structure.</li>
+</ul>
 </div>
 ## Introduction <a name="intro"> </a>
 Spread of COVID-19 in early 2020 has raised important concerns about the ability of national health systems to detect the positive cases, as well as the intervention rate a country is expected to put in place to contain the infection.
@@ -56,9 +58,9 @@ The framework of statistical inference allows us to estimate model parameters an
 
 The interactive charts below give an overview of the course of the infection for each country for the two models employed. On the left, predictions based on the heuristic model show the dynamics of the infection rate with the 90% confidence interval (red curves). On the right, the dynamics of infection (red curves) obtained with the SIR model, which includes additional features such as the recovery rate (green curves). Data are updated every day. 
 
-<div id="areaSIR"></div>
+<div id="areaHM"></div>
 
-<select id="dropdown_SIR"> </select>
+<select id="dropdown_HM"> </select>
 
 <script src="{{site.baseurl}}/js/d3Chart_HM.js" > </script>
 
@@ -66,7 +68,7 @@ Interactive chart 1: Heuristic model predictions. Choose the country from the dr
 
 <div id="areaSIR"></div>
 
-<select id="dropdown_HM"> </select>
+<select id="dropdown_SIR"> </select>
 
 <script src="{{site.baseurl}}/js/d3Chart_SIR.js" > </script>
 Interactive chart 2: SIR model predictions.
