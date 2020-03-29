@@ -2,7 +2,7 @@
 
 #source("../src/cov_sampler_SIR.R")
 #load("../src/samples_sir_23mar.RData")
-samples=sam_glob_sir
+samples=sam_glob_sir[1000:2000]
 
 cov.getAllAreas <- function(samples,tf,n){
         Nsam=length(samples)

@@ -9,11 +9,6 @@
 library(readr)
 # download the data
 
-
-#data_ts<-read.table("ncov_ts_2802.csv",sep=",",header=T)
-#data_rec<-read.table("ncov_rec_2802.csv",sep=",",header=T)
-#data_death<-read.table("ncov_death_2802.csv",sep=",",header=T)
-
 cat("Download data\n")
 
 file_conf = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv"
@@ -98,8 +93,10 @@ data.conf=data.conf[match(labels,labels.conf),]
 data.rec=data.rec[match(labels,labels.rec),]
 data.deaths=data.deaths[match(labels,labels.deaths),]
 
-data=data.conf
 datar=data.rec+data.deaths
+data=data.conf-datar
+data[data<0]=0
+
 country=country.conf[match(labels,labels.conf),]
 province=province.conf[match(labels,labels.conf),]
 popsize=pop[ pop[,1] %in% labels.conf &
@@ -539,15 +536,15 @@ cov.MCMC <- function(ind,NITER){
 
 cov.GlobalMCMC <- function(NITER,show=1,init=NA,init_labels=NA,init_temp=0,verbose=F){
 	Al=c(1,1)
-	Bl=c(1,10)
+	Bl=c(10,10)
 
-	A=c(1,2,2, # R 
-	    1,2,2, # A
+	A=c(2,2,2, # R 
+	    10,2,2, # A
 	    1,1,2, # T
 	    1)     # x0
 	B=c(1,.1,.2,
-	    0.01,.1,.2,
-	    10,  .1,.2,
+	    0.1,.01,.2,
+	    10,  .01,.2,
 	    .1)
 
 

@@ -16,13 +16,13 @@ library(readr)
 
 cat("Download data\n")
 
-file_conf = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv"
+file_conf = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv"
 rawdata_conf<-read_csv(file_conf)
 
-file_rec = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Recovered.csv"
+file_rec = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv"
 rawdata_rec<-read_csv(file_rec)
 
-file_deaths = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Deaths.csv"
+file_deaths = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv"
 rawdata_deaths<-read_csv(file_deaths)
 
 country=rawdata_conf[,"Country/Region"]
@@ -37,26 +37,26 @@ data.C=rawdata_conf
 data.R=rawdata_rec
 data.D=rawdata_deaths
 
-for(i in 1:nrow(rawdata_conf)){
-	for(k in ncol(rawdata_conf):2){
-		if(data.C[i,k]<data.C[i,k-1]) data.C[i,k-1]=data.C[i,k]
-		if(data.R[i,k]<data.R[i,k-1]) data.R[i,k-1]=data.R[i,k]
-		if(data.D[i,k]<data.D[i,k-1]) data.D[i,k-1]=data.D[i,k]
-	}
-}
+#for(i in 1:nrow(rawdata_conf)){
+#	for(k in ncol(rawdata_conf):2){
+#		if(data.C[i,k]<data.C[i,k-1]) data.C[i,k-1]=data.C[i,k]
+#		if(data.R[i,k]<data.R[i,k-1]) data.R[i,k-1]=data.R[i,k]
+#		if(data.D[i,k]<data.D[i,k-1]) data.D[i,k-1]=data.D[i,k]
+#	}
+#}
 
 
 # check that deaths = rec are always less than confirmed after correction
-if(any(data.C-data.R-data.D<0)) stop("confirmed less than deaths plus recovered")
+#if(any(data.C-data.R-data.D<0)) stop("confirmed less than deaths plus recovered")
 
 # if everything went fine then we can calculate the number of infected individuals as
 data.I=data.C-data.R-data.D
-data.I.diff=t(apply(data.I,1,diff))
-data.I.diff[data.I.diff<0]=0
-data.R.diff=t(apply(data.R,1,diff))
-data.R.diff[data.R.diff<0]=0
-data.D.diff=t(apply(data.D,1,diff))
-data.D.diff[data.D.diff<0]=0
+#data.I.diff=t(apply(data.I,1,diff))
+#data.I.diff[data.I.diff<0]=0
+#data.R.diff=t(apply(data.R,1,diff))
+#data.R.diff[data.R.diff<0]=0
+#data.D.diff=t(apply(data.D,1,diff))
+#data.D.diff[data.D.diff<0]=0
 
 data=data.I
 
