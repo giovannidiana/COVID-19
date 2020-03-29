@@ -1,4 +1,4 @@
-load("AreaList_HM-2203.RData")
+load("AreaList_HM-2903.RData")
 
 tf=ncol(AreaList$data)+300
 time_axis=format(as.Date(seq(1,tf,1),origin="21 Jan 2020",format="%d %b %Y"),"%d %b %Y")
@@ -17,5 +17,5 @@ rownames(AreaList2$data)=paste(labels,"_INF",sep="")
 
 AreaListCsv = cbind(t=time_axis,t(do.call(rbind,AreaList2[c('data','q1','q2','q3')])))
 
-write.table(AreaListCsv,file="AreaListCsv_hm_2203.csv",row.names=F,sep=",")
+write.table(AreaListCsv,file="AreaListCsv_hm.csv",row.names=F,sep=",")
 

@@ -9,11 +9,6 @@
 library(readr)
 # download the data
 
-
-#data_ts<-read.table("ncov_ts_2802.csv",sep=",",header=T)
-#data_rec<-read.table("ncov_rec_2802.csv",sep=",",header=T)
-#data_death<-read.table("ncov_death_2802.csv",sep=",",header=T)
-
 cat("Download data\n")
 
 file_conf = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv"
@@ -25,17 +20,22 @@ rawdata_rec<-read_csv(file_rec)
 file_deaths = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv"
 rawdata_deaths<-read_csv(file_deaths)
 
-country=rawdata_conf[,"Country/Region"]
-province=rawdata_conf[,"Province/State"]
+country.conf=rawdata_conf[,"Country/Region"]
+province.conf=rawdata_conf[,"Province/State"]
+country.rec=rawdata_rec[,"Country/Region"]
+province.rec=rawdata_rec[,"Province/State"]
+country.deaths=rawdata_deaths[,"Country/Region"]
+province.deaths=rawdata_deaths[,"Province/State"]
 
-rawdata_conf=as.matrix(rawdata_conf[,5:ncol(rawdata_conf)])
-rawdata_rec=as.matrix(rawdata_rec[,5:ncol(rawdata_rec)])
-rawdata_deaths=as.matrix(rawdata_deaths[,5:ncol(rawdata_deaths)])
+nc=ncol(rawdata_conf)
+rawdata_conf=as.matrix(rawdata_conf[,5:nc])
+rawdata_rec=as.matrix(rawdata_rec[,5:nc])
+rawdata_deaths=as.matrix(rawdata_deaths[,5:nc])
 
 # Clean confirmed
-data.C=rawdata_conf
-data.R=rawdata_rec
-data.D=rawdata_deaths
+data.conf=rawdata_conf
+data.rec=rawdata_rec
+data.deaths=rawdata_deaths
 
 #for(i in 1:nrow(rawdata_conf)){
 #	for(k in ncol(rawdata_conf):2){
@@ -46,33 +46,67 @@ data.D=rawdata_deaths
 #}
 
 
-# check that deaths = rec are always less than confirmed after correction
+## check that deaths = rec are always less than confirmed after correction
 #if(any(data.C-data.R-data.D<0)) stop("confirmed less than deaths plus recovered")
-
+#
 # if everything went fine then we can calculate the number of infected individuals as
-data.I=data.C-data.R-data.D
-#data.I.diff=t(apply(data.I,1,diff))
-#data.I.diff[data.I.diff<0]=0
-#data.R.diff=t(apply(data.R,1,diff))
-#data.R.diff[data.R.diff<0]=0
-#data.D.diff=t(apply(data.D,1,diff))
-#data.D.diff[data.D.diff<0]=0
-
-data=data.I
-
 
 ## set labels 
 
-labels=rep("",nrow(data))
+labels.conf=rep("",nrow(data.conf))
+labels.rec=rep("",nrow(data.rec))
+labels.deaths=rep("",nrow(data.deaths))
 
-with_province=!is.na(province[,1])
-for(i in 1:nrow(data)){
+with_province=!is.na(province.conf[,1])
+for(i in 1:nrow(data.conf)){
     if(with_province[i]){
-        labels[i]=paste(country[i,],",",province[i,],sep="")
+        labels.conf[i]=paste(country.conf[i,1],",",province.conf[i,1],sep="")
     } else {        
-        labels[i]=paste(country[i,],sep="")
+        labels.conf[i]=paste(country.conf[i,1],sep="")
     } 
 }
+
+with_province=!is.na(province.rec[,1])
+for(i in 1:nrow(data.rec)){
+    if(with_province[i]){
+        labels.rec[i]=paste(country.rec[i,1],",",province.rec[i,1],sep="")
+    } else {        
+        labels.rec[i]=paste(country.rec[i,1],sep="")
+    } 
+}
+
+with_province=!is.na(province.deaths[,1])
+for(i in 1:nrow(data.deaths)){
+    if(with_province[i]){
+        labels.deaths[i]=paste(country.deaths[i,1],",",province.deaths[i,1],sep="")
+    } else {        
+        labels.deaths[i]=paste(country.deaths[i,1],sep="")
+    } 
+}
+
+## read labels for which the population size is available
+pop<-read.table("../data/countries_population2.csv",header=T,sep=';')
+labels=pop[ pop[,1] %in% labels.conf &
+            pop[,1] %in% labels.rec &
+            pop[,1] %in% labels.deaths,1]
+data.conf=data.conf[match(labels,labels.conf),]
+data.rec=data.rec[match(labels,labels.rec),]
+data.deaths=data.deaths[match(labels,labels.deaths),]
+
+datar=data.rec+data.deaths
+data=data.conf-datar
+data[data<0]=0
+data.I=data
+data.C=data.conf
+data.R=data.rec
+data.D=data.deaths
+
+country=country.conf[match(labels,labels.conf),]
+province=province.conf[match(labels,labels.conf),]
+popsize=pop[ pop[,1] %in% labels.conf &
+             pop[,1] %in% labels.rec &
+             pop[,1] %in% labels.deaths,2]
+
 
 cov.MixedGammaVec <- function(x1,a1,b1,x2,a2,b2){
 	
