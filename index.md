@@ -71,7 +71,7 @@ Interactive chart 1: Heuristic model predictions. Choose the country from the dr
 <select id="dropdown_SIR"> </select>
 
 <script src="{{site.baseurl}}/js/d3Chart_SIR.js" > </script>
-Interactive chart 2: SIR model predictions.
+Interactive chart 2: SIR model predictions. Infected (red) and recovered (green) populations. Shaded areas denote the 90% credible interval.
 
 While China is now at the final stage of the spread, several countries in Europe are now facing the exponential phase. By quantifying the number of infected individual at the peak predicted by our model we found that Italy, Germany, France and Iran are at high risk of pandemic spread. During the exponential phase it is really hard to draw reliable estimates of when the diffusion of the virus will start displaying a reduction, therefore it is extremely important for these countries to strenghten the interventions to contain the eponential increase of new cases.  
 
