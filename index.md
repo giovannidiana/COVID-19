@@ -25,7 +25,7 @@ mathjax: true
 <div style="background-color:rgb(200,100,0);color:white;padding:10px">
 <p style="font-size:20px"> <b>Update</b></p>
 <ul>
-<li> Last update, 05-04-2020</li>
+<li> Last update, 14-04-2020</li>
 <li> 26 Mar 2020: The repository CSSEGISandData/COVID-19 is currently making major changes in the data structure.</li>
 </ul>
 </div>
@@ -38,12 +38,12 @@ In some regions of China the infection rate has significantly decreased compared
 
 <figure>
    <center><img src="Figures/Figure_henan.png"/>
-   <figcaption> Figure 1a: Dynamics of the infection in the Henan province, China (last update 14/02/2020) </figcaption></center>
+   <figcaption> Figure 1a: Dynamics of the infection in the Henan province, China </figcaption></center>
 </figure>
 
  <figure>
    <center><img src="Figures/Figure_stat_1.png"/>
-   <figcaption> Figure 1b: Dynamics of the infection in Italy (last update 14/02/2020) </figcaption></center>
+   <figcaption> Figure 1b: Dynamics of the infection in Italy  </figcaption></center>
 </figure>
 
 First, we introduce a minimal heuristic model of the number of infections based on the disease outbreak in China. This model captures the initial exponential phase of the outbreak and the effect of the external intervention to contain the infection. Next we extend the SIR model employed to describe susceptible, infected and recovered populations to account for external interventaions. 
