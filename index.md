@@ -14,7 +14,6 @@ mathjax: true
 
 ***
 * <a href="#intro"> Introduction </a>
-* <a href="#model"> Empirical model of infection </a>
 * <a href="#SIR"> The SIR model </a>
 * <a href="#inference1"> Statistical inference and model predictions </a>
 
@@ -25,7 +24,7 @@ mathjax: true
 <div style="background-color:rgb(200,100,0);color:white;padding:10px">
 <p style="font-size:20px"> <b>Update</b></p>
 <ul>
-<li> Last update, 14-04-2020</li>
+<li> Last update, 20-04-2020</li>
 <li> 26 Mar 2020: The repository CSSEGISandData/COVID-19 is currently making major changes in the data structure.</li>
 </ul>
 </div>
@@ -58,63 +57,14 @@ The framework of statistical inference allows us to estimate model parameters an
 
 The interactive charts below give an overview of the course of the infection for each country for the two models employed. On the left, predictions based on the heuristic model show the dynamics of the infection rate with the 90% confidence interval (red curves). On the right, the dynamics of infection (red curves) obtained with the SIR model, which includes additional features such as the recovery rate (green curves). Data are updated every day. 
 
-<div id="areaHM"></div>
-
-<select id="dropdown_HM"> </select>
-
-<script src="{{site.baseurl}}/js/d3Chart_HM.js" > </script>
-
-Interactive chart 1: Heuristic model predictions. Choose the country from the dropdown button, zoom in by selecting a square region and zoom out by double click on the image.
-
 <div id="areaSIR"></div>
 
 <select id="dropdown_SIR"> </select>
 
 <script src="{{site.baseurl}}/js/d3Chart_SIR.js" > </script>
-Interactive chart 2: SIR model predictions. Infected (red) and recovered (green) populations. Shaded areas denote the 90% credible interval.
+Interactive chart 2: SIR model predictions. Infected (red) and recovered (green) populations. Dots are data, shaded areas denote the 90% credible interval.
 
 While China is now at the final stage of the spread, several countries in Europe are now facing the exponential phase. By quantifying the number of infected individual at the peak predicted by our model we found that Italy, Germany, France and Iran are at high risk of pandemic spread. During the exponential phase it is really hard to draw reliable estimates of when the diffusion of the virus will start displaying a reduction, therefore it is extremely important for these countries to strenghten the interventions to contain the eponential increase of new cases.  
-
-
-## Heuristic model <a name="model"> </a>
-We used a generative model to describe the dynamics of the infected population in a given geographic area. The model takes into account the effect of the local interventions by coupling the average number of infections $X(t)$ with a dynamical variable $A(t)$ which acts against the spread. The observed number of cases is then generated from a Poisson distribution with rate $X(t)\cdot p(t)$, where $p(t)$ is a fraction of the true number of infections which varies over time (due for instance to the increased number of tests during the acute phase).
-
-The model is defined by two differential equations for the size of the infected population $X(t)$ and the action $A(t)$ and a probabilistic rule on the observed infections 
-
-$$
-\begin{align*}
-\frac{dX}{dt} &= (\beta-A(t))\cdot X(t),\quad X(t_0) = X_0\\
-\frac{dA}{dt} &= h X(t)p(t),\quad A(t_0)=0\\
-n(t) & \sim \mathrm{Poisson}(X(t) \cdot p(t)),\\
-p(t)&=\frac{1}{1+\left(\frac{k}{X(t)}\right)^g}
-\end{align*}
-$$ 
-
-where $\beta$ is the (observed) infection rate and $h$ quantifies the effect of local interventions.  
-$X_0$ is the average number of infections at the initial time (22/01/2020).
-The lack of observations at early stages is captured by the factor $p(t)$ which depends directly on the daily infection rate. The assumption being that the more infections are detected the more tests and controls are put in place to monitor the infected population. Note however that this is not sufficient to estimate the true number of infected individual, but to accommodate the low number of observations when the epidemics reaches a given country.
-
-Figure 2 illustrates the typical dynamics of the model.
-
-<figure>
-<img src="Figures/Figure_1.png"/>
-<figcaption> Figure 2: Dynamics of the number of infections</figcaption>
-</figure>
-
-|name |	description|
-|:----|-----------:|
-|$h$ |	intervention coefficient|
-|$k$ |	Hill scale|
-|$g$ |	Hill shape|
-|$\beta$ |	global infection rate|
-|$X_0$ |	initial infected|
-|$X(t)$ |	infected at time t|
-|$A(t)$ | intervention strength|
-|$p(t)$ |	observed fraction of infected individuals|
-
-Table 1: Summary of parameters and variable used in the model.
-
-Of particular importance, the intervention coefficient $h$ describes the investment the country is putting in place to contain the epidemy (plotted in Supplementary figure 1). Linked to this parameter, the hill scale can be calculated for each country (Supplementary figure 3), and together with the hill shape $k$ (Supplementary figure 4) is indicative of the readiness of the country to put in place a containment programme.  
 
 ## SIR model<a id="SIR"></a>
 In this section we introduce the SIR model to describe susceptible, infected and recovered individuals in a population. The intervention is accounted in two ways, first by reducing the infection rate $\beta$, and second by increasing the recovery rate $\gamma$. The first effect is due to restriction in social activity, reducing the probability of being infected, the second is due to the treatment of patients in hospitals which might improve over time.  
