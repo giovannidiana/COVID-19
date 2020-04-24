@@ -24,7 +24,7 @@ mathjax: true
 <div style="background-color:rgb(200,100,0);color:white;padding:10px">
 <p style="font-size:20px"> <b>Update</b></p>
 <ul>
-<li> Last update, 20-04-2020</li>
+<li> Last update, 24-04-2020</li>
 <li> 26 Mar 2020: The repository CSSEGISandData/COVID-19 is currently making major changes in the data structure.</li>
 </ul>
 </div>
